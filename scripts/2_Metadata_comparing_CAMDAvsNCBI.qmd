@@ -4,14 +4,20 @@
 >
 > -   **Author**: Evelia Coss
 > -   **Date**: 12/June/2025
-> -   Input files
-> -   test.
+> -   **Input files:**
+>     -   [test set](https://github.com/ccm-bioinfo/CAMDA2025_AntibioticResistance/blob/main/rawdata/TrainAndTest_dataset/testing_template.csv): CAMDA test set.
+>     -   [training set](https://github.com/ccm-bioinfo/CAMDA2025_AntibioticResistance/blob/main/rawdata/TrainAndTest_dataset/training_dataset.csv): CAMDA training set.
+>     -   [NCBI data](https://github.com/ccm-bioinfo/CAMDA2025_AntibioticResistance/blob/main/metadata/sra-metadata.csv): Metadata from NCBI (June 10, 2025)
+>     -   [Antibiogramas](https://zenodo.org/records/14876710): Metadata from NCBI, ENA and BV-BRC. (February 16, 2025)
+> -   Output files:
+> -   
 
 ## Load packages
 
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(DT)        # Tablas bonitas
+library(here)
 ```
 
 ## STEP 1. Import Metadata and change format
