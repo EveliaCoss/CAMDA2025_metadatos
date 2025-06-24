@@ -3,14 +3,14 @@
 > Aim: Find how many species are correctly annotated in both databases CAMDA and NCBI related with CAMDA information (training and test datasets).
 >
 > -   **Author**: Evelia Coss
-> -   **Date**: 12/June/2025
+> -   **Date**: 23/June/2025
 > -   **Input files:**
->     -   [test set](https://github.com/ccm-bioinfo/CAMDA2025_AntibioticResistance/blob/main/rawdata/TrainAndTest_dataset/testing_template.csv): CAMDA test set.
->     -   [training set](https://github.com/ccm-bioinfo/CAMDA2025_AntibioticResistance/blob/main/rawdata/TrainAndTest_dataset/training_dataset.csv): CAMDA training set.
->     -   [NCBI data](https://github.com/ccm-bioinfo/CAMDA2025_AntibioticResistance/blob/main/metadata/sra-metadata.csv): Metadata from NCBI (June 10, 2025)
->     -   [Antibiogramas](https://zenodo.org/records/14876710): Metadata from NCBI, ENA and BV-BRC. (February 16, 2025)
+>     -   [test set](https://github.com/ccm-bioinfo/CAMDA2025_AntibioticResistance/blob/main/rawdata/TrainAndTest_dataset/testing_template.csv): CAMDA test set (`test_metadata_db`).
+>     -   [training set](https://github.com/ccm-bioinfo/CAMDA2025_AntibioticResistance/blob/main/rawdata/TrainAndTest_dataset/training_dataset.csv): CAMDA training set (`training_metadata_db`).
+>     -   [NCBI data](https://github.com/ccm-bioinfo/CAMDA2025_AntibioticResistance/blob/main/metadata/sra-metadata.csv): Metadata from NCBI (June 10, 2025) (`sra_metadata_db`)
+>     -   [Antibiogramas](https://zenodo.org/records/14876710): Metadata from NCBI, ENA and BV-BRC. (February 16, 2025) (`antibiograms_metadata_db`)
 > -   Output files:
-> -   
+>     -   Archivo
 
 ## Load packages
 
@@ -23,34 +23,36 @@ library(here)
 ## STEP 1. Import Metadata and change format
 
 ```{r importData}
-# getwd() # [1] "C:/Users/ecoss/Documents/Respaldos/Github_notes/CAMDA2025_AntibioticResistance/scripts"
-getwd()
-
 # > training dataset
-training_metadata <- read_csv("../rawdata/TrainAndTest_dataset/training_dataset.csv")
+training_metadata <- read_csv(here("rawdata/TrainAndTest_dataset",  "training_dataset.csv"))
 # rename species
 training_metadata_db <- training_metadata %>%
   mutate(scientific_name_CAMDA = paste(genus, species, sep = " ")) 
 # Rows: 6144 Columns: 16── Column
 
 # > test dataset
-test_metadata <- read_csv("../rawdata/TrainAndTest_dataset/testing_template.csv")
+test_metadata <- read_csv(here("rawdata/TrainAndTest_dataset",  "testing_template.csv"))
 # rename species
 test_metadata_db <- test_metadata %>%
   mutate(scientific_name_CAMDA = paste(genus, species, sep = " ")) 
 # Rows: 5345 Columns: 6── Column
 
 # > Load public metadata from NCBI
-sra_metadata <- read_csv("../metadata/sra-metadata.csv") 
+sra_metadata <- read_csv(here("metadata", "sra-metadata.csv")) 
 sra_metadata_db <- sra_metadata %>% janitor::clean_names() %>%  # para limpiar y estandarizar los nombres de columnas de un data frame
-  select(run, library_strategy, library_selection, library_source, platform, model, 
-                        bio_project, bio_sample, scientific_name) %>%
-  rename(accession = run, scientific_name_complete = scientific_name)
+  select(run, library_strategy, library_selection, library_source, platform, model, bio_project, bio_sample, scientific_name) %>%
+  # renombrar columnas
+  rename(accession = run, scientific_name_NCBI = scientific_name)
 # Rows: 11510 Columns: 47── Column specification
 
 # Reduce name
 # Quedarme con las primeras dos palabras
 sra_metadata_db$scientific_name_NCBI <- word(sra_metadata_db$scientific_name_complete, 1, 2)
+
+# > Antibiogram
+antibiograms_metadata <- read_tsv(here("metadata", "antibiograms.tsv.gz")) 
+antibiograms_metadata_db <- antibiograms_metadata %>% janitor::clean_names() %>%  # Renombrar datos
+  rename(accession = reads, scientific_name_Antibiogram = species)
 ```
 
 ## STEP 2. Cleaning metadata information
@@ -86,7 +88,7 @@ nrow(testing_metadata_cleaned)
 # Save file
 # Create new folder
 #dir.create("../rawdata/TrainAndTest_cleaned")
-write_tsv(testing_metadata_cleaned, file = "../rawdata/TrainAndTest_cleaned/testing_metadata_cleaned.tsv", quote = "none")
+write_tsv(testing_metadata_cleaned, file = here("rawdata/TrainAndTest_cleaned", "testing_metadata_cleaned.tsv"), quote = "none")
 ```
 
 ## STEP 3. Remove duplicated SRA IDs from the training set
