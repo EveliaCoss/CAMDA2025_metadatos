@@ -10,9 +10,9 @@ book:
     - index.qmd
     - intro.qmd
     - 2_Metadata_comparing_CAMDAvsNCBI.qmd
-    - summary.qmd
+    - 3_Download_SRAdata.qmd
      # Information
-  repo-url: https://github.com/EveliaCoss/Workshop_GitGithub2024 # link de Github
+  repo-url: https://github.com/EveliaCoss/CAMDA2025_metadatos # link de Github
 
 format:
   html:

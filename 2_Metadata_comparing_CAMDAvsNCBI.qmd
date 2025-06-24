@@ -10,7 +10,10 @@
 >     -   [NCBI data](https://github.com/ccm-bioinfo/CAMDA2025_AntibioticResistance/blob/main/metadata/sra-metadata.csv): Metadata from NCBI (June 10, 2025) (`sra_metadata_db`)
 >     -   [Antibiogramas](https://zenodo.org/records/14876710): Metadata from NCBI, ENA and BV-BRC. (February 16, 2025) (`antibiograms_metadata_db`)
 > -   Output files:
->     -   Archivo
+>     -   `testing_metadata_cleaned.tsv`: Archivo sin los datos de SRA que compartian con training, localizado en `rawdata/TrainAndTest_cleaned`.
+>     -   `Training_allstatus_sp_reference_metadata.tsv.gz`: Tabla de metadatos sobre la informacion contenida en los datos publicos (`sra_metadata_db y antibiograms_metadata_db`) y training dataset, contiene dos columnas extras *status* y *status_reference.* Revisar la informacion completa en STEP 4.
+>     -   `Test_allstatus_sp_reference_metadata.tsv.gz`: Tabla de metadatos sobre la informacion contenida en los datos publicos (`sra_metadata_db y antibiograms_metadata_db`) y testing dataset, contiene dos columnas extras *status* y *status_reference.* Revisar la informacion completa en STEP 4.
+>     -   `training_metadata_cleaned.tsv`: Datos limpios, sin Missing data, sin especies mal asignadas. Ademas se reasignaron especies. Revisar la informacion completa en STEP 5.
 
 ## Load packages
 
@@ -225,13 +228,14 @@ training_completeInfo_db %>%
   summarise(
     total_samples = n(),
     n_missing_data = sum(status == "Missing_All"),
-    pct_missing_data = (n_missing_data / total_samples) * 100
-  ) %>%
-  arrange(desc(n_missing_data))
+    pct_missing_data = (n_missing_data / total_samples) * 100) %>%
+  arrange(desc(n_missing_data)) %>%
+# Change NA by Zero
+ mutate(across(everything(), ~replace_na(., 0)))
 ```
 
 ::: callout-important
-8 out of 9 species have missing or incorrect data.
+7 out of 9 species have missing or incorrect data.
 :::
 
 #### Checar fuentes de informacion
@@ -367,6 +371,19 @@ combined_counts_completed <- combined_counts %>%
   left_join(train_counts_cleaned, by = "scientific_name_CAMDA") %>%
   left_join(test_counts_cleaned, by = "scientific_name_CAMDA") 
 
+# sum columns
+df_total <- combined_counts_completed %>%
+  summarise(across(where(is.numeric), ~sum(.x, na.rm = TRUE))) %>%
+  mutate(rowname = "Total") %>%
+  select(rowname, everything())
+
+combined_counts_completed <- combined_counts_completed %>%
+  mutate(rowname = rownames(.)) %>%
+  select(rowname, everything()) %>%
+  bind_rows(df_total)
+
 # Display the combined counts table
-combined_counts_completed
+combined_counts_completed %>% 
+  select(-rowname) %>%
+  DT::datatable()
 ```

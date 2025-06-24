@@ -1,0 +1,11 @@
+# Verificar los datos descargados
+
+> Aim: Find how many species are correctly annotated in both databases CAMDA and NCBI related with CAMDA information (training and test datasets).
+>
+> -   **Author**: Evelia Coss
+> -   **Date**: 23/June/2025
+> -   **Input files:**
+>     -   SRA_names_carpetas.txt: Creado a partir de todos los datos crudos localizados en `/files/CAMDA2025_AntibioticResistance/genome_reassembly/reads`
+>     -   
+> -   Output files:
+>     -   Archivo
