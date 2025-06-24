@@ -1,33 +1,42 @@
-#' Compare species annotations using NCBI and antibiogram metadata
+#' Compare species annotations across CAMDA, NCBI, and antibiogram datasets
 #'
-#' This function compares species annotations from CAMDA with those provided by NCBI and, 
-#' when missing, supplements with data from antibiogram metadata.
+#' This function compares species annotations from the CAMDA dataset against metadata from
+#' NCBI and antibiograms. It returns a dataset that includes consistency status between CAMDA
+#' and the external sources, as well as a comparison between the external sources themselves.
 #'
-#' It first attempts to match species between `training_metadata_db` and `sra_metadata_db` 
-#' using the `accession` field. If no match is found or the NCBI information is missing, 
-#' the function tries to match using the `antibiograms_metadata_db`.
+#' @param training_metadata_db A data frame containing the CAMDA annotations. 
+#'        Must include the columns: `accession` and `scientific_name_CAMDA`.
+#' @param sra_metadata_db A data frame containing metadata from NCBI.
+#'        Must include the columns: `accession` and `scientific_name_NCBI`.
+#' @param antibiograms_metadata_db A data frame containing species annotations from antibiograms.
+#'        Must include the columns: `accession` and `scientific_name_Antibiogram`.
 #'
-#' @param training_metadata_db A data frame containing the original metadata with CAMDA species annotations. 
-#'        Must include columns: `accession` and `scientific_name_CAMDA`.
-#' @param sra_metadata_db A data frame containing NCBI metadata. 
-#'        Must include columns: `accession` and `scientific_name_NCBI`.
-#' @param antibiograms_metadata_db A data frame containing metadata from antibiograms. 
-#'        Must include columns: `accession` and `scientific_name_Antibiogram`.
-#'
-#' @return A data frame with the `accession`, the CAMDA species name, the matched species name 
-#'         from NCBI or antibiogram (if available), and a `status` column indicating:
-#'         - `"Matched_NCBI"`: exact match with NCBI species name
-#'         - `"Not-matched_NCBI"`: mismatch with NCBI species name
-#'         - `"Missing_NCBI"`: no NCBI data available
-#'         - `"Matched_Antibiogram"`: exact match with antibiogram species name
-#'         - `"Not-matched_Antibiogram"`: mismatch with antibiogram species name
-#'         - `"Missing_All"`: no data available in either source
+#' @return A data frame with the following columns:
+#' \itemize{
+#'   \item \code{accession}: Unique sample identifier.
+#'   \item \code{scientific_name_CAMDA}: Species annotation from the CAMDA dataset.
+#'   \item \code{scientific_name_NCBI}: Species annotation from NCBI metadata.
+#'   \item \code{scientific_name_Antibiogram}: Species annotation from antibiogram metadata.
+#'   \item \code{status}: Consistency between CAMDA and external sources, with values:
+#'     \describe{
+#'       \item{Matched_NCBI_Antibiogram}{CAMDA matches both NCBI and antibiogram.}
+#'       \item{Matched_NCBI}{CAMDA matches only NCBI.}
+#'       \item{Matched_Antibiogram}{CAMDA matches only the antibiogram.}
+#'       \item{Mismatch_with_CAMDA}{At least one source has data, but CAMDA does not match either.}
+#'       \item{Missing_All}{No data available from NCBI or antibiogram.}
+#'     }
+#'   \item \code{status_reference}: Consistency between NCBI and antibiogram sources, with values:
+#'     \describe{
+#'       \item{Good_sources}{Both sources are present and agree.}
+#'       \item{Verify_sources}{At least one source is present and sources disagree or are partially missing.}
+#'       \item{No_sources}{Both NCBI and antibiogram are missing.}
+#'     }
+#' }
 #'
 #' @examples
-#' result <- comparar_especies(training_metadata_db, sra_metadata_db, antibiograms_metadata_db)
+#' result <- compare_sp(training_metadata_db, sra_metadata_db, antibiograms_metadata_db)
 #'
 #' @export
-
 
 compare_sp <- function(training_metadata_db, sra_metadata_db, antibiograms_metadata_db) {
   library(dplyr)

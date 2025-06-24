@@ -55,6 +55,33 @@ antibiograms_metadata_db <- antibiograms_metadata %>% janitor::clean_names() %>%
   rename(accession = reads, scientific_name_Antibiogram = species)
 ```
 
+Distribution of SRA IDs
+
+```{r combined_counts}
+# Count unique accessions per species in the training metadata
+train_counts <- training_metadata_db %>%
+  group_by(scientific_name_CAMDA) %>%
+  summarise(train_num_accessions = n_distinct(accession))
+
+# Count unique accessions per species in the testing metadata
+test_counts <- test_metadata_db %>%
+  group_by(scientific_name_CAMDA) %>%
+  summarise(test_num_accessions = n_distinct(accession))
+
+# Combine the counts by species, keeping all species present in the training set
+combined_counts <- train_counts %>%
+  left_join(test_counts, by = "scientific_name_CAMDA") %>%
+  # Replace NA in testing counts with 0 for species not present in the testing data
+  mutate(test_num_accessions = ifelse(is.na(test_num_accessions), 0, test_num_accessions))
+
+# Display the combined counts table
+combined_counts
+```
+
+::: callout-important
+These tables may contain duplicates and incorrect annotations in the species names.
+:::
+
 ## STEP 2. Cleaning metadata information
 
 The information for the SRA IDs in the test and training datasets was verified:
@@ -74,9 +101,9 @@ sraids_overlapping <- intersect(test_metadata_db$accession, training_metadata_db
 length(sraids_overlapping)
 ```
 
-We detected 1290 SRA IDs se encuentran compartidos entre ambos archivos.
+We detected that 1,290 SRA IDs are shared between both files.
 
-### Eliminar los IDs que se comparten con training
+### Remove the test IDs that are shared with the training set
 
 ```{r}
 testing_metadata_cleaned <- test_metadata_db %>% filter(!(accession %in% training_metadata_db$accession))
@@ -94,9 +121,9 @@ Save file:
 write_tsv(testing_metadata_cleaned, file = here("rawdata/TrainAndTest_cleaned", "testing_metadata_cleaned.tsv"), quote = "none")
 ```
 
-## STEP 3. Remove duplicated SRA IDs from the training set
+## STEP 3. Filter out from the testing data the IDs present in the training set
 
-### Cuantos SRA IDs se encuentran repetidos en training
+### **How many SRA IDs are duplicated within the training set?**
 
 ```{r}
 # How many unique that we have?
@@ -115,22 +142,21 @@ training_duplicated_table <- training_metadata %>%
 
 # Only IDs (502 SRA IDs)
 training_SRAIDs_duplicated <- training_duplicated_table$accession
-```
 
-```{r}
+# Obtain duplicated names
 training_duplicated_db <- training_metadata %>% 
   filter(accession %in% training_SRAIDs_duplicated)
 ```
 
 ## Check: Do we have the same species?
 
-### Training vs NCBI data
+### Training vs public data
 
 ```{r}
 intersect(training_metadata_db$scientific_name_CAMDA, sra_metadata_db$scientific_name_NCBI)
 ```
 
-### Test vs NCBI data
+### Test vs public data
 
 ```{r}
 intersect(test_metadata_db$scientific_name_CAMDA, sra_metadata_db$scientific_name_NCBI)
@@ -138,21 +164,39 @@ intersect(test_metadata_db$scientific_name_CAMDA, sra_metadata_db$scientific_nam
 
 ## STEP 4. Comparing the information of Specie and accession (SRA ID)
 
+Load function
+
+```{r}
+source("functions/compare_sp_function.R")
+```
+
+The resulting dataset includes two status columns: **`status`** and **`status_reference`**:
+
+-   **`status`** indicates how the species annotation from the CAMDA dataset compares to external sources:
+
+    -   `Matched_NCBI_Antibiogram`: CAMDA matches both NCBI and antibiogram data.
+
+    -   `Matched_NCBI`: CAMDA matches only NCBI data.
+
+    -   `Matched_Antibiogram`: CAMDA matches only the antibiogram data.
+
+    -   `Missing_All`: No sufficient external data available for comparison.
+
+-   **`status_reference`** evaluates the consistency between the two external sources (NCBI and antibiogram):
+
+    -   `Good_sources`: NCBI and antibiogram annotations agree with each other.
+    -   `Verify_sources`: NCBI and antibiogram annotations disagree and require further manual verification to ensure data reliability.
+
+When the species annotations provided by NCBI and the antibiogram metadata do not match, it raises concerns about the accuracy of the sample's taxonomic identity. Such discrepancies may indicate mislabeling, contamination, or outdated records. Therefore, it is essential to verify the original sources to ensure the reliability of downstream analyses.
+
 ### Training vs NCBI data
 
-#### 2.1 Check species name matches between CAMDA and NCBI
+#### Check species name matches between CAMDA and NCBI
 
 Find how many species have matching names between CAMDA and NCBI to identify correctly annotated entries.
 
 ```{r}
-training_completeInfo_db <- left_join(training_metadata_db, sra_metadata_db, by ="accession") %>%
-  select(accession, scientific_name_CAMDA, scientific_name_NCBI) %>%
-  distinct() %>% #eliminas filas
-  # Agregar informacion si coinden o no las especies
-  mutate( status = case_when(
-      scientific_name_CAMDA == scientific_name_NCBI ~ "coincide",
-      TRUE ~ "no coincide"
-    )) 
+training_completeInfo_db <- compare_sp(training_metadata_db, sra_metadata_db, antibiograms_metadata_db)
 
 # Global information
 training_completeInfo_db %>%  
@@ -163,41 +207,44 @@ training_completeInfo_db %>%
 Save data
 
 ```{r save training_completeInfo_db}
-write_tsv(training_completeInfo_db, file = "../rawdata/Training_status_sp_CAMDAvsNCBI.tsv.gz")
+write_tsv(training_completeInfo_db, file = here("rawdata/TrainAndTest_cleaned", "Training_allstatus_sp_reference_metadata.tsv.gz"), quote = "none")
 ```
 
-#### 2.2 How many SRA entries are correctly annotated and how many are not?
+#### How many SRA entries are correctly annotated and how many are not?
 
 ```{r}
 # Global 
 table(training_completeInfo_db$status)
 ```
 
-How many species have at least one misannotated entry?
-
-```{r}
-training_completeInfo_db %>% filter(status == "no coincide") %>%
-  distinct(scientific_name_CAMDA)
-```
-
-#### 2.3 What information recorded in CAMDA does not match the NCBI data?
-
-```{r}
-training_completeInfo_db %>% filter(status == "no coincide") %>%
-  group_by(scientific_name_CAMDA) %>%
-  distinct(scientific_name_NCBI) %>%
-  # Visualizar informacion en una tabla bonita
-  DT::datatable()
-```
-
-#### 2.4 How many samples from each species do not match the NCBI data?
+How many species have at least one missing entry?
 
 ```{r}
 training_completeInfo_db %>%
-  filter(status == "no coincide") %>%
   group_by(scientific_name_CAMDA) %>%
-  summarise(n_mal_anotadas = n()) %>%
-  arrange(desc(n_mal_anotadas))
+  summarise(
+    total_samples = n(),
+    n_missing_data = sum(status == "Missing_All"),
+    pct_missing_data = (n_missing_data / total_samples) * 100
+  ) %>%
+  arrange(desc(n_missing_data))
+```
+
+::: callout-important
+8 out of 9 species have missing or incorrect data.
+:::
+
+#### Checar fuentes de informacion
+
+No coicide la informacion de NCBI con la que hay en Antibiogramas
+
+```{r}
+training_verify_data <- training_completeInfo_db %>%
+  filter(status_reference == "Verify_sources") 
+```
+
+```{r}
+table(training_completeInfo_db$status_reference)
 ```
 
 ## Test vs NCBI data
@@ -265,3 +312,9 @@ test_completeInfo_db %>%
 -   Cuantos SRR tenemos en total por especie?
 -   Cuantas 341 se pueden reeetiquetar con la misma especie relacionada con las especies que tenemos?
 -   Porcentajes de datos que debemos eliminar?
+
+In one specific case, the species reported in both the CAMDA and antibiogram datasets is incorrect: SRR2101499 was annotated as *Staphylococcus aureus*, but it has been previously reported to be misassigned and actually corresponds to *Mycobacterium tuberculosis*.
+
+Based on the information obtained from public datasets, we have decided to remove SRA IDs SRR2101499, ERR1218771, and SRR5386043, as they correspond to species that are not relevant or appropriate for the scope of this study and are considered sources of noise in the identification of antimicrobial resistance genes.
+
+Additionally, SRA IDs ERR1218638 and ERR1218722 will be reassigned to *Klebsiella pneumoniae*, a species included in the study. These samples were previously annotated in the CAMDA dataset as *Escherichia coli*.
