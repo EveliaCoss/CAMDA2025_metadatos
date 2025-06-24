@@ -1,25 +1,30 @@
 project:
   type: book
+  output-dir: docs
 
 book:
-  title: "CAMDA2025_metadatos"
-  author: "Norah Jones"
+  title: "CAMDA2025 metadatos"
+  author: "Evelia Coss"
   date: "6/17/2025"
   chapters:
     - index.qmd
     - intro.qmd
+    - 2_Metadata_comparing_CAMDAvsNCBI.qmd
     - summary.qmd
-    - references.qmd
-
-bibliography: references.bib
+     # Information
+  repo-url: https://github.com/EveliaCoss/Workshop_GitGithub2024 # link de Github
 
 format:
   html:
+    toc-depth: 4
+    number-depth: 5
+  # Boton para cambiar tema de oscuro a claro
     theme:
-      - cosmo
-      - brand
-  pdf:
-    documentclass: scrreprt
+      light: cosmo
+      dark: darkly
+    code-fold: show # Ocultar codigo
+    code-copy: true # Copy button
+    freeze: false  # Desactivar congelamiento
 
 editor: visual
 

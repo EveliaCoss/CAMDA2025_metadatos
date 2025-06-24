@@ -64,28 +64,31 @@ The information for the SRA IDs in the test and training datasets was verified:
 3.  SRA IDs with all three phenotypes (S/I/R) were removed from the training dataset.
 4.  Re-assignment of SRA IDs with duplicated annotations or conflicting annotations.
 
-### 2.1 Exclude overlapping SRA IDs from the test set, retaining them only in the training set
+### Exclude overlapping SRA IDs from the test set, retaining them only in the training set
 
 ```{r}
 # Obtener los IDs que están en ambos dataframes
-sraids_overlapping <- intersect(test_metadata$accession, training_metadata$accession)
+sraids_overlapping <- intersect(test_metadata_db$accession, training_metadata_db$accession)
 
 # Mostrar los IDs comunes
 length(sraids_overlapping)
 ```
 
-We detected `length(sraids_overlapping)` SRA IDs se encuentran compartidos entre ambos archivos.
+We detected 1290 SRA IDs se encuentran compartidos entre ambos archivos.
 
 ### Eliminar los IDs que se comparten con training
 
 ```{r}
-testing_metadata_cleaned <- test_metadata %>% filter(!(accession %in% training_metadata$accession))
+testing_metadata_cleaned <- test_metadata_db %>% filter(!(accession %in% training_metadata_db$accession))
 
 # 4055 SRA IDs accessions by row
 nrow(testing_metadata_cleaned) 
 # check: length(unique(testing_metadata_cleaned$accession))
+```
 
-# Save file
+Save file:
+
+```{r}
 # Create new folder
 #dir.create("../rawdata/TrainAndTest_cleaned")
 write_tsv(testing_metadata_cleaned, file = here("rawdata/TrainAndTest_cleaned", "testing_metadata_cleaned.tsv"), quote = "none")
