@@ -1,4 +1,4 @@
-# Comparing CAMDA metadata related with NCBI
+# Comparing CAMDA metadata related with public data
 
 > Aim: Find how many species are correctly annotated in both databases CAMDA and NCBI related with CAMDA information (training and test datasets).
 >
@@ -17,7 +17,7 @@
 
 ## Load packages
 
-```{r, message=FALSE, warning=FALSE}
+```{r packages, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(DT)        # Tablas bonitas
 library(here)
@@ -386,4 +386,10 @@ combined_counts_completed <- combined_counts_completed %>%
 combined_counts_completed %>% 
   select(-rowname) %>%
   DT::datatable()
+```
+
+Almacenar las variables
+
+```{r}
+save(test_completeInfo_db, training_completeInfo_db, training_cleanedInfo_db, antibiograms_metadata_db, file = here("rawdata/TrainAndTest_cleaned", "complete_metadata.RData"))
 ```

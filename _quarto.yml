@@ -11,6 +11,7 @@ book:
     - intro.qmd
     - 2_Metadata_comparing_CAMDAvsNCBI.qmd
     - 3_Download_SRAdata.qmd
+    - 4_Aligment.qmd
      # Information
   repo-url: https://github.com/EveliaCoss/CAMDA2025_metadatos # link de Github
 

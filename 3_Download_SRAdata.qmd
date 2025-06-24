@@ -1,11 +1,195 @@
 # Verificar los datos descargados
 
-> Aim: Find how many species are correctly annotated in both databases CAMDA and NCBI related with CAMDA information (training and test datasets).
+> Aim: Verificar la correcta descarga de los datos, Distribucion de carpetas y verificar calidad de los datos
 >
 > -   **Author**: Evelia Coss
 > -   **Date**: 23/June/2025
 > -   **Input files:**
->     -   SRA_names_carpetas.txt: Creado a partir de todos los datos crudos localizados en `/files/CAMDA2025_AntibioticResistance/genome_reassembly/reads`
+>     -   `SRA_names_carpetas.txt`: Creado a partir de todos los datos crudos descargados en el cluster y localizados en `/files/CAMDA2025_AntibioticResistance/genome_reassembly/reads`. El archivo se encuentra en `quality_metadata`.
 >     -   
 > -   Output files:
 >     -   Archivo
+
+Crear archivo solo de los datos que se encuentren descargados
+
+``` bash
+find raw/ -mindepth 1 -maxdepth 1 -type d -exec basename {} \; > SRA_names_carpetas.txt
+```
+
+Lo descargue en mi computadora dentro de la carpeta donde se respalda Github.
+
+``` bash
+scp ecoss@elisa.matmor.unam.mx:/files/CAMDA2025_AntibioticResistance/genome_reassembly/reads/SRA_names_carpetas.txt .
+```
+
+## To do list
+
+-   Checar cuanto porcentage de descarga tenemos de los datos
+-   Mover a sus respectivas carpetas por especies
+-   Orden de las carpetas, clasificar por Herramienta/equipo de secuenciacion (Illumina, PacBio, Nanopore), Tamaños de los reads, Tipos de bibliotecas (PE/SE)
+-   Mover los FastQC a sus respectivas carpeta y correr MultiQC
+
+Load packages
+
+```{r packages, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(DT)        # Tablas bonitas
+library(here)
+```
+
+Import Data
+
+```{r}
+# Load metadata cleaned and antibiogram information
+load(here("rawdata/TrainAndTest_cleaned", "complete_metadata.RData"))
+
+# Load information about download rawdata, import as data.frame
+SRA_down <- read.table(here("quality_rawdata", "SRA_names_carpetas.txt"), header = FALSE, col.names = "accession")
+```
+
+Clasificacion de los datos descargados
+
+```{r}
+# Combina los datos de test y training en un solo data frame con una columna fuente
+info_combined <- bind_rows(
+  test_completeInfo_db %>% mutate(info = "Test_data"),
+  training_completeInfo_db %>% mutate(info = "Training_data")) %>%
+  select(accession, scientific_name_CAMDA, info)
+
+# Une con SRA_down y asigna 'missing' si no hay coincidencias
+SRA_down_joined_data <- SRA_down %>%
+  full_join(info_combined, by = "accession") %>%
+  mutate(info = if_else(accession %in% SRA_down$accession, paste0(info,"_download") , paste0(info,"_missing")))
+
+table(SRA_down_joined_data$info)
+```
+
+De que especies ya tenemos informacion
+
+```{r}
+SRA_down_joined_data %>%
+  group_by(scientific_name_CAMDA, info) %>%
+  summarise(n_accession = n_distinct(accession)) %>%
+  arrange(desc(n_accession))  %>%
+  DT::datatable()
+```
+
+Acomodar los datos descargados
+
+```{r}
+kpeun_ids <- SRA_down_joined_data %>%
+  filter(info == "Training_data_download") %>%
+  filter(scientific_name_CAMDA == "Klebsiella pneumoniae")
+kpeun_ids <- kpeun_ids$accession
+```
+
+## Acomodo de las carpetas por especie
+
+Esperaria contar con 9 carpetas, unas por cada especie, ademas de tener subcarpetas relacionadas con el equipo de secuenciacion (Illumina, Nanopore, PacBio), tipo de bibliotecas (paired-end, single-end), asi como de los tamaños de los reads. Viendose algo como eso:
+
+```         
+/raw_data/
+├── Especie_1/
+│   ├── illumina/
+│   │   ├── paired_end/
+│   │   └── single_end/
+│   ├── pacbio/
+│   │   └── single_end/
+│   └── nanopore/
+│       └── single_end/
+├── Especie_2/
+│   ├── illumina/
+│   │   ├── paired_end/
+│   │   └── single_end/
+│   ├── pacbio/
+│   │   └── single_end/
+│   └── nanopore/
+│       └── single_end/
+...
+└── Especie_9/
+    ├── illumina/
+    │   ├── paired_end/
+    │   └── single_end/
+    ├── pacbio/
+    │   └── single_end/
+    └── nanopore/
+        └── single_end/
+```
+
+Información sobre los tipos de bibliotecas:
+
+-   **`PAIRED`**: indica que es una **secuenciación por pares (paired-end)**, es decir, se han secuenciado ambos extremos de un fragmento de ADN.
+-   **`SINGLE`**: significa que las lecturas son **de un solo extremo** (single-end), es decir, se secuencia solo un extremo de cada fragmento de ADN.
+
+Información sobrelas tecnologias de secuenciacion:
+
+-   **`LS454`**: se refiere a la tecnología de secuenciación **Roche/454 Life Sciences**, una de las primeras plataformas de secuenciación masiva (ya descontinuada).
+-   **`PACBIO_SMRT`**: se refiere a la tecnología de **Pacific Biosciences (PacBio)** usando su plataforma **SMRT (Single Molecule Real-Time)** sequencing.
+-   **`ILLUMINA`**: Tecnología de secuenciación de segunda generación, que es la plataforma más común y extendida para NGS. Produce lecturas cortas (100-300 pb típicamente) con alta precisión y gran volumen.
+-   **`OXFORD_NANOPORE`**: Plataforma de secuenciación desarrollada por Oxford Nanopore Technologies, que produce lecturas muy largas en tiempo real mediante la detección de cambios en corriente eléctrica cuando el ADN pasa por un poro nanopore.
+
+Crear carpetas por especies en raw, dentro del cluster de Elisa.
+
+``` bash
+mkdir ngonorrhoeae \
+     saureus \
+     spneumoniae \
+     abaumannii \
+     senterica \
+     kpneumoniae \
+     ecoli \
+     cjejuni \
+     paeruginosa
+```
+
+### Test information 
+
+Vamos a revisar que tipos de datos esperamos tener de las secuenciaciones para generar las carpetas relacionadas
+
+```{r}
+# 1. Expandir accession IDs en antibiograms_metadata_db
+antibiograms_expanded <- antibiograms_metadata_db %>%
+  separate_rows(accession, read_type, sep = " ")  # cambia el separador si es coma por row
+
+# 2. Unir con test_completeInfo_db por accession
+test_joined_data <- test_completeInfo_db %>%
+  left_join(antibiograms_expanded %>% select(accession, read_type),
+            by = "accession")
+
+# 3. Resultado
+table(test_joined_data$read_type)
+```
+
+Distribucion por especies y tecnologias de secuenciacion
+
+```{r}
+test_joined_data %>%
+  group_by(scientific_name_CAMDA, read_type) %>%
+  summarise(n_accession = n_distinct(accession)) %>%
+  arrange(desc(n_accession))  %>%
+  DT::datatable()
+```
+
+### Training information 
+
+Vamos a revisar que tipos de datos esperamos tener de las secuenciaciones para generar las carpetas relacionadas
+
+```{r}
+# 2. Unir con training_completeInfo_db por accession
+training_joined_data <- training_completeInfo_db %>%
+  left_join(antibiograms_expanded %>% select(accession, read_type),
+            by = "accession")
+
+# 3. Resultado
+table(training_joined_data$read_type)
+```
+
+Distribucion por especies y tecnologias de secuenciacion
+
+```{r}
+training_joined_data %>%
+  group_by(scientific_name_CAMDA, read_type) %>%
+  summarise(n_accession = n_distinct(accession)) %>%
+  arrange(desc(n_accession))  %>%
+  DT::datatable()
+```
