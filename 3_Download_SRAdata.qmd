@@ -128,21 +128,7 @@ Información sobrelas tecnologias de secuenciacion:
 -   **`ILLUMINA`**: Tecnología de secuenciación de segunda generación, que es la plataforma más común y extendida para NGS. Produce lecturas cortas (100-300 pb típicamente) con alta precisión y gran volumen.
 -   **`OXFORD_NANOPORE`**: Plataforma de secuenciación desarrollada por Oxford Nanopore Technologies, que produce lecturas muy largas en tiempo real mediante la detección de cambios en corriente eléctrica cuando el ADN pasa por un poro nanopore.
 
-Crear carpetas por especies en raw, dentro del cluster de Elisa.
-
-``` bash
-mkdir ngonorrhoeae \
-     saureus \
-     spneumoniae \
-     abaumannii \
-     senterica \
-     kpneumoniae \
-     ecoli \
-     cjejuni \
-     paeruginosa
-```
-
-### Test information 
+### Test information
 
 Vamos a revisar que tipos de datos esperamos tener de las secuenciaciones para generar las carpetas relacionadas
 
@@ -170,7 +156,7 @@ test_joined_data %>%
   DT::datatable()
 ```
 
-### Training information 
+### Training information
 
 Vamos a revisar que tipos de datos esperamos tener de las secuenciaciones para generar las carpetas relacionadas
 
@@ -193,3 +179,294 @@ training_joined_data %>%
   arrange(desc(n_accession))  %>%
   DT::datatable()
 ```
+
+### SRA de las especies
+
+Cargar funcion
+
+```{r}
+# Separar la s especies en variables individuales especie_ids
+source("functions/create_species_function.R")
+# Funcion que genera archivos txt de solo SRA 
+source("functions/Save_ids_files.R")
+```
+
+Extraer una variable por especie
+
+```{r}
+# Generar una variable por especie
+create_species_variables(SRA_down_joined_data, "scientific_name_CAMDA")
+
+# IDs de las especies descargadas 
+save_ids(ngonorrhoeae_ids, "ngonorrhoeae", ruta_salida = "quality_rawdata/species_ids_carpetas")
+save_ids(abaumannii_ids, "abaumannii", ruta_salida = "quality_rawdata/species_ids_carpetas")
+save_ids(cjejuni_ids, "cjejuni", ruta_salida = "quality_rawdata/species_ids_carpetas")
+save_ids(ecoli_ids, "ecoli", ruta_salida = "quality_rawdata/species_ids_carpetas")
+save_ids(kpneumoniae_ids, "kpneumoniae", ruta_salida = "quality_rawdata/species_ids_carpetas")
+save_ids(paeruginosa_ids, "paeruginosa", ruta_salida = "quality_rawdata/species_ids_carpetas")
+save_ids(saureus_ids, "saureus", ruta_salida = "quality_rawdata/species_ids_carpetas")
+save_ids(senterica_ids, "senterica", ruta_salida = "quality_rawdata/species_ids_carpetas")
+save_ids(spneumoniae_ids, "spneumoniae", ruta_salida = "quality_rawdata/species_ids_carpetas")
+```
+
+Subir los archivos en el cluster
+
+``` bash
+scp scripts/move_ids.sh ecoss@elisa.matmor.unam.mx:/files/CAMDA2025_AntibioticResistance/genome_reassembly/reads/scripts
+# Script: Crear symlinks de los rawdata (raw/) y almacenarlo por especies en rawspecies/
+scp scripts/links_rawdata_byspecies.sh ecoss@elisa.matmor.unam.mx:/files/CAMDA2025_AntibioticResistance/genome_reassembly/reads/scripts
+# Script: Crear symlinks de los fastqc (quality/fastqc/) y almacenarlo por especies en quality_byspecies/
+scp scripts/links_fastqc_byspecies.sh ecoss@elisa.matmor.unam.mx:/files/CAMDA2025_AntibioticResistance/genome_reassembly/reads/scripts
+```
+
+Subir la carpeta con los IDs
+
+``` bash
+scp -v -r quality_rawdata/species_ids_carpetas ecoss@elisa.matmor.unam.mx:/files/CAMDA2025_AntibioticResistance/genome_reassembly/reads/scripts
+```
+
+Cargar funcion y crear symlinks de los rawdata
+
+``` bash
+# ecoss@elisa:/files/CAMDA2025_AntibioticResistance/genome_reassembly/reads
+# cargar funcion
+source scripts/move_ids.sh # no tengo permisos
+source scripts/links_rawdata_byspecies.sh
+
+# ecoss@elisa:/files/CAMDA2025_AntibioticResistance/genome_reassembly/reads
+link_ids scripts/species_ids_carpetas/abaumannii_test_ids.txt test abaumannii
+link_ids scripts/species_ids_carpetas/abaumannii_training_ids.txt training abaumannii
+#
+link_ids scripts/species_ids_carpetas/cjejuni_test_ids.txt test cjejuni
+link_ids scripts/species_ids_carpetas/cjejuni_training_ids.txt training cjejuni
+#
+link_ids scripts/species_ids_carpetas/ecoli_test_ids.txt test ecoli
+link_ids scripts/species_ids_carpetas/ecoli_training_ids.txt training ecoli
+#
+# link_ids scripts/species_ids_carpetas/kpneumoniae_test_ids.txt test kpneumoniae
+link_ids scripts/species_ids_carpetas/kpneumoniae_training_ids.txt training kpneumoniae
+#
+link_ids scripts/species_ids_carpetas/ngonorrhoeae_test_ids.txt test ngonorrhoeae
+link_ids scripts/species_ids_carpetas/ngonorrhoeae_training_ids.txt training ngonorrhoeae
+#
+link_ids scripts/species_ids_carpetas/paeruginosa_test_ids.txt test paeruginosa
+link_ids scripts/species_ids_carpetas/paeruginosa_training_ids.txt training paeruginosa
+#
+link_ids scripts/species_ids_carpetas/saureus_test_ids.txt test saureus
+link_ids scripts/species_ids_carpetas/saureus_training_ids.txt training saureus
+#
+link_ids scripts/species_ids_carpetas/senterica_test_ids.txt test senterica
+link_ids scripts/species_ids_carpetas/senterica_training_ids.txt training senterica
+#
+link_ids scripts/species_ids_carpetas/spneumoniae_test_ids.txt test spneumoniae
+link_ids scripts/species_ids_carpetas/spneumoniae_training_ids.txt training spneumoniae
+```
+
+Informacion de las carpetas contenidas:
+
+``` bash
+ls -la raw_byspecies/*
+raw_byspecies/abaumannii:
+total 28
+drwxr-xr-x  4 ecoss bio  4096 jun 25 23:04 .
+drwxr-xr-x 11 ecoss bio  4096 jun 25 23:05 ..
+drwxr-xr-x  2 ecoss bio  4096 jun 25 23:03 test
+drwxr-xr-x  2 ecoss bio 16384 jun 25 23:04 training
+
+raw_byspecies/cjejuni:
+total 52
+drwxr-xr-x  4 ecoss bio  4096 jun 25 23:04 .
+drwxr-xr-x 11 ecoss bio  4096 jun 25 23:05 ..
+drwxr-xr-x  2 ecoss bio 16384 jun 25 23:04 test
+drwxr-xr-x  2 ecoss bio 24576 jun 25 23:04 training
+
+raw_byspecies/ecoli:
+total 48
+drwxr-xr-x  4 ecoss bio  4096 jun 25 23:05 .
+drwxr-xr-x 11 ecoss bio  4096 jun 25 23:05 ..
+drwxr-xr-x  2 ecoss bio 20480 jun 25 23:05 test
+drwxr-xr-x  2 ecoss bio 20480 jun 25 23:05 training
+
+raw_byspecies/kpneumoniae:
+total 12
+drwxr-xr-x  3 ecoss bio 4096 jun 25 23:05 .
+drwxr-xr-x 11 ecoss bio 4096 jun 25 23:05 ..
+drwxr-xr-x  2 ecoss bio 4096 jun 25 23:05 training
+
+raw_byspecies/ngonorrhoeae:
+total 48
+drwxr-xr-x  4 ecoss bio  4096 jun 25 23:05 .
+drwxr-xr-x 11 ecoss bio  4096 jun 25 23:05 ..
+drwxr-xr-x  2 ecoss bio  4096 jun 25 23:05 test
+drwxr-xr-x  2 ecoss bio 32768 jun 25 23:05 training
+
+raw_byspecies/paeruginosa:
+total 16
+drwxr-xr-x  4 ecoss bio 4096 jun 25 23:05 .
+drwxr-xr-x 11 ecoss bio 4096 jun 25 23:05 ..
+drwxr-xr-x  2 ecoss bio 4096 jun 25 23:05 test
+drwxr-xr-x  2 ecoss bio 4096 jun 25 23:05 training
+
+raw_byspecies/saureus:
+total 64
+drwxr-xr-x  4 ecoss bio  4096 jun 25 23:05 .
+drwxr-xr-x 11 ecoss bio  4096 jun 25 23:05 ..
+drwxr-xr-x  2 ecoss bio 24576 jun 25 23:05 test
+drwxr-xr-x  2 ecoss bio 24576 jun 25 23:05 training
+
+raw_byspecies/senterica:
+total 16
+drwxr-xr-x  4 ecoss bio 4096 jun 25 23:05 .
+drwxr-xr-x 11 ecoss bio 4096 jun 25 23:05 ..
+drwxr-xr-x  2 ecoss bio 4096 jun 25 23:05 test
+drwxr-xr-x  2 ecoss bio 4096 jun 25 23:05 training
+
+raw_byspecies/spneumoniae:
+total 40
+drwxr-xr-x  4 ecoss bio  4096 jun 25 23:05 .
+drwxr-xr-x 11 ecoss bio  4096 jun 25 23:05 ..
+drwxr-xr-x  2 ecoss bio 16384 jun 25 23:05 test
+drwxr-xr-x  2 ecoss bio 16384 jun 25 23:05 training
+```
+
+Cargar funcion y crear symlink de los fastqc por especies
+
+``` bash
+# ecoss@elisa:/files/CAMDA2025_AntibioticResistance/genome_reassembly/reads
+# cargar funcion
+source scripts/links_fastqc_byspecies.sh
+
+# > abaumannii
+link_fastqc_by_species scripts/species_ids_carpetas/abaumannii_test_ids.txt test abaumannii # sin reportes
+link_fastqc_by_species scripts/species_ids_carpetas/abaumannii_training_ids.txt training abaumannii
+
+# correr multiqc
+multiqc quality_byspecies/abaumannii/training -n multiqc_abaumannii_training.html -o quality_byspecies/multiqc_report
+
+# /// MultiQC 🔍 v1.29
+# 
+#        file_search | Search path: /files/CAMDA2025_AntibioticResistance/genome_reassembly/reads/quality_byspecies/abaumannii/training
+#          searching | ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 1264/1264  
+#             fastqc | Found 632 reports
+#      write_results | Data        : quality_byspecies/multiqc_report/multiqc_abaumannii_training_data
+#      write_results | Report      : quality_byspecies/multiqc_report/multiqc_abaumannii_training.html
+#            multiqc | MultiQC complete
+
+# > cjejuni
+link_fastqc_by_species scripts/species_ids_carpetas/cjejuni_test_ids.txt test cjejuni # sin reportes link_fastqc_by_species scripts/species_ids_carpetas/cjejuni_training_ids.txt training cjejuni
+
+# correr multiqc
+multiqc quality_byspecies/cjejuni/training -n multiqc_cjejuni_training.html -o quality_byspecies/multiqc_report
+
+# /// MultiQC 🔍 v1.29
+# 
+#        file_search | Search path: /files/CAMDA2025_AntibioticResistance/genome_reassembly/reads/quality_byspecies/cjejuni/training
+#          searching | ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 2132/2132  
+#             fastqc | Found 1066 reports
+#      write_results | Data        : quality_byspecies/multiqc_report/multiqc_cjejuni_training_data
+#      write_results | Report      : quality_byspecies/multiqc_report/multiqc_cjejuni_training.html
+#            multiqc | MultiQC complete
+
+# > ecoli
+link_fastqc_by_species scripts/species_ids_carpetas/ecoli_test_ids.txt test ecoli
+link_fastqc_by_species scripts/species_ids_carpetas/ecoli_training_ids.txt training ecoli
+
+# correr multiqc
+multiqc quality_byspecies/ecoli/training -n multiqc_ecoli_training.html -o quality_byspecies/multiqc_report
+
+# /// MultiQC 🔍 v1.29
+# 
+#        file_search | Search path: /files/CAMDA2025_AntibioticResistance/genome_reassembly/reads/quality_byspecies/ecoli/training
+#          searching | ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 1894/1894  
+#             fastqc | Found 947 reports
+#      write_results | Data        : quality_byspecies/multiqc_report/multiqc_ecoli_training_data
+#      write_results | Report      : quality_byspecies/multiqc_report/multiqc_ecoli_training.html
+#            multiqc | MultiQC complete
+
+
+# > kpneumoniae - sin reporte en ambos
+link_fastqc_by_species scripts/species_ids_carpetas/kpneumoniae_test_ids.txt test kpneumoniae
+link_fastqc_by_species scripts/species_ids_carpetas/kpneumoniae_training_ids.txt training kpneumoniae
+
+# correr multiqc
+multiqc quality_byspecies/kpneumoniae/training -n multiqc_kpneumoniae_training.html -o quality_byspecies/multiqc_report
+
+           
+# > ngonorrhoeae
+link_fastqc_by_species scripts/species_ids_carpetas/ngonorrhoeae_test_ids.txt test ngonorrhoeae
+link_fastqc_by_species scripts/species_ids_carpetas/ngonorrhoeae_training_ids.txt training ngonorrhoeae
+
+# correr multiqc
+multiqc quality_byspecies/ngonorrhoeae/training -n multiqc_ngonorrhoeae_training.html -o quality_byspecies/multiqc_report
+
+# /// MultiQC 🔍 v1.29
+# 
+#        file_search | Search path: /files/CAMDA2025_AntibioticResistance/genome_reassembly/reads/quality_byspecies/ngonorrhoeae/training
+#          searching | ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 2836/2836  
+#             fastqc | Found 1418 reports
+#      write_results | Data        : quality_byspecies/multiqc_report/multiqc_ngonorrhoeae_training_data
+#      write_results | Report      : quality_byspecies/multiqc_report/multiqc_ngonorrhoeae_training.html
+#            multiqc | MultiQC complete 
+
+# > Sin reporte de fastqc
+link_fastqc_by_species scripts/species_ids_carpetas/paeruginosa_test_ids.txt test paeruginosa
+link_fastqc_by_species scripts/species_ids_carpetas/paeruginosa_training_ids.txt training paeruginosa
+
+# correr multiqc
+multiqc quality_byspecies/paeruginosa/training -n multiqc_paeruginosa_training.html -o quality_byspecies/multiqc_report
+
+# > saureus
+link_fastqc_by_species scripts/species_ids_carpetas/saureus_test_ids.txt test saureus
+link_fastqc_by_species scripts/species_ids_carpetas/saureus_training_ids.txt training saureus
+
+# correr multiqc
+multiqc quality_byspecies/saureus/training -n multiqc_saureus_training.html -o quality_byspecies/multiqc_report
+
+# /// MultiQC 🔍 v1.29
+# 
+#        file_search | Search path: /files/CAMDA2025_AntibioticResistance/genome_reassembly/reads/quality_byspecies/saureus/training
+#          searching | ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 1796/1796  
+#             fastqc | Found 898 reports
+#      write_results | Data        : quality_byspecies/multiqc_report/multiqc_saureus_training_data
+#      write_results | Report      : quality_byspecies/multiqc_report/multiqc_saureus_training.html
+#            multiqc | MultiQC complete
+
+# > senterica
+link_fastqc_by_species scripts/species_ids_carpetas/senterica_test_ids.txt test senterica
+link_fastqc_by_species scripts/species_ids_carpetas/senterica_training_ids.txt training senterica
+
+# correr multiqc
+multiqc quality_byspecies/senterica/training -n multiqc_senterica_training.html -o quality_byspecies/multiqc_report
+
+# > spneumoniae
+link_fastqc_by_species scripts/species_ids_carpetas/spneumoniae_test_ids.txt test spneumoniae
+link_fastqc_by_species scripts/species_ids_carpetas/spneumoniae_training_ids.txt training spneumoniae
+
+# correr multiqc
+multiqc quality_byspecies/spneumoniae/training -n multiqc_spneumoniae_training.html -o quality_byspecies/multiqc_report
+```
+
+Descargar archivos
+
+``` bash
+# /Users/ecoss/Documents/CAMDA2025_metadatos/quality_rawdata
+scp -r ecoss@elisa.matmor.unam.mx:/files/CAMDA2025_AntibioticResistance/genome_reassembly/reads/quality_byspecies/multiqc_report/*html .
+```
+
+> one of the Staphylococcus aureus accession codes is incorrect, as follows: ***SRR2101499 should be ERR1197981*** [Bradley, et al. 2016. Nature](https://www.nature.com/articles/ncomms11465)
+>
+> De acuerdo a [ENA](https://www.ebi.ac.uk/ena/browser/text-search?query=SRR2101499), este ***SRR2101499*** corresponde a *Mycobacterium tuberculosis*.
+
+SRR1187837 y SRR1187838 - E.coli UCI 54
+
+SRR3982215 - E.coli
+
+SRR3996243
+
+## Eliminacion de secuencias de mala calidad y de adaptadores
+
+Trim Galore! o Trimmomatic - Solo illumina
+
+Filtlong o NanoFilt - Oxford Nanopore / PacBio
+
+Cutadapt o Prinseq-lite - SOLiD / Ion Torrent / 454
