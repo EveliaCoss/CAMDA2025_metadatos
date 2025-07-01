@@ -53,7 +53,7 @@ Clasificacion de los datos descargados
 # Combina los datos de test y training en un solo data frame con una columna fuente
 info_combined <- bind_rows(
   test_completeInfo_db %>% mutate(info = "Test_data"),
-  training_completeInfo_db %>% mutate(info = "Training_data")) %>%
+  training_cleanedInfo_db %>% mutate(info = "Training_data")) %>%
   select(accession, scientific_name_CAMDA, info)
 
 # Une con SRA_down y asigna 'missing' si no hay coincidencias
@@ -133,8 +133,8 @@ Información sobrelas tecnologias de secuenciacion:
 Vamos a revisar que tipos de datos esperamos tener de las secuenciaciones para generar las carpetas relacionadas
 
 ```{r}
-# 1. Expandir accession IDs en antibiograms_metadata_db
-antibiograms_expanded <- antibiograms_metadata_db %>%
+# 1. Expandir accession IDs en antibiograms_db
+antibiograms_expanded <- antibiograms_db %>%
   separate_rows(accession, read_type, sep = " ")  # cambia el separador si es coma por row
 
 # 2. Unir con test_completeInfo_db por accession
@@ -161,8 +161,8 @@ test_joined_data %>%
 Vamos a revisar que tipos de datos esperamos tener de las secuenciaciones para generar las carpetas relacionadas
 
 ```{r}
-# 2. Unir con training_completeInfo_db por accession
-training_joined_data <- training_completeInfo_db %>%
+# 2. Unir con training_cleanedInfo_db por accession
+training_joined_data <- training_cleanedInfo_db %>%
   left_join(antibiograms_expanded %>% select(accession, read_type),
             by = "accession")
 

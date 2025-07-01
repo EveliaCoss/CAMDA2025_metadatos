@@ -9,7 +9,7 @@ book:
   chapters:
     - index.qmd
     - intro.qmd
-    - 2_Metadata_comparing_CAMDAvsNCBI.qmd
+    - 2_Preprocessing_CAMDApublicdata.qmd
     - 3_Download_SRAdata.qmd
     - 4_Aligment.qmd
      # Information

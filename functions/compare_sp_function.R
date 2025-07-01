@@ -4,12 +4,15 @@
 #' NCBI and antibiograms. It returns a dataset that includes consistency status between CAMDA
 #' and the external sources, as well as a comparison between the external sources themselves.
 #'
-#' @param training_metadata_db A data frame containing the CAMDA annotations. 
+#' @param metadata_db A data frame containing CAMDA species annotations.
 #'        Must include the columns: `accession` and `scientific_name_CAMDA`.
+#'        Example datasets included in the package: `training_metadata_db`, `testing_metadata_cleaned`.
 #' @param sra_metadata_db A data frame containing metadata from NCBI.
 #'        Must include the columns: `accession` and `scientific_name_NCBI`.
-#' @param antibiograms_metadata_db A data frame containing species annotations from antibiograms.
+#'        A sample dataset is preloaded in the package as `sra_metadata_db`.
+#' @param antibiograms_db A data frame containing species annotations from antibiograms.
 #'        Must include the columns: `accession` and `scientific_name_Antibiogram`.
+#'        A sample dataset is preloaded in the package as `antibiograms_db`.
 #'
 #' @return A data frame with the following columns:
 #' \itemize{
@@ -33,20 +36,54 @@
 #'     }
 #' }
 #'
-#' @examples
-#' result <- compare_sp(training_metadata_db, sra_metadata_db, antibiograms_metadata_db)
+#' @import dplyr
 #'
 #' @export
+#'
+#' @examples
+#' result <- compare_sp(metadata_db = training_metadata_db, sra_metadata_db, antibiograms_db)
+#'
 
-compare_sp <- function(training_metadata_db, sra_metadata_db, antibiograms_metadata_db) {
-  library(dplyr)
-  
+compare_sp <- function(metadata_db = NULL,
+                       sra_metadata_db = NULL,
+                       antibiograms_db = NULL) {
+  # Load defaults if any are NULL
+  if (is.null(metadata_db)) {
+    message("Using default 'training_metadata_db' from package.")
+    metadata_db <- training_metadata_db
+  }
+  if (is.null(sra_metadata_db)) {
+    message("Using default 'sra_metadata_db' from package.")
+    sra_metadata_db <- sra_metadata_db
+  }
+  if (is.null(antibiograms_db)) {
+    message("Using default 'antibiograms_db' from package.")
+    antibiograms_db <- antibiograms_db
+  }
+
+  # Validate required columns
+  required_cols <- list(
+    training_metadata_db = c("accession", "scientific_name_CAMDA"),
+    sra_metadata_db = c("accession", "scientific_name_NCBI"),
+    antibiograms_db = c("accession", "scientific_name_Antibiogram")
+  )
+
+  for (df_name in names(required_cols)) {
+    df <- get(df_name)
+    missing_cols <- setdiff(required_cols[[df_name]], colnames(df))
+    if (length(missing_cols) > 0) {
+      stop(sprintf("Data frame '%s' is missing required columns: %s",
+                   df_name, paste(missing_cols, collapse = ", ")))
+    }
+  }
+
   # Paso 1: Unir con datos de metadat, NCBI y Antibiogram
-  base_all <- left_join(training_metadata_db, sra_metadata_db, by = "accession") %>%
-    left_join(antibiograms_metadata_db, by = "accession") %>%
+  # Join and analyze
+  base_all <- left_join(training_metadata_db, sra_metadata_db, by = "accession", relationship = "many-to-many") %>%
+    left_join(antibiograms_db, by = "accession", relationship = "many-to-many") %>%
     select(accession, scientific_name_CAMDA, scientific_name_NCBI, scientific_name_Antibiogram) %>%
     distinct() # eliminar filas repetidas
-  
+
   # Paso 2: Analizar la informacion con NCBI y antiograms y colocar un estatus
   base_status <- base_all %>%
     mutate(status = case_when(
@@ -54,19 +91,19 @@ compare_sp <- function(training_metadata_db, sra_metadata_db, antibiograms_metad
       !is.na(scientific_name_NCBI) & !is.na(scientific_name_Antibiogram) &
         scientific_name_CAMDA == scientific_name_NCBI &
         scientific_name_CAMDA == scientific_name_Antibiogram ~ "Matched_NCBI_Antibiogram",
-      
+
       # CAMDA matches only NCBI
       !is.na(scientific_name_NCBI) &
         scientific_name_CAMDA == scientific_name_NCBI ~ "Matched_NCBI",
-      
+
       # CAMDA matches only Antibiogram
       !is.na(scientific_name_Antibiogram) &
         scientific_name_CAMDA == scientific_name_Antibiogram ~ "Matched_Antibiogram",
-      
+
       # CAMDA does not match any, but at least one source has info
       (!is.na(scientific_name_NCBI) | !is.na(scientific_name_Antibiogram)) &
         (scientific_name_CAMDA != scientific_name_NCBI) ~ "Mismatch_with_CAMDA",
-      
+
       # No useful data in either source
       is.na(scientific_name_NCBI) & is.na(scientific_name_Antibiogram) ~ "Missing_All"
     )) %>%
@@ -75,21 +112,21 @@ compare_sp <- function(training_metadata_db, sra_metadata_db, antibiograms_metad
       # Ambos tienen información y no coinciden
       !is.na(scientific_name_NCBI) & !is.na(scientific_name_Antibiogram) &
         scientific_name_NCBI != scientific_name_Antibiogram ~ "Verify_sources",
-      
+
       # Solo NCBI tiene información, Antibiogram es NA
       !is.na(scientific_name_NCBI) & is.na(scientific_name_Antibiogram) ~ "Verify_sources",
-      
+
       # Solo Antibiogram tiene información, NCBI es NA
       is.na(scientific_name_NCBI) & !is.na(scientific_name_Antibiogram) ~ "Verify_sources",
-      
+
       # Ambos están vacíos
       is.na(scientific_name_NCBI) & is.na(scientific_name_Antibiogram) ~ "No_sources",
-      
+
       # Ambos existen y coinciden
       !is.na(scientific_name_NCBI) & !is.na(scientific_name_Antibiogram) &
         scientific_name_NCBI == scientific_name_Antibiogram ~ "Good_sources"
     ))
-  
+
   # Obtain results
   return(base_status)
 }
