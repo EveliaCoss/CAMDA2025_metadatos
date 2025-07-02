@@ -1,0 +1,55 @@
+# Generating the Input File for Machine Learning and Deep Learning Models
+
+To prepare the dataset for downstream predictive modeling, we merged three key sources of information:
+
+-   The cleaned training database (`training_db_cleaned`)
+
+-   A new dataset containing assigned MIC values for additional isolates (`Yesenia`)
+
+-   The gene family matrix derived from the pangenome analysis (`2025_Training_and_testing_strict.tsv.gz`)
+
+This unified dataset serves as the foundation for training and evaluating machine learning (ML) and deep learning (DL) models aimed at predicting antimicrobial resistance patterns.
+
+### Import Data
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(here)
+
+# > training database
+# Load metadata cleaned and antibiogram information
+load(here("rawdata/TrainAndTest_cleaned", "complete_metadata.RData"))
+# antibiograms_db, test_db_cleaned, training_db_cleaned, sra_metadata_db, test_completeInfo_db, training_cleanedInfo_db
+
+# > MIC values
+
+
+# > gene family matrix
+# Download pagenomic results
+pangenomic_url <- "https://raw.githubusercontent.com/ccm-bioinfo/CAMDA2025_AntibioticResistance/main/Pangenome_analysis/2025_Training_and_testing_strict.tsv.gz"
+
+destfile <- here("rawdata/pangenomic_analysis", "2025_Training_and_testing_strict.tsv.gz")
+
+# Download the compressed file
+download.file(url = pangenomic_url, destfile = destfile, mode = "wb")
+
+# Read the .csv file into R
+pangenomic_results <- read_tsv(destfile) %>%
+   # Standardizes column names: converts them to lowercase,
+  # replaces spaces and special characters with underscores
+  janitor::clean_names() 
+# Rows: 9471 Columns: 1076
+```
+
+Join information according with metadata
+
+```{r}
+training_inputfile <- training_db_cleaned %>%
+  # Join New MIC values (accession, phenotype_assigned, mic_new)
+  # Join pangenomic results
+  left_join(select(pangenomic_results, -genus, -species, -phenotype, 
+                   -antibiotic, -measurement_value), by = "accession")
+
+dim(training_inputfile)
+```

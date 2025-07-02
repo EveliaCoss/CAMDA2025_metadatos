@@ -11,7 +11,7 @@ book:
     - intro.qmd
     - 2_Preprocessing_CAMDApublicdata.qmd
     - 3_Download_SRAdata.qmd
-    - 4_Aligment.qmd
+    - 4_inpufile_MLandDL.qmd
      # Information
   repo-url: https://github.com/EveliaCoss/CAMDA2025_metadatos # link de Github
 
