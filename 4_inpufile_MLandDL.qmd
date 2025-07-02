@@ -4,7 +4,7 @@
 >
 > -   The cleaned training and test database (`training_db_cleaned and test_db_cleaned from complete_metadata.RData`)
 > -   A new dataset containing assigned MIC values for additional isolates ([`CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv))
-> -   The gene family matrix derived from the pangenome analysis ([`2025_Training_and_testing_strict.tsv.gz`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/pangenomic_analysis/2025_Training_and_testing_strict.tsv.gz))
+> -   The gene family matrix derived from the RGI analysis ([`2025_Training_and_testing_strict.tsv.gz`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/pangenomic_analysis/2025_Training_and_testing_strict.tsv.gz))
 >
 > This unified dataset serves as the foundation for training and evaluating machine learning (ML) and deep learning (DL) models aimed at predicting antimicrobial resistance patterns.
 >
@@ -23,7 +23,7 @@
 >         -   **recategorized_MIC**- Proposed standardized MIC (Minimum Inhibitory Concentration) value for each sample (new version, 2025).
 >         -   **assign_phenotype** – Reassigned binary phenotype, considering only “Resistant” and “Susceptible” categories.
 > -   Output files:
->     -   `training_and_test_inputfile_cleaned.tsv.gz`: Cleaned dataset (training ans test) containing standardized species names, reassigned MIC values (recategorized_mic), and curated phenotypes (assign_phenotype). This file is formatted and ready for input into machine learning (ML) and deep learning (DL) workflows. It includes the following columns:
+>     -   [`training_and_test_inputfile_cleaned.tsv.gz`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/training_and_test_inputfile_cleaned.tsv.gz): Cleaned dataset (training ans test) containing standardized species names, reassigned MIC values (recategorized_mic), and curated phenotypes (assign_phenotype). This file is formatted and ready for input into machine learning (ML) and deep learning (DL) workflows. It includes the following columns:
 >         -   **genus**, **species**, **accession**, **phenotype**, **antibiotic,** **measurement_value** -Sample metadata with corrected species information. *Source:* `training_db_cleaned`
 >         -   **recategorized_MIC**- Updated (2025) standardized Minimum Inhibitory Concentration (MIC) values for each sample. *Source:* [`CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv)
 >         -   **assign_phenotype** –Reassigned phenotype labels, limited to “Resistant” and “Susceptible” categories. *Source:* [`CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv)
@@ -87,7 +87,7 @@ training_and_test_inputfile <- training_and_test_inputfile %>%
   # Join New MIC values (accession, phenotype_assigned, mic_new)
   left_join(select(new_mic_db,
                    accession, assign_phenotype, recategorized_mic), by ="accession") %>%
-  # Join pangenomic results
+  # Join rgi results
   left_join(select(rgi_results, -genus, -species, -phenotype, 
                    -antibiotic, -measurement_value, -categoria_recodificada), by = "accession")
 

@@ -216,7 +216,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>The cleaned training and test database (<code>training_db_cleaned and test_db_cleaned from complete_metadata.RData</code>)</li>
 <li>A new dataset containing assigned MIC values for additional isolates (<a href="https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv"><code>CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv</code></a>)</li>
-<li>The gene family matrix derived from the pangenome analysis (<a href="https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/pangenomic_analysis/2025_Training_and_testing_strict.tsv.gz"><code>2025_Training_and_testing_strict.tsv.gz</code></a>)</li>
+<li>The gene family matrix derived from the RGI analysis (<a href="https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/pangenomic_analysis/2025_Training_and_testing_strict.tsv.gz"><code>2025_Training_and_testing_strict.tsv.gz</code></a>)</li>
 </ul>
 <p>This unified dataset serves as the foundation for training and evaluating machine learning (ML) and deep learning (DL) models aimed at predicting antimicrobial resistance patterns.</p>
 <ul>
@@ -242,7 +242,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></li>
 <li>Output files:
 <ul>
-<li><code>training_and_test_inputfile_cleaned.tsv.gz</code>: Cleaned dataset (training ans test) containing standardized species names, reassigned MIC values (recategorized_mic), and curated phenotypes (assign_phenotype). This file is formatted and ready for input into machine learning (ML) and deep learning (DL) workflows. It includes the following columns:
+<li><a href="https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/training_and_test_inputfile_cleaned.tsv.gz"><code>training_and_test_inputfile_cleaned.tsv.gz</code></a>: Cleaned dataset (training ans test) containing standardized species names, reassigned MIC values (recategorized_mic), and curated phenotypes (assign_phenotype). This file is formatted and ready for input into machine learning (ML) and deep learning (DL) workflows. It includes the following columns:
 <ul>
 <li><strong>genus</strong>, <strong>species</strong>, <strong>accession</strong>, <strong>phenotype</strong>, <strong>antibiotic,</strong> <strong>measurement_value</strong> -Sample metadata with corrected species information. <em>Source:</em> <code>training_db_cleaned</code></li>
 <li><strong>recategorized_MIC</strong>- Updated (2025) standardized Minimum Inhibitory Concentration (MIC) values for each sample. <em>Source:</em> <a href="https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv"><code>CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv</code></a></li>
@@ -378,7 +378,7 @@ dbl (1070): categoria_recodificada, ARO3000464-A121D, ARO3000464-G120K, ARO3...
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Join New MIC values (accession, phenotype_assigned, mic_new)</span></span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">select</span>(new_mic_db,</span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>                   accession, assign_phenotype, recategorized_mic), <span class="at">by =</span><span class="st">"accession"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Join pangenomic results</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Join rgi results</span></span>
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">select</span>(rgi_results, <span class="sc">-</span>genus, <span class="sc">-</span>species, <span class="sc">-</span>phenotype, </span>
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>                   <span class="sc">-</span>antibiotic, <span class="sc">-</span>measurement_value, <span class="sc">-</span>categoria_recodificada), <span class="at">by =</span> <span class="st">"accession"</span>)</span>
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
