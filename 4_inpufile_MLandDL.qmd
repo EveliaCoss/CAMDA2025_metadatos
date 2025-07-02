@@ -1,29 +1,33 @@
 # Generating the Input File for Machine Learning and Deep Learning Models
 
-> Aim: To confirm successful data download, folder structure organization, and assess the quality of the retrieved files.
+> Aim: To prepare the dataset for downstream predictive modeling, we merged three key sources of information:
+>
+> -   The cleaned training database (`training_db_cleaned from complete_metadata.RData`)
+> -   A new dataset containing assigned MIC values for additional isolates ([`CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv))
+> -   The gene family matrix derived from the pangenome analysis ([`2025_Training_and_testing_strict.tsv.gz`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/pangenomic_analysis/2025_Training_and_testing_strict.tsv.gz))
+>
+> This unified dataset serves as the foundation for training and evaluating machine learning (ML) and deep learning (DL) models aimed at predicting antimicrobial resistance patterns.
 >
 > -   **Author**: Evelia Coss
 > -   **Date**: 1/July/2025
 > -   **Input files:**
->     -   [`SRA_names_carpetas.txt`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/quality_rawdata/SRA_names_carpetas.txt): Generated from all raw data downloaded to the cluster, located under `/files/CAMDA2025_AntibioticResistance/genome_reassembly/reads`. This file is stored in the `quality_metadata` directory.
 >     -   [`complete_metadata.RData`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/complete_metadata.RData): This RData file contains a consolidated set of key objects used in workflows for antimicrobial resistance analysis and sequencing metadata. It supports smooth transitions between preprocessing, integration, and analysis stages. See complete details in [**Chapter 2**](https://eveliacoss.github.io/CAMDA2025_metadatos/2_Preprocessing_CAMDApublicdata.html).
 >     -   [`2025_Training_and_testing_strict.tsv.gz`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/pangenomic_analysis/2025_Training_and_testing_strict.tsv.gz)`:` Table containing results from pangenomic analysis. This file originates from [Dataset2025](https://github.com/ccm-bioinfo/Camda_resistance_24-25/tree/main/DataSets/2025). It includes the following columns:
->         -   **accession**, **genus**, **species**, **antibiotic** - sample metadata.
+>         -   **accession**, **genus**, **species**, **antibiotic** - Sample metadata. Note: some species annotations may contain inconsistencies due to accession-level discrepancies.
 >         -   **phenotype**, **measurement_value** - Prediction targets for modeling.
->         -   categoria_recodificada- Proposed standardized MIC (Minimum Inhibitory Concentration) value for each sample.
->         -   **everything else** -Gene presence/absence counts. Column headers correspond to gene family identifiers (AROS) detected during the analysis.
+>         -   **categoria_recodificada**- Proposed standardized MIC (Minimum Inhibitory Concentration) value for each sample (old version, 2024).
+>         -   **everything else** - Gene presence/absence counts. Column headers correspond to gene family identifiers (AROS) detected during the analysis.
+>     -   [`CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv): Table containing updated annotations of standardized MIC values (`recategorized_MIC`) and newly assigned phenotypes (`assign_phenotype`) for all samples. It includes the following columns:
+>         -   **genus**, **species**, **accession**, **antibiotic** - Sample metadata. Note: some species annotations may contain inconsistencies due to accession-level discrepancies.
+>         -   **phenotype**, **measurement_value** - Prediction targets for modeling.
+>         -   **recategorized_MIC**- Proposed standardized MIC (Minimum Inhibitory Concentration) value for each sample (new version, 2025).
+>         -   **assign_phenotype** – Reassigned binary phenotype, considering only “Resistant” and “Susceptible” categories.
 > -   Output files:
->     -   Archivo
-
-To prepare the dataset for downstream predictive modeling, we merged three key sources of information:
-
--   The cleaned training database (`training_db_cleaned`)
-
--   A new dataset containing assigned MIC values for additional isolates (`Yesenia`)
-
--   The gene family matrix derived from the pangenome analysis (`2025_Training_and_testing_strict.tsv.gz`)
-
-This unified dataset serves as the foundation for training and evaluating machine learning (ML) and deep learning (DL) models aimed at predicting antimicrobial resistance patterns.
+>     -   `training_inputfile_cleaned.tsv.gz`: Cleaned dataset containing standardized species names, reassigned MIC values (recategorized_mic), and curated phenotypes (assign_phenotype). This file is formatted and ready for input into machine learning (ML) and deep learning (DL) workflows. It includes the following columns:
+>         -   **genus**, **species**, **accession**, **phenotype**, **antibiotic,** **measurement_value** -Sample metadata with corrected species information. *Source:* `training_db_cleaned`
+>         -   **recategorized_MIC**- Updated (2025) standardized Minimum Inhibitory Concentration (MIC) values for each sample. *Source:* [`CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv)
+>         -   **assign_phenotype** –Reassigned phenotype labels, limited to “Resistant” and “Susceptible” categories. *Source:* [`CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv)
+>         -   **everything else** - Gene presence/absence counts. Column headers correspond to gene family identifiers (AROS) detected during the analysis.
 
 ### Import Data
 
@@ -38,9 +42,13 @@ load(here("rawdata/TrainAndTest_cleaned", "complete_metadata.RData"))
 # antibiograms_db, test_db_cleaned, training_db_cleaned, sra_metadata_db, test_completeInfo_db, training_cleanedInfo_db
 
 # > MIC values
+new_mic_db <- read_csv(file= here("rawdata/TrainAndTest_cleaned","CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv")) %>%
+   # Standardizes column names: converts them to lowercase,
+  # replaces spaces and special characters with underscores
+  janitor::clean_names() 
+#Rows: 5420 Columns: 8
 
-
-# > gene family matrix
+# > gene family matrix (strict)
 # Download pagenomic results
 pangenomic_url <- "https://raw.githubusercontent.com/ccm-bioinfo/CAMDA2025_AntibioticResistance/main/Pangenome_analysis/2025_Training_and_testing_strict.tsv.gz"
 
@@ -55,21 +63,34 @@ pangenomic_results <- read_tsv(destfile) %>%
   # replaces spaces and special characters with underscores
   janitor::clean_names() 
 # Rows: 9471 Columns: 1076
+
+# > gene family matrix
+
+# Read the .csv file into R
+pangenomic_all_results <- read_tsv(file= here("rawdata/pangenomic_analysis","2025_Training_and_testing_strict.tsv.gz")) %>%
+   # Standardizes column names: converts them to lowercase,
+  # replaces spaces and special characters with underscores
+  janitor::clean_names() 
+# Rows: 9471 Columns: 1076
 ```
 
 Join information according with metadata
 
 ```{r}
-# columns to remove
+# columns to remove from metadata
 cols_to_remove <- colnames(training_db_cleaned %>%
-  select(measurement_unit:collection_date))
+  select(measurement_unit:collection_date, measurement_sign, measurement_unit,
+         scientific_name_CAMDA:status_reference))
 
 training_inputfile <- training_db_cleaned %>%
+  # remove columns
   select(-any_of(cols_to_remove)) %>% 
   # Join New MIC values (accession, phenotype_assigned, mic_new)
+  left_join(select(new_mic_db,
+                   accession, assign_phenotype, recategorized_mic), by ="accession") %>%
   # Join pangenomic results
   left_join(select(pangenomic_results, -genus, -species, -phenotype, 
-                   -antibiotic, -measurement_value), by = "accession")
+                   -antibiotic, -measurement_value, -categoria_recodificada), by = "accession")
 
 dim(training_inputfile)
 ```
@@ -83,5 +104,5 @@ colnames(training_inputfile)[1:30]
 Save file
 
 ```{r}
-write_tsv(training_inputfile, file = here("rawdata/TrainAndTest_cleaned", "training_inputfile_cleaned.tsv.gz"))
+write_tsv(training_inputfile, file = here("rawdata/TrainAndTest_cleaned", "training_inputfile_cleaned_strict.tsv.gz"))
 ```
