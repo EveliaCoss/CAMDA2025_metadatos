@@ -247,7 +247,7 @@ training_completeInfo_db %>%
 7 out of 9 species have missing or incorrect data.
 :::
 
-## **Verify information sources** 
+## **Verify information sources**
 
 The data from NCBI does not match the information available in the antibiogram records.
 

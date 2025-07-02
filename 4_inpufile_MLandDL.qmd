@@ -27,6 +27,7 @@
 >         -   **genus**, **species**, **accession**, **phenotype**, **antibiotic,** **measurement_value** -Sample metadata with corrected species information. *Source:* `training_db_cleaned`
 >         -   **recategorized_MIC**- Updated (2025) standardized Minimum Inhibitory Concentration (MIC) values for each sample. *Source:* [`CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv)
 >         -   **assign_phenotype** –Reassigned phenotype labels, limited to “Resistant” and “Susceptible” categories. *Source:* [`CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv)
+>         -   **type**: Dataset classification between training and test datasets.
 >         -   **columns starting with 300...** - feature data. Contains counts of genes and SNPs conferring antibiotic resistance. Columns are labeled using ARO ids (see Section 3 for details). SNP features are labeled with the ARO id, followed by a dash (`-`) and the amino acid substitution.
 
 ### Import Data
