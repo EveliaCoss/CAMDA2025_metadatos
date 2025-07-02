@@ -312,6 +312,37 @@ dbl (1070): categoria_recodificada, ARO3000464-A121D, ARO3000464-G120K, ARO3...
 <pre><code>[1] 5721 1091</code></pre>
 </div>
 </div>
+<p>colnames</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(training_inputfile)[<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "genus"                       "species"                    
+ [3] "accession"                   "phenotype"                  
+ [5] "antibiotic"                  "measurement_sign"           
+ [7] "measurement_value"           "measurement_unit"           
+ [9] "laboratory_typing_method"    "laboratory_typing_platform" 
+[11] "testing_standard"            "testing_standard_year"      
+[13] "publication"                 "isolation_source"           
+[15] "isolation_country"           "collection_date"            
+[17] "scientific_name_CAMDA"       "scientific_name_NCBI"       
+[19] "scientific_name_Antibiogram" "status"                     
+[21] "status_reference"            "categoria_recodificada"     
+[23] "aro3000464_a121d"            "aro3000464_g120k"           
+[25] "aro3003930_v57m"             "aro3004833_l421p"           
+[27] "aro3000816"                  "aro3003961"                 
+[29] "aro3000533"                  "aro3000535"                 </code></pre>
+</div>
+</div>
+<p>Save file</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_tsv</span>(training_inputfile, <span class="at">file =</span> <span class="fu">here</span>(<span class="st">"rawdata/TrainAndTest_cleaned"</span>, <span class="st">"training_inputfile_cleaned.tsv.gz"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 
 
 </section>

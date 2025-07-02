@@ -1,6 +1,0 @@
-# Download raw data Fastq
-# 
-# 
-
-
-

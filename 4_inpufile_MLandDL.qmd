@@ -1,5 +1,20 @@
 # Generating the Input File for Machine Learning and Deep Learning Models
 
+> Aim: To confirm successful data download, folder structure organization, and assess the quality of the retrieved files.
+>
+> -   **Author**: Evelia Coss
+> -   **Date**: 1/July/2025
+> -   **Input files:**
+>     -   [`SRA_names_carpetas.txt`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/quality_rawdata/SRA_names_carpetas.txt): Generated from all raw data downloaded to the cluster, located under `/files/CAMDA2025_AntibioticResistance/genome_reassembly/reads`. This file is stored in the `quality_metadata` directory.
+>     -   [`complete_metadata.RData`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/complete_metadata.RData): This RData file contains a consolidated set of key objects used in workflows for antimicrobial resistance analysis and sequencing metadata. It supports smooth transitions between preprocessing, integration, and analysis stages. See complete details in [**Chapter 2**](https://eveliacoss.github.io/CAMDA2025_metadatos/2_Preprocessing_CAMDApublicdata.html).
+>     -   [`2025_Training_and_testing_strict.tsv.gz`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/pangenomic_analysis/2025_Training_and_testing_strict.tsv.gz)`:` Table containing results from pangenomic analysis. This file originates from [Dataset2025](https://github.com/ccm-bioinfo/Camda_resistance_24-25/tree/main/DataSets/2025). It includes the following columns:
+>         -   **accession**, **genus**, **species**, **antibiotic** - sample metadata.
+>         -   **phenotype**, **measurement_value** - Prediction targets for modeling.
+>         -   categoria_recodificada- Proposed standardized MIC (Minimum Inhibitory Concentration) value for each sample.
+>         -   **everything else** -Gene presence/absence counts. Column headers correspond to gene family identifiers (AROS) detected during the analysis.
+> -   Output files:
+>     -   Archivo
+
 To prepare the dataset for downstream predictive modeling, we merged three key sources of information:
 
 -   The cleaned training database (`training_db_cleaned`)
@@ -45,11 +60,28 @@ pangenomic_results <- read_tsv(destfile) %>%
 Join information according with metadata
 
 ```{r}
+# columns to remove
+cols_to_remove <- colnames(training_db_cleaned %>%
+  select(measurement_unit:collection_date))
+
 training_inputfile <- training_db_cleaned %>%
+  select(-any_of(cols_to_remove)) %>% 
   # Join New MIC values (accession, phenotype_assigned, mic_new)
   # Join pangenomic results
   left_join(select(pangenomic_results, -genus, -species, -phenotype, 
                    -antibiotic, -measurement_value), by = "accession")
 
 dim(training_inputfile)
+```
+
+colnames
+
+```{r}
+colnames(training_inputfile)[1:30]
+```
+
+Save file
+
+```{r}
+write_tsv(training_inputfile, file = here("rawdata/TrainAndTest_cleaned", "training_inputfile_cleaned.tsv.gz"))
 ```
