@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>1&nbsp; Datos – CAMDA2025 metadatos</title>
+<title>1&nbsp; Datasets – CAMDA2025 metadatos</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -83,7 +83,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./intro.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Datos</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./intro.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Datasets</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -121,7 +121,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./intro.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Datos</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Datasets</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -155,7 +155,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Datos</span></h1>
+<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Datasets</span></h1>
 </div>
 
 
@@ -172,6 +172,42 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p>Datasets provideb by CAMDA2025:</p>
+<ul>
+<li><p><a href="https://github.com/ccm-bioinfo/CAMDA2025_AntibioticResistance/blob/main/rawdata/TrainAndTest_dataset/training_dataset.csv">training set</a>: CAMDA training set (<code>training_metadata_db</code>).</p>
+<ul>
+<li><strong>genus</strong> – Bacterial genus assigned to the sample.</li>
+</ul>
+<!-- -->
+<ul>
+<li><strong>species</strong> – Reported species name; may include annotation inconsistencies based on accession.</li>
+<li><strong>accession</strong> – Unique sample identifier from the original database.</li>
+<li><strong>phenotype</strong> – Reported antimicrobial susceptibility phenotype (e.g., susceptible, intermediate, resistant).</li>
+<li><strong>antibiotic</strong> – Antibiotic used to assess susceptibility.</li>
+<li><strong>measurement_sign</strong> – Comparison symbol used in MIC reporting (e.g., <code>=</code>, <code>&lt;</code>, <code>&gt;</code>).</li>
+<li><strong>measurement_value</strong> – Numeric value of the Minimum Inhibitory Concentration (MIC).</li>
+<li><strong>measurement_unit</strong> – Unit of measurement for MIC (commonly µg/mL).</li>
+<li><strong>laboratory_typing_method</strong> – Method used for strain typing (e.g., sequencing, PCR).</li>
+<li><strong>laboratory_typing_platform</strong> – Instrument or platform used (e.g., Illumina, Nanopore).</li>
+<li><strong>testing_standard</strong> – Testing guideline followed (e.g., CLSI, EUCAST).</li>
+<li><strong>testing_standard_year</strong> – Year of the applied testing standard.</li>
+<li><strong>publication</strong> – Identifier for the original study or source publication.</li>
+<li><strong>isolation_source</strong> – Biological or environmental source from which the sample was isolated (e.g., blood, urine, soil).</li>
+<li><strong>isolation_country</strong> – Country where the sample was collected.</li>
+<li><strong>collection_date</strong> – Date the sample was collected or reported.</li>
+</ul></li>
+<li><p><a href="https://github.com/ccm-bioinfo/CAMDA2025_AntibioticResistance/blob/main/rawdata/TrainAndTest_dataset/testing_template.csv">test set</a>: CAMDA test set (<code>test_metadata_db</code>).</p>
+<ul>
+<li><strong>genus</strong> – Bacterial genus assigned to the sample.</li>
+</ul>
+<!-- -->
+<ul>
+<li><strong>species</strong> – Reported species name; may include inconsistencies depending on the data source.</li>
+<li><strong>accession</strong> – Unique identifier for the isolate or sample.</li>
+<li><strong>phenotype</strong> and <strong>measurement_value</strong>– In this dataset, represented as <code>"?"</code>, indicating that it is an unknown value to be predicted using ML/DL models as part of the CAMDA challenge.</li>
+<li><strong>antibiotic</strong> – Antibiotic tested against the isolate.</li>
+</ul></li>
+</ul>
 
 
 

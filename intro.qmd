@@ -1,1 +1,36 @@
-# Datos
+# Datasets 
+
+Datasets provideb by CAMDA2025:
+
+-   [training set](https://github.com/ccm-bioinfo/CAMDA2025_AntibioticResistance/blob/main/rawdata/TrainAndTest_dataset/training_dataset.csv): CAMDA training set (`training_metadata_db`).
+
+    -   **genus** – Bacterial genus assigned to the sample.
+
+    <!-- -->
+
+    -   **species** – Reported species name; may include annotation inconsistencies based on accession.
+    -   **accession** – Unique sample identifier from the original database.
+    -   **phenotype** – Reported antimicrobial susceptibility phenotype (e.g., susceptible, intermediate, resistant).
+    -   **antibiotic** – Antibiotic used to assess susceptibility.
+    -   **measurement_sign** – Comparison symbol used in MIC reporting (e.g., `=`, `<`, `>`).
+    -   **measurement_value** – Numeric value of the Minimum Inhibitory Concentration (MIC).
+    -   **measurement_unit** – Unit of measurement for MIC (commonly µg/mL).
+    -   **laboratory_typing_method** – Method used for strain typing (e.g., sequencing, PCR).
+    -   **laboratory_typing_platform** – Instrument or platform used (e.g., Illumina, Nanopore).
+    -   **testing_standard** – Testing guideline followed (e.g., CLSI, EUCAST).
+    -   **testing_standard_year** – Year of the applied testing standard.
+    -   **publication** – Identifier for the original study or source publication.
+    -   **isolation_source** – Biological or environmental source from which the sample was isolated (e.g., blood, urine, soil).
+    -   **isolation_country** – Country where the sample was collected.
+    -   **collection_date** – Date the sample was collected or reported.
+
+-   [test set](https://github.com/ccm-bioinfo/CAMDA2025_AntibioticResistance/blob/main/rawdata/TrainAndTest_dataset/testing_template.csv): CAMDA test set (`test_metadata_db`).
+
+    -   **genus** – Bacterial genus assigned to the sample.
+
+    <!-- -->
+
+    -   **species** – Reported species name; may include inconsistencies depending on the data source.
+    -   **accession** – Unique identifier for the isolate or sample.
+    -   **phenotype** and **measurement_value**– In this dataset, represented as `"?"`, indicating that it is an unknown value to be predicted using ML/DL models as part of the CAMDA challenge.
+    -   **antibiotic** – Antibiotic tested against the isolate.

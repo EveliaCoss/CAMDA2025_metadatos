@@ -1,51 +1,51 @@
 # CAMDA: Antibiotic Resistance
 
-This repository contains the organized and structured information for the **CAMDA Hackathon** competition using the **2024 and 2025 datasets**, focused on **Antibiotic Resistance**. It includes scripts, analyses, visualizations, and relevant documentation developed during the event, aiming to facilitate understanding and reproducibility of the work carried out by the team.
+**CAMDA2025_metadatos** is a curated collection of scripts, datasets, and documentation supporting the CAMDA 2025 challenge on antimicrobial resistance.
 
-## General information
+This repository is intended to ensure reproducibility, transparency, and efficiency in modeling workflows, with a focus on high-quality input for machine learning and deep learning models in antimicrobial resistance prediction.
 
-The dataset contains 9 bacterial species encompassing 4 antibiotics:
+## Datasets provided by CAMDA 2025
 
-    - GEN: Gentamicin
-    - ERY: Erythromycin
-    - TET: Tetracycline
-    - CAZ: Ceftazidime
+The dataset contains 9 bacterial species ("Neisseria gonorrhoeae", "Staphylococcus aureus", "Escherichia coli", "Campylobacter jejuni", "Acinetobacter baumannii", "Streptococcus pneumoniae", "Klebsiella pneumoniae", "Salmonella enterica", and "Pseudomonas aeruginosa") encompassing 4 antibiotics:
 
-For each bacterial isolate, the SRA ID corresponding to the sequencing reads is available, and inferences can be performed based on:
+```         
+- GEN: Gentamicin
+- ERY: Erythromycin
+- TET: Tetracycline
+- CAZ: Ceftazidime
+```
 
-    - measurement values with typing method and measurement signs ('=', '>', '<' or '<='). Please note that these inferences are not possible for S. aureus and A. baumannii.
-    - phenotypic status ('Susceptible', 'Intermediate' and 'Resistant'), all obtained using the latest CLSI versions (R package 'AMR' v2.1.1).
+Datasets:
 
-Some additional metadata are provided when available (publication ID, isolation_source, isolation_country, collection_date).
+-   [training set](https://github.com/ccm-bioinfo/CAMDA2025_AntibioticResistance/blob/main/rawdata/TrainAndTest_dataset/training_dataset.csv): CAMDA training set.
+-   [test set](https://github.com/ccm-bioinfo/CAMDA2025_AntibioticResistance/blob/main/rawdata/TrainAndTest_dataset/testing_template.csv): CAMDA test set.
 
-The total number of isolates for model training is 6,144, subdivided as follows: 
+## Pipeline
 
-Species                     Antibiotic  Susceptible  Intermediate  Resistant	Notes
------------------------------------------------------------------------------------------------------------------
-Klebsiella pneumoniae      	GEN          350          150         350
-Salmonella enterica        	GEN          350           21         350
-Escherichia coli           	GEN          345           19         154
-Staphylococcus aureus       ERY          334           46         265   		no MIC value in testing dataset
-Streptococcus pneumoniae   	ERY          350           53         350
-Campylobacter jejuni      	TET          211            0         326
-Neisseria gonorrhoeae       TET          271          150         350
-Acinetobacter baumannii    	CAZ          277          150         350   		no MIC value in testing dataset
-Pseudomonas aeruginosa     	CAZ          228           95         249
+-   **Input files:**
+    -   [test set](https://github.com/ccm-bioinfo/CAMDA2025_AntibioticResistance/blob/main/rawdata/TrainAndTest_dataset/testing_template.csv): CAMDA test set (`test_metadata_db`).
+    -   [training set](https://github.com/ccm-bioinfo/CAMDA2025_AntibioticResistance/blob/main/rawdata/TrainAndTest_dataset/training_dataset.csv): CAMDA training set (`training_metadata_db`).
+    -   [NCBI data](https://github.com/ccm-bioinfo/CAMDA2025_AntibioticResistance/blob/main/metadata/sra-metadata.csv): Metadata from NCBI (June 10, 2025) (`sra_metadata_db`)
+    -   [Antibiogramas](https://zenodo.org/records/14876710): Metadata from NCBI, ENA and BV-BRC. (February 16, 2025) (`antibiograms_db`)
 
+**Complete [codebook](https://eveliacoss.github.io/CAMDA2025_metadatos/) containing scripts, inputs, and outputs for:**
 
+1.  [Data cleaning](https://eveliacoss.github.io/CAMDA2025_metadatos/2_Preprocessing_CAMDApublicdata.html) - Find how many species are correctly annotated in both databases CAMDA and NCBI related with CAMDA information (training and test datasets).
+2.  [Verification of data downloads](https://eveliacoss.github.io/CAMDA2025_metadatos/3_Download_SRAdata.html) - To confirm successful data download, folder structure organization, and assess the quality of the retrieved files.
+3.  [Generation of input files for machine learning (ML) and deep learning (DL) workflows](https://eveliacoss.github.io/CAMDA2025_metadatos/4_inpufile_MLandDL.html) - To prepare the dataset for downstream predictive modeling, we merged three key sources of information.
 
-## Team 2025: 
+## Team 2025
 
-- Anton Pashkov
-- Francisco Santiago Nieto
-- Johana Atenea Carreón Baltazar
-- Luis Raúl Figueroa Martinez
-- Víctor Muñíz
-- César Aguilar
-- Varinia
-- Johana Castelo
-- Mariana
-- Evelia Lorena Coss Navarrete 
-- Yesenia Villicaña Molina
-- Haydeé Contreras Peruyero
-- Nelly Sélem Mojica
+-   Anton Pashkov
+-   Francisco Santiago Nieto
+-   Johana Atenea Carreón Baltazar
+-   Luis Raúl Figueroa Martinez
+-   Víctor Muñíz
+-   César Aguilar
+-   Varinia
+-   Johana Castelo
+-   Mariana Amparo
+-   Evelia Lorena Coss Navarrete
+-   Yesenia Villicaña Molina
+-   Haydeé Contreras Peruyero
+-   Nelly Sélem Mojica

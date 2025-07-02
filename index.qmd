@@ -1,3 +1,7 @@
 # CAMDA 2025 {.unnumbered}
 
-Analisis de los metadatos proporcionados por CAMDA, tanto training dataset como de testing.
+**CAMDA2025_metadatos** is a curated collection of scripts, datasets, and documentation supporting the CAMDA 2025 challenge on antimicrobial resistance. The repository provides:
+
+-   Cleaned and standardized metadata for pangenomic analyses
+-   Scripts for data cleaning, validation, and preparation of ML/DL-ready inputs
+-   Outputs from quality control, phenotype recategorization, and MIC standardization pipelines

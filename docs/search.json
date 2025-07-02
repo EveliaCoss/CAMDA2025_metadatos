@@ -4,9 +4,19 @@
     "href": "index.html",
     "title": "CAMDA2025 metadatos",
     "section": "",
-    "text": "CAMDA 2025\nAnalisis de los metadatos proporcionados por CAMDA, tanto training dataset como de testing.",
+    "text": "CAMDA 2025\nCAMDA2025_metadatos is a curated collection of scripts, datasets, and documentation supporting the CAMDA 2025 challenge on antimicrobial resistance. The repository provides:\n\nCleaned and standardized metadata for pangenomic analyses\nScripts for data cleaning, validation, and preparation of ML/DL-ready inputs\nOutputs from quality control, phenotype recategorization, and MIC standardization pipelines",
     "crumbs": [
       "CAMDA 2025"
+    ]
+  },
+  {
+    "objectID": "intro.html",
+    "href": "intro.html",
+    "title": "1  Datasets",
+    "section": "",
+    "text": "Datasets provideb by CAMDA2025:\n\ntraining set: CAMDA training set (training_metadata_db).\n\ngenus – Bacterial genus assigned to the sample.\n\n\n\nspecies – Reported species name; may include annotation inconsistencies based on accession.\naccession – Unique sample identifier from the original database.\nphenotype – Reported antimicrobial susceptibility phenotype (e.g., susceptible, intermediate, resistant).\nantibiotic – Antibiotic used to assess susceptibility.\nmeasurement_sign – Comparison symbol used in MIC reporting (e.g., =, &lt;, &gt;).\nmeasurement_value – Numeric value of the Minimum Inhibitory Concentration (MIC).\nmeasurement_unit – Unit of measurement for MIC (commonly µg/mL).\nlaboratory_typing_method – Method used for strain typing (e.g., sequencing, PCR).\nlaboratory_typing_platform – Instrument or platform used (e.g., Illumina, Nanopore).\ntesting_standard – Testing guideline followed (e.g., CLSI, EUCAST).\ntesting_standard_year – Year of the applied testing standard.\npublication – Identifier for the original study or source publication.\nisolation_source – Biological or environmental source from which the sample was isolated (e.g., blood, urine, soil).\nisolation_country – Country where the sample was collected.\ncollection_date – Date the sample was collected or reported.\n\ntest set: CAMDA test set (test_metadata_db).\n\ngenus – Bacterial genus assigned to the sample.\n\n\n\nspecies – Reported species name; may include inconsistencies depending on the data source.\naccession – Unique identifier for the isolate or sample.\nphenotype and measurement_value– In this dataset, represented as \"?\", indicating that it is an unknown value to be predicted using ML/DL models as part of the CAMDA challenge.\nantibiotic – Antibiotic tested against the isolate.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Datasets</span>"
     ]
   },
   {
