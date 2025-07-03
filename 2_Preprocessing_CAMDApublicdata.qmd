@@ -331,7 +331,8 @@ write_tsv(training_db_cleaned, file = here("rawdata/TrainAndTest_cleaned", "trai
 
 Aqui debo unir el archivo de nuevos MIC y fenotipos
 
-```{r}
+```{r, eval=FALSE}
+#NO CORRER
 # Join information
 training_db_cleaned <- training_completeinfo_cleaned_db %>%
   left_join(select(training_metadata_db, -scientific_name_CAMDA), by = "accession") %>%
@@ -345,13 +346,14 @@ dim(training_db_cleaned)
 
 Save data
 
-```{r}
+```{r, eval=FALSE}
+# POR CAMBIAR
 write_tsv(training_db_cleaned, file = here("rawdata/TrainAndTest_cleaned", "training_metadata_cleaned.tsv"), quote = "none")
 ```
 
 ## About missing data
 
-```{r}
+```{r, eval=FALSE}
 training_db_cleaned %>%
   group_by(scientific_name_CAMDA) %>%
   summarise(
@@ -371,7 +373,7 @@ training_db_cleaned %>%
 
 The data from NCBI does not match the information available in the antibiogram records.
 
-```{r}
+```{r, eval=FALSE}
 training_verify_data <- training_db_cleaned %>%
   filter(status_reference == "Verify_sources")
 ```
@@ -464,7 +466,7 @@ save(antibiograms_db, test_db_cleaned, training_db_cleaned, sra_metadata_db, tes
 
 # Diverse phenotypes
 
-```{r}
+```{r, eval=FALSE}
 # Visualize phenotype info for Acinetobacter baumannii
 training_db_cleaned %>%
   group_by(scientific_name_CAMDA, phenotype) %>%
@@ -478,7 +480,7 @@ training_db_cleaned %>%
 
 How Many SRA are repeated within each species but assigned to different phenotypes
 
-```{r}
+```{r, eval=FALSE}
 training_db_cleaned %>%
   group_by(scientific_name_CAMDA, accession) %>%
   summarise(phenotype_count = n_distinct(phenotype), .groups = "drop") %>%
@@ -488,7 +490,7 @@ training_db_cleaned %>%
 
 To break down the count of conflicting accessions per species and per phenotype, you can extend the logic by grouping further by phenotype after identifying accessions with multiple phenotypes.
 
-```{r}
+```{r, eval=FALSE}
 training_diff_phenotype_summary <- training_db_cleaned %>%
   group_by(scientific_name_CAMDA, accession) %>%
   filter(n_distinct(phenotype) > 1) %>%
@@ -498,7 +500,7 @@ training_diff_phenotype_summary <- training_db_cleaned %>%
 head(training_diff_phenotype_summary)
 ```
 
-```{r}
+```{r, eval=FALSE}
 # Identify species with more than one assigned phenotype
 training_diff_phenotype_db <- training_db_cleaned %>%
   filter(accession %in% training_diff_phenotype_summary$accession)
@@ -507,7 +509,7 @@ dim(training_diff_phenotype_db)# [1] 108 21
 
 Save files
 
-```{r}
+```{r, eval=FALSE}
 write_tsv(training_diff_phenotype_db, file = here("rawdata/diff_phenotype","training_diff_phenotype_db.tsv"))
 write_tsv(training_diff_phenotype_summary, file = here("rawdata/diff_phenotype", "training_diff_phenotype_summary.tsv"))
 ```
