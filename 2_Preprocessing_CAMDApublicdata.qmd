@@ -336,7 +336,7 @@ table(training_completeinfo_cleaned_db$status)
 
 Enviar a Yesenia
 
-```{r}
+```{r, eval=FALSE}
 training_db_cleaned <- training_completeinfo_cleaned_db %>%
    select(scientific_name_new, accession, genome) 
 dim(training_db_cleaned)
@@ -347,7 +347,7 @@ write_tsv(training_db_cleaned, file = here("rawdata/TrainAndTest_cleaned", "trai
 
 Aqui debo unir el archivo de nuevos MIC y fenotipos
 
-```{r, eval=FALSE}
+```{r}
 #NO CORRER
 # Join information
 training_db_cleaned <- training_completeinfo_cleaned_db %>%
@@ -362,8 +362,7 @@ dim(training_db_cleaned)
 
 Save data
 
-```{r, eval=FALSE}
-# POR CAMBIAR
+```{r}
 write_tsv(training_db_cleaned, file = here("rawdata/TrainAndTest_cleaned", "training_metadata_cleaned.tsv"), quote = "none")
 ```
 
