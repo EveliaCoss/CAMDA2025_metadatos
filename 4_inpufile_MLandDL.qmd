@@ -40,7 +40,7 @@ library(here)
 # > training and test database
 # Load metadata cleaned and antibiogram information
 load(here("rawdata/TrainAndTest_cleaned", "complete_metadata.RData"))
-# antibiograms_db, test_db_cleaned, training_db_cleaned, sra_metadata_db, test_completeInfo_db, training_cleanedInfo_db
+# antibiograms_db, test_db_cleaned, training_db_cleaned, sra_metadata_db, test_completeInfo_db,  training_completeInfo_db
 
 # > MIC values
 new_mic_db <- read_csv(file= here("rawdata/TrainAndTest_cleaned","CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv")) %>%
@@ -67,31 +67,48 @@ cols_to_remove <- colnames(training_db_cleaned %>%
   select(measurement_unit:collection_date, measurement_sign, measurement_unit,
          scientific_name_CAMDA:status_reference))
 
+# 1. Remove columns from training
 training_inputfile <- training_db_cleaned %>%
   # remove columns
-  select(-any_of(cols_to_remove)) 
-training_inputfile$type <- "training"
+  select(-any_of(cols_to_remove)) %>%
+  # Seleccion de columnas solo specie y accession
+  select(accession)
+unique(training_inputfile$accession) %>% length()
+# [1] 5450
 
+# 2. Unique IDs
+# Join New MIC values (accession, phenotype_assigned, mic_new)
+training_inputfile_cleaned <- new_mic_db %>% 
+  filter(accession %in% training_inputfile$accession)
+training_inputfile_cleaned$type <- "training"
+dim(training_inputfile_cleaned) # [1] 5420    9
+
+# 3. Remove columns from testing
 test_inputfile <- test_db_cleaned %>%
   # remove columns
   select(-any_of(cols_to_remove)) 
 test_inputfile$type <- "test"
+test_inputfile$assign_phenotype <- 0
+test_inputfile$recategorized_mic <- 0
+dim(test_inputfile) # [1] 4055    9
 
-# Join files 
-training_and_test_inputfile <- rbind(training_inputfile, test_inputfile)
+# 4. Join files 
+training_and_test_inputfile <- rbind(training_inputfile_cleaned, test_inputfile)
 table(training_and_test_inputfile$type)
 # test training 
-# 4055     5721 #9776
+# 4055     5420 #9475
 
 # Join with RGI results
 training_and_test_inputfile <- training_and_test_inputfile %>% 
-  # Join New MIC values (accession, phenotype_assigned, mic_new)
-  left_join(select(new_mic_db,
-                   accession, assign_phenotype, recategorized_mic), by ="accession") %>%
   # Join rgi results
   left_join(select(rgi_results, -genus, -species, -phenotype, 
-                   -antibiotic, -measurement_value, -categoria_recodificada), by = "accession")
+                   -antibiotic, -measurement_value, -categoria_recodificada), by = "accession") %>% 
+  mutate(antibiotic = if_else( antibiotic == "tetracycline", "TET", antibiotic))
 
+# unique(training_and_test_inputfile$antibiotic)
+# [1] "TET" "ERY" "GEN" "CAZ"
+
+# Dimensions
 dim(training_and_test_inputfile)
 ```
 
