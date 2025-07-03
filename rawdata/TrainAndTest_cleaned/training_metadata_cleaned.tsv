@@ -1,4 +1,4 @@
-scientific_name_CAMDA	accession	genome
+scientific_name_new	accession	genome
 Neisseria gonorrhoeae	SRR1661238	ENA_SAMN03201584
 Neisseria gonorrhoeae	SRR5827180	ENA_SAMN07351025
 Neisseria gonorrhoeae	SRR5827125	ENA_SAMN07351011
@@ -2372,7 +2372,7 @@ Acinetobacter baumannii	SRR3223470	ENA_SAMN04549260
 Acinetobacter baumannii	SRR3152502	ENA_SAMN04480660
 Acinetobacter baumannii	SRR3170779	NA
 Acinetobacter baumannii	SRR3170783	NA
-Acinetobacter baumannii	SRR3242034	ENA_SAMN04568503
+Acinetobacter courvalinii	SRR3242034	ENA_SAMN04568503
 Acinetobacter baumannii	SRR3170776	NA
 Acinetobacter baumannii	SRR3131209	NA
 Acinetobacter baumannii	SRR2911726	ENA_SAMN04229823
@@ -2390,7 +2390,7 @@ Acinetobacter baumannii	SRR3159168	ENA_SAMN04482453
 Acinetobacter baumannii	SRR3152497	ENA_SAMN04480655
 Acinetobacter baumannii	SRR721187	ENA_SAMN01828165
 Acinetobacter baumannii	SRR3152508	NA
-Acinetobacter baumannii	SRR3170246	ENA_SAMN04485906
+Acinetobacter nosocomialis	SRR3170246	ENA_SAMN04485906
 Acinetobacter baumannii	SRR3152506	NA
 Acinetobacter baumannii	SRR3170780	NA
 Acinetobacter baumannii	SRR3133106	NA
@@ -2432,7 +2432,7 @@ Acinetobacter baumannii	SRR3224801	ENA_SAMN04549832
 Acinetobacter baumannii	SRR3228537	ENA_SAMN04555483
 Acinetobacter baumannii	SRR3227045	ENA_SAMN04555231
 Acinetobacter baumannii	SRR3170255	ENA_SAMN04487136
-Acinetobacter baumannii	SRR3222486	ENA_SAMN04546718
+Acinetobacter nosocomialis	SRR3222486	ENA_SAMN04546718
 Acinetobacter baumannii	SRR3223164	ENA_SAMN04547091
 Acinetobacter baumannii	SRR3170788	NA
 Acinetobacter baumannii	SRR3222491	ENA_SAMN04546723
@@ -2455,7 +2455,7 @@ Acinetobacter baumannii	SRR3228561	ENA_SAMN04555507
 Acinetobacter baumannii	SRR5477437	ENA_SAMN06827873
 Acinetobacter baumannii	SRR3227030	ENA_SAMN04555216
 Acinetobacter baumannii	SRR3217272	ENA_SAMN04515405
-Acinetobacter baumannii	SRR3197589	ENA_SAMN04525189
+Acinetobacter nosocomialis	SRR3197589	ENA_SAMN04525189
 Acinetobacter baumannii	SRR3223165	ENA_SAMN04547092
 Acinetobacter baumannii	SRR3131230	ENA_SAMN04446551
 Acinetobacter baumannii	SRR3224993	ENA_SAMN04549875
@@ -3449,16 +3449,16 @@ Streptococcus pneumoniae	ERR069699	ENA_SAMEA1032577
 Streptococcus pneumoniae	ERR065344	ENA_SAMEA1032678
 Klebsiella pneumoniae	SRR5659146	ENA_SAMN02138666
 Klebsiella pneumoniae	SRR5385660	ENA_SAMN06438045
-Klebsiella pneumoniae	ERR486347	ENA_SAMEA2273600
-Klebsiella pneumoniae	SRR4017887	ENA_SAMN05170211
+Klebsiella variicola	ERR486347	ENA_SAMEA2273600
+Klebsiella quasipneumoniae	SRR4017887	ENA_SAMN05170211
 Klebsiella pneumoniae	SRR5387322	ENA_SAMN06438847
 Klebsiella pneumoniae	SRR5387027	ENA_SAMN06437597
 Klebsiella pneumoniae	SRR5385684	ENA_SAMN06438021
 Klebsiella pneumoniae	SRR5385424	ENA_SAMN06437559
-Klebsiella pneumoniae	SRR5386623	ENA_SAMN06438525
+Klebsiella variicola	SRR5386623	ENA_SAMN06438525
 Klebsiella pneumoniae	ERR474508	ENA_SAMEA2273690
 Klebsiella pneumoniae	SRR5386391	ENA_SAMN06437214
-Klebsiella pneumoniae	SRR5385984	ENA_SAMN06438690
+Klebsiella variicola	SRR5385984	ENA_SAMN06438690
 Klebsiella pneumoniae	SRR5385720	ENA_SAMN06437985
 Klebsiella pneumoniae	SRR5387161	ENA_SAMN06439008
 Klebsiella pneumoniae	SRR5386191	ENA_SAMN06437413
@@ -3486,7 +3486,7 @@ Klebsiella pneumoniae	SRR5973373	ENA_SAMN07525477
 Klebsiella pneumoniae	SRR5386003	ENA_SAMN06438671
 Klebsiella pneumoniae	SRR5386469	ENA_SAMN06437761
 Klebsiella pneumoniae	SRR5387390	ENA_SAMN06438779
-Klebsiella pneumoniae	ERR474498	ENA_SAMEA2273677
+Klebsiella variicola	ERR474498	ENA_SAMEA2273677
 Klebsiella pneumoniae	SRR5386265	ENA_SAMN06437340
 Klebsiella pneumoniae	SRR5385697	ENA_SAMN06438008
 Klebsiella pneumoniae	SRR5387245	ENA_SAMN06438924
@@ -3524,7 +3524,7 @@ Klebsiella pneumoniae	SRR5385413	ENA_SAMN06437570
 Klebsiella pneumoniae	SRR4017837	ENA_SAMN05170182
 Klebsiella pneumoniae	SRR5973331	ENA_SAMN07525440
 Klebsiella pneumoniae	SRR4065644	ENA_SAMN05170313
-Klebsiella pneumoniae	SRR1187798	ENA_SAMN02581282
+Klebsiella variicola	SRR1187798	ENA_SAMN02581282
 Klebsiella pneumoniae	SRR5386192	ENA_SAMN06437412
 Klebsiella pneumoniae	SRR900207	ENA_SAMN02142051
 Klebsiella pneumoniae	ERR3164672	ENA_SAMEA104414869
@@ -3555,7 +3555,7 @@ Klebsiella pneumoniae	SRR1204041	ENA_SAMN02581383
 Klebsiella pneumoniae	SRR5386383	ENA_SAMN06437222
 Klebsiella pneumoniae	ERR474494	ENA_SAMEA2273673
 Klebsiella pneumoniae	ERR3164772	ENA_SAMEA104414948
-Klebsiella pneumoniae	SRR5386037	ENA_SAMN06438654
+Klebsiella quasipneumoniae	SRR5386037	ENA_SAMN06438654
 Klebsiella pneumoniae	SRR5386743	ENA_SAMN06438419
 Klebsiella pneumoniae	SRR5387179	ENA_SAMN06438990
 Klebsiella pneumoniae	SRR5386345	ENA_SAMN06437260
@@ -3595,14 +3595,14 @@ Klebsiella pneumoniae	SRR5386163	ENA_SAMN06437441
 Klebsiella pneumoniae	SRR5386556	ENA_SAMN06437674
 Klebsiella pneumoniae	ERR3164726	ENA_SAMEA104414923
 Klebsiella pneumoniae	SRR5973296	ENA_SAMN07525454
-Klebsiella pneumoniae	SRR5387197	ENA_SAMN06438972
+Klebsiella quasipneumoniae	SRR5387197	ENA_SAMN06438972
 Klebsiella pneumoniae	SRR5386654	ENA_SAMN06438494
 Klebsiella pneumoniae	SRR5386306	ENA_SAMN06437299
 Klebsiella pneumoniae	SRR5385944	ENA_SAMN06438730
-Klebsiella pneumoniae	SRR5385710	ENA_SAMN06437995
-Klebsiella pneumoniae	SRR960879	ENA_SAMN02138619
+Klebsiella quasipneumoniae	SRR5385710	ENA_SAMN06437995
+Klebsiella quasipneumoniae	SRR960879	ENA_SAMN02138619
 Klebsiella pneumoniae	SRR5387210	ENA_SAMN06438959
-Klebsiella pneumoniae	SRR5862478	ENA_SAMN07410714
+Klebsiella quasipneumoniae	SRR5862478	ENA_SAMN07410714
 Klebsiella pneumoniae	SRR5385992	ENA_SAMN06438682
 Klebsiella pneumoniae	SRR5386310	ENA_SAMN06437295
 Klebsiella pneumoniae	SRR5386600	ENA_SAMN06437632
@@ -3657,7 +3657,7 @@ Klebsiella pneumoniae	SRR3221942	ENA_SAMN04448235
 Klebsiella pneumoniae	SRR5385837	ENA_SAMN06437868
 Klebsiella pneumoniae	SRR5386032	ENA_SAMN06438659
 Klebsiella pneumoniae	SRR5387191	ENA_SAMN06438978
-Klebsiella pneumoniae	SRR850995	ENA_SAMN02138560
+Klebsiella variicola	SRR850995	ENA_SAMN02138560
 Klebsiella pneumoniae	ERR775693	ENA_SAMEA2609409
 Klebsiella pneumoniae	SRR5385830	ENA_SAMN06437875
 Klebsiella pneumoniae	SRR5385637	ENA_SAMN06438068
@@ -3679,9 +3679,9 @@ Klebsiella pneumoniae	SRR5385895	ENA_SAMN06437810
 Klebsiella pneumoniae	SRR5386503	ENA_SAMN06437727
 Klebsiella pneumoniae	SRR5973407	ENA_SAMN07525403
 Klebsiella pneumoniae	SRR5385670	ENA_SAMN06438035
-Klebsiella pneumoniae	SRR5385464	ENA_SAMN06437519
+Klebsiella quasipneumoniae	SRR5385464	ENA_SAMN06437519
 Klebsiella pneumoniae	ERR486787	ENA_SAMEA2273731
-Klebsiella pneumoniae	ERR486298	ENA_SAMEA2273545
+Klebsiella variicola	ERR486298	ENA_SAMEA2273545
 Klebsiella pneumoniae	ERR3164661	ENA_SAMEA104414858
 Klebsiella pneumoniae	ERR3164756	ENA_SAMEA104414966
 Klebsiella pneumoniae	SRR5387224	ENA_SAMN06438945
@@ -3736,7 +3736,7 @@ Klebsiella pneumoniae	SRR5386155	ENA_SAMN06438538
 Klebsiella pneumoniae	SRR5973276	ENA_SAMN07525459
 Klebsiella pneumoniae	SRR5387023	ENA_SAMN06437601
 Klebsiella pneumoniae	SRR5387031	ENA_SAMN06437593
-Klebsiella pneumoniae	ERR486351	ENA_SAMEA2273604
+Klebsiella variicola	ERR486351	ENA_SAMEA2273604
 Klebsiella pneumoniae	ERR486766	ENA_SAMEA2273640
 Klebsiella pneumoniae	ERR474543	ENA_SAMEA2273742
 Klebsiella pneumoniae	SRR4245474	ENA_SAMN05774073
@@ -3746,7 +3746,7 @@ Klebsiella pneumoniae	SRR5386222	ENA_SAMN06437382
 Klebsiella pneumoniae	SRR5385901	ENA_SAMN06437804
 Klebsiella pneumoniae	SRR5386025	ENA_SAMN06438666
 Klebsiella pneumoniae	SRR5387254	ENA_SAMN06438915
-Klebsiella pneumoniae	SRR5806877	ENA_SAMN07325906
+Klebsiella quasipneumoniae	SRR5806877	ENA_SAMN07325906
 Klebsiella pneumoniae	SRR5387193	ENA_SAMN06438976
 Klebsiella pneumoniae	SRR5385724	ENA_SAMN06437981
 Klebsiella pneumoniae	SRR5387234	ENA_SAMN06438935
@@ -3771,8 +3771,8 @@ Klebsiella pneumoniae	SRR5385506	ENA_SAMN06437477
 Klebsiella pneumoniae	SRR5973347	ENA_SAMN07525433
 Klebsiella pneumoniae	SRR5386293	ENA_SAMN06437312
 Klebsiella pneumoniae	SRR5973363	ENA_SAMN07525423
-Klebsiella pneumoniae	SRR5385695	ENA_SAMN06438010
-Klebsiella pneumoniae	SRR5385538	ENA_SAMN06437445
+Klebsiella quasipneumoniae	SRR5385695	ENA_SAMN06438010
+Klebsiella variicola	SRR5385538	ENA_SAMN06437445
 Klebsiella pneumoniae	SRR5386239	ENA_SAMN06437365
 Klebsiella pneumoniae	SRR4017840	ENA_SAMN05170185
 Klebsiella pneumoniae	ERR486343	ENA_SAMEA2273596
@@ -3797,7 +3797,7 @@ Klebsiella pneumoniae	ERR486463	ENA_SAMEA2273855
 Klebsiella pneumoniae	SRR5387033	ENA_SAMN06437591
 Klebsiella pneumoniae	SRR4017842	ENA_SAMN05170187
 Klebsiella pneumoniae	SRR5385419	ENA_SAMN06437564
-Klebsiella pneumoniae	ERR486764	ENA_SAMEA2273633
+Klebsiella variicola	ERR486764	ENA_SAMEA2273633
 Klebsiella pneumoniae	SRR5387356	ENA_SAMN06438813
 Klebsiella pneumoniae	SRR3996241	ENA_SAMN05170124
 Klebsiella pneumoniae	SRR1167015	ENA_SAMN02631068
@@ -3897,7 +3897,7 @@ Klebsiella pneumoniae	ERR775546	ENA_SAMEA2609508
 Klebsiella pneumoniae	SRR5386820	ENA_SAMN06438342
 Klebsiella pneumoniae	SRR5385411	ENA_SAMN06437572
 Klebsiella pneumoniae	SRR5385704	ENA_SAMN06438001
-Klebsiella pneumoniae	ERR1218771	ENA_SAMEA3531884
+Klebsiella quasipneumoniae	ERR1218771	ENA_SAMEA3531884
 Klebsiella pneumoniae	SRR5386637	ENA_SAMN06438511
 Klebsiella pneumoniae	SRR1166982	ENA_SAMN02631035
 Klebsiella pneumoniae	SRR5387311	ENA_SAMN06438858
@@ -3921,7 +3921,7 @@ Klebsiella pneumoniae	SRR5386166	ENA_SAMN06437438
 Klebsiella pneumoniae	ERR775674	ENA_SAMEA2609362
 Klebsiella pneumoniae	SRR5385790	ENA_SAMN06437915
 Klebsiella pneumoniae	ERR1218772	ENA_SAMEA3531885
-Klebsiella pneumoniae	ERR486370	ENA_SAMEA2273625
+Klebsiella variicola	ERR486370	ENA_SAMEA2273625
 Klebsiella pneumoniae	SRR5386356	ENA_SAMN06437249
 Klebsiella pneumoniae	SRR5385884	ENA_SAMN06437821
 Klebsiella pneumoniae	ERR486408	ENA_SAMEA2273800
@@ -3932,7 +3932,7 @@ Klebsiella pneumoniae	SRR5973239	ENA_SAMN07525496
 Klebsiella pneumoniae	SRR3996236	ENA_SAMN05170119
 Klebsiella pneumoniae	SRR5387353	ENA_SAMN06438816
 Klebsiella pneumoniae	ERR486359	ENA_SAMEA2273612
-Klebsiella pneumoniae	SRR5386602	ENA_SAMN06437630
+Klebsiella quasipneumoniae	SRR5386602	ENA_SAMN06437630
 Klebsiella pneumoniae	SRR5385908	ENA_SAMN06437797
 Klebsiella pneumoniae	SRR5387374	ENA_SAMN06438795
 Klebsiella pneumoniae	ERR474500	ENA_SAMEA2273681
@@ -4039,8 +4039,8 @@ Klebsiella pneumoniae	ERR775502	ENA_SAMEA2609416
 Klebsiella pneumoniae	SRR5386456	ENA_SAMN06437149
 Klebsiella pneumoniae	SRR5386224	ENA_SAMN06437380
 Klebsiella pneumoniae	SRR3987128	ENA_SAMN05170111
-Klebsiella pneumoniae	SRR5386043	ENA_SAMN06438648
-Klebsiella pneumoniae	SRR4017929	ENA_SAMN05170253
+Klebsiella africana	SRR5386043	ENA_SAMN06438648
+Klebsiella variicola	SRR4017929	ENA_SAMN05170253
 Klebsiella pneumoniae	SRR2449251	ENA_SAMN04096276
 Klebsiella pneumoniae	SRR5387293	ENA_SAMN06438876
 Klebsiella pneumoniae	SRR5386249	ENA_SAMN06437356

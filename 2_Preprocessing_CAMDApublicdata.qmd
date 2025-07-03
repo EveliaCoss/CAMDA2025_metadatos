@@ -293,9 +293,20 @@ training_completeinfo_cleaned_db <- compare_genus(training_completeInfo_db, old_
   # Delete problems with species
    filter(genus_match != FALSE) 
 
-# table(training_completeinfo_cleaned_db$genus_match)
-#TRUE FALSE    NA 
-# 5105     9   344 
+table(training_completeinfo_cleaned_db$genus_match)
+# TRUE FALSE    NA 
+# 5105     0   344
+
+# agregar nueva clasiifacion en los nombres de las especies
+training_completeinfo_cleaned_db$scientific_name_new <- ifelse(
+  # Si new_species es NA, mantiene scientific_name_CAMDA.
+  is.na(training_completeinfo_cleaned_db$new_species),
+  training_completeinfo_cleaned_db$scientific_name_CAMDA,
+  # Si son iguales, conserva scientific_name_CAMDA.
+  ifelse(
+    training_completeinfo_cleaned_db$scientific_name_CAMDA == training_completeinfo_cleaned_db$new_species,
+         training_completeinfo_cleaned_db$scientific_name_CAMDA,
+         training_completeinfo_cleaned_db$new_species))
 
 dim(training_completeinfo_cleaned_db)
 # [1] 5449   12
@@ -304,6 +315,10 @@ dim(training_completeinfo_cleaned_db)
 training_completeinfo_cleaned_db %>%  
   # Visualizar informacion en una tabla bonita
   DT::datatable()
+```
+
+```{r}
+table(training_completeinfo_cleaned_db$scientific_name_new)
 ```
 
 Save data
@@ -323,7 +338,8 @@ Enviar a Yesenia
 
 ```{r}
 training_db_cleaned <- training_completeinfo_cleaned_db %>%
-   select(scientific_name_CAMDA, accession, genome) 
+   select(scientific_name_CAMDA, accession, genome) %>%
+  
 
 # save
 write_tsv(training_db_cleaned, file = here("rawdata/TrainAndTest_cleaned", "training_metadata_cleaned.tsv"), quote = "none")

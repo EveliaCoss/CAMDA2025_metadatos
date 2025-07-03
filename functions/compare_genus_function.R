@@ -23,12 +23,15 @@
 compare_genus <- function(df, old_col = "old_species", new_col = "new_species") {
   extract_genus <- function(x) sub(" .*", "", x)
   
+  message("Extrayendo el genero de las especies")
   df$old_genus <- extract_genus(df[[old_col]])
   df$new_genus <- extract_genus(df[[new_col]])
   
+  message("Determinando especies erroneas")
   df$genus_match <- ifelse(is.na(df$old_genus) | is.na(df$new_genus),"NA",
     ifelse(df$old_genus == df$new_genus, "TRUE", "FALSE"))
   
+  message("Agregar clasificaciones")
   df$genus_match <- factor(df$genus_match, levels = c("TRUE", "FALSE", "NA"))
   
   return(df)
