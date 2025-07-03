@@ -339,6 +339,7 @@ Enviar a Yesenia
 ```{r}
 training_db_cleaned <- training_completeinfo_cleaned_db %>%
    select(scientific_name_new, accession, genome) 
+dim(training_db_cleaned)
 
 # save
 write_tsv(training_db_cleaned, file = here("rawdata/TrainAndTest_cleaned", "training_metadata_cleaned.tsv"), quote = "none")
