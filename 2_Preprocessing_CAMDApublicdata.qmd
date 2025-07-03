@@ -338,8 +338,7 @@ Enviar a Yesenia
 
 ```{r}
 training_db_cleaned <- training_completeinfo_cleaned_db %>%
-   select(scientific_name_CAMDA, accession, genome) %>%
-  
+   select(scientific_name_new, accession, genome) 
 
 # save
 write_tsv(training_db_cleaned, file = here("rawdata/TrainAndTest_cleaned", "training_metadata_cleaned.tsv"), quote = "none")
@@ -394,7 +393,7 @@ training_verify_data <- training_db_cleaned %>%
   filter(status_reference == "Verify_sources")
 ```
 
-```{r}
+```{r, eval=FALSE}
 table(training_completeInfo_db$status_reference)
 ```
 
@@ -441,7 +440,7 @@ table(test_completeInfo_db$status_reference)
 
 Verify the total number of SRA IDs.
 
-```{r}
+```{r, eval=FALSE}
 # Count unique accessions per species in the training metadata
 train_counts_cleaned <- training_db_cleaned %>%
   group_by(scientific_name_CAMDA) %>%
@@ -476,7 +475,7 @@ combined_counts_completed %>%
 
 Save
 
-```{r}
+```{r, eval=FALSE}
 save(antibiograms_db, test_db_cleaned, training_db_cleaned, sra_metadata_db, test_completeInfo_db, training_completeInfo_db,  file = here("rawdata/TrainAndTest_cleaned", "complete_metadata.RData"))
 ```
 
