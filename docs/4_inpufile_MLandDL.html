@@ -215,7 +215,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Aim: To prepare the dataset for downstream predictive modeling, we merged three key sources of information:</p>
 <ul>
 <li>The cleaned training and test database (<code>training_db_cleaned and test_db_cleaned from complete_metadata.RData</code>)</li>
-<li>A new dataset containing assigned MIC values for additional isolates (<a href="https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv"><code>CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv</code></a>)</li>
+<li>A new dataset containing assigned MIC values for additional isolates (<code>CAMDA25_training_con_MIC_y_fenotipo_1.csv</code>)</li>
 <li>The gene family matrix derived from the RGI analysis (<a href="https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/pangenomic_analysis/2025_Training_and_testing_strict.tsv.gz"><code>2025_Training_and_testing_strict.tsv.gz</code></a>)</li>
 </ul>
 <p>This unified dataset serves as the foundation for training and evaluating machine learning (ML) and deep learning (DL) models aimed at predicting antimicrobial resistance patterns.</p>
@@ -232,7 +232,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>categoria_recodificada</strong>- Proposed standardized MIC (Minimum Inhibitory Concentration) value for each sample (old version, 2024).</li>
 <li><strong>columns starting with 300…</strong> - feature data. Contains counts of genes and SNPs conferring antibiotic resistance. Columns are labeled using ARO ids (see Section 3 for details). SNP features are labeled with the ARO id, followed by a dash (<code>-</code>) and the amino acid substitution.</li>
 </ul></li>
-<li><a href="https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv"><code>CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv</code></a>: Table containing updated annotations of standardized MIC values (<code>recategorized_MIC</code>) and newly assigned phenotypes (<code>assign_phenotype</code>) for all samples. It includes the following columns:
+<li><code>CAMDA25_training_con_MIC_y_fenotipo_1.csv</code>: Table containing updated annotations of standardized MIC values (<code>recategorized_MIC</code>) and newly assigned phenotypes (<code>assign_phenotype</code>) for all samples. It includes the following columns:
 <ul>
 <li><strong>genus</strong>, <strong>species</strong>, <strong>accession</strong>, <strong>antibiotic</strong> - Sample metadata. Note: some species annotations may contain inconsistencies due to accession-level discrepancies.</li>
 <li><strong>phenotype</strong>, <strong>measurement_value</strong> - Prediction targets for modeling.</li>
@@ -245,8 +245,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/training_and_test_inputfile_cleaned.tsv.gz"><code>training_and_test_inputfile_cleaned.tsv.gz</code></a>: Cleaned dataset (training ans test) containing standardized species names, reassigned MIC values (recategorized_mic), and curated phenotypes (assign_phenotype). This file is formatted and ready for input into machine learning (ML) and deep learning (DL) workflows. It includes the following columns:
 <ul>
 <li><strong>genus</strong>, <strong>species</strong>, <strong>accession</strong>, <strong>phenotype</strong>, <strong>antibiotic,</strong> <strong>measurement_value</strong> -Sample metadata with corrected species information. <em>Source:</em> <code>training_db_cleaned</code></li>
-<li><strong>recategorized_MIC</strong>- Updated (2025) standardized Minimum Inhibitory Concentration (MIC) values for each sample. <em>Source:</em> <a href="https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv"><code>CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv</code></a></li>
-<li><strong>assign_phenotype</strong> –Reassigned phenotype labels, limited to “Resistant” and “Susceptible” categories. <em>Source:</em> <a href="https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv"><code>CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv</code></a></li>
+<li><strong>recategorized_MIC</strong>- Updated (2025) standardized Minimum Inhibitory Concentration (MIC) values for each sample. <em>Source:</em> <code>CAMDA25_training_con_MIC_y_fenotipo_1.csv</code></li>
+<li><strong>assign_phenotype</strong> –Reassigned phenotype labels, limited to “Resistant” and “Susceptible” categories. <em>Source:</em> <code>CAMDA25_training_con_MIC_y_fenotipo_1.csv</code></li>
 <li><strong>type</strong>: Dataset classification between training and test datasets.</li>
 <li><strong>columns starting with 300…</strong> - feature data. Contains counts of genes and SNPs conferring antibiotic resistance. Columns are labeled using ARO ids (see Section 3 for details). SNP features are labeled with the ARO id, followed by a dash (<code>-</code>) and the amino acid substitution.</li>
 </ul></li>
@@ -296,20 +296,20 @@ The following objects are masked from 'package:stats':
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># &gt; training and test database</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Load metadata cleaned and antibiogram information</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">here</span>(<span class="st">"rawdata/TrainAndTest_cleaned"</span>, <span class="st">"complete_metadata.RData"</span>))</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># antibiograms_db, test_db_cleaned, training_db_cleaned, sra_metadata_db, test_completeInfo_db, training_cleanedInfo_db</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># antibiograms_db, test_db_cleaned, training_db_cleaned, sra_metadata_db, test_completeInfo_db,  training_completeInfo_db</span></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># &gt; MIC values</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>new_mic_db <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="at">file=</span> <span class="fu">here</span>(<span class="st">"rawdata/TrainAndTest_cleaned"</span>,<span class="st">"CAMDA25_trainnig_metadatos_filtrado_con_assign_recategorizado.csv"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>new_mic_db <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="at">file=</span> <span class="fu">here</span>(<span class="st">"rawdata/TrainAndTest_cleaned"</span>,<span class="st">"CAMDA25_training_con_MIC_y_fenotipo_1.csv"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>   <span class="co"># Standardizes column names: converts them to lowercase,</span></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># replaces spaces and special characters with underscores</span></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
-<pre><code>Rows: 5420 Columns: 8
+<pre><code>Rows: 5720 Columns: 26
 ── Column specification ────────────────────────────────────────────────────────
 Delimiter: ","
-chr (6): genus, species, accession, phenotype, antibiotic, assign_phenotype
-dbl (2): measurement_value, recategorized_MIC
+chr (23): genus, species, accession, genome, new_genus, phenotype_assigned, ...
+dbl  (3): ani, measurement_value, recategorized_MIC
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
@@ -317,14 +317,16 @@ dbl (2): measurement_value, recategorized_MIC
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Rows: 5420 Columns: 8</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># &gt; gene family matrix (strict)</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># renombrar columnas</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(new_mic_db)[<span class="fu">names</span>(new_mic_db) <span class="sc">==</span> <span class="st">"new_genus"</span>] <span class="ot">&lt;-</span> <span class="st">"new_species"</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Read the .csv file into R</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>rgi_results <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="at">file=</span> <span class="fu">here</span>(<span class="st">"rawdata/rgi_analysis"</span>,<span class="st">"2025_Training_and_testing_strict.tsv.gz"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>   <span class="co"># Standardizes column names: converts them to lowercase,</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># replaces spaces and special characters with underscores</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># &gt; gene family matrix (strict)</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Read the .csv file into R</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>rgi_results <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="at">file=</span> <span class="fu">here</span>(<span class="st">"rawdata/rgi_analysis"</span>,<span class="st">"2025_Training_and_testing_strict.tsv.gz"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>   <span class="co"># Standardizes column names: converts them to lowercase,</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># replaces spaces and special characters with underscores</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>Rows: 9471 Columns: 1076
@@ -350,97 +352,106 @@ dbl (1070): categoria_recodificada, ARO3000464-A121D, ARO3000464-G120K, ARO3...
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(measurement_unit<span class="sc">:</span>collection_date, measurement_sign, measurement_unit,</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>         scientific_name_CAMDA<span class="sc">:</span>status_reference))</span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Remove columns from training</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>training_inputfile <span class="ot">&lt;-</span> training_db_cleaned <span class="sc">%&gt;%</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Remove columns from testing</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>test_inputfile <span class="ot">&lt;-</span> test_db_cleaned <span class="sc">%&gt;%</span></span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># remove columns</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">any_of</span>(cols_to_remove)) <span class="sc">%&gt;%</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Seleccion de columnas solo specie y accession</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(accession)</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(training_inputfile<span class="sc">$</span>accession) <span class="sc">%&gt;%</span> <span class="fu">length</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">any_of</span>(cols_to_remove)) </span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>test_inputfile<span class="sc">$</span>type <span class="ot">&lt;-</span> <span class="st">"test"</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>test_inputfile<span class="sc">$</span>phenotype_assigned <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>test_inputfile<span class="sc">$</span>recategorized_mic <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(test_inputfile) <span class="co"># [1] 4055    12</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 5450</code></pre>
+<pre><code>[1] 4055   12</code></pre>
 </div>
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] 5450</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Unique IDs</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Join New MIC values (accession, phenotype_assigned, mic_new)</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>training_inputfile_cleaned <span class="ot">&lt;-</span> new_mic_db <span class="sc">%&gt;%</span> </span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(accession <span class="sc">%in%</span> training_inputfile<span class="sc">$</span>accession)</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>training_inputfile_cleaned<span class="sc">$</span>type <span class="ot">&lt;-</span> <span class="st">"training"</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(training_inputfile_cleaned) <span class="co"># [1] 5420    9</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Unique IDs</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Join New MIC values (accession, phenotype_assigned, mic_new)</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>training_inputfile_cleaned <span class="ot">&lt;-</span> new_mic_db <span class="sc">%&gt;%</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(accession <span class="sc">%in%</span> training_db_cleaned<span class="sc">$</span>accession)<span class="sc">%&gt;%</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># remove columns</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">select</span>(genus, species, accession, phenotype, antibiotic,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>         measurement_value, new_species, genome, ani, phenotype_assigned, recategorized_mic) </span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>training_inputfile_cleaned<span class="sc">$</span>type <span class="ot">&lt;-</span> <span class="st">"training"</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(training_inputfile_cleaned) <span class="co"># [1] 5720    12</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 5420    9</code></pre>
+<pre><code>[1] 5720   12</code></pre>
 </div>
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Remove columns from testing</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>test_inputfile <span class="ot">&lt;-</span> test_db_cleaned <span class="sc">%&gt;%</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># remove columns</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">any_of</span>(cols_to_remove)) </span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>test_inputfile<span class="sc">$</span>type <span class="ot">&lt;-</span> <span class="st">"test"</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>test_inputfile<span class="sc">$</span>assign_phenotype <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>test_inputfile<span class="sc">$</span>recategorized_mic <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(test_inputfile) <span class="co"># [1] 4055    9</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">unique</span>(new_mic_db<span class="sc">$</span>accession)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 4055    9</code></pre>
+<pre><code>[1] 5449</code></pre>
 </div>
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Join files </span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>training_and_test_inputfile <span class="ot">&lt;-</span> <span class="fu">rbind</span>(training_inputfile_cleaned, test_inputfile)</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(training_and_test_inputfile<span class="sc">$</span>type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] 5449</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Join files </span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>training_and_test_inputfile <span class="ot">&lt;-</span> <span class="fu">rbind</span>(training_inputfile_cleaned, test_inputfile)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(training_and_test_inputfile<span class="sc">$</span>type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     test training 
-    4055     5420 </code></pre>
+    4055     5720 </code></pre>
 </div>
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test training </span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 4055     5420 #9475</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 4055    5720 #9775</span></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Join with RGI results</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>training_and_test_inputfile <span class="ot">&lt;-</span> training_and_test_inputfile <span class="sc">%&gt;%</span> </span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Join rgi results</span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">select</span>(rgi_results, <span class="sc">-</span>genus, <span class="sc">-</span>species, <span class="sc">-</span>phenotype, </span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>                   <span class="sc">-</span>antibiotic, <span class="sc">-</span>measurement_value, <span class="sc">-</span>categoria_recodificada), <span class="at">by =</span> <span class="st">"accession"</span>)</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(training_and_test_inputfile)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">unique</span>(training_and_test_inputfile<span class="sc">$</span>accession))<span class="co"># 9504 = 4055+5449</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 9475 1078</code></pre>
+<pre><code>[1] 9504</code></pre>
+</div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Join with RGI results</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>training_and_test_inputfile <span class="ot">&lt;-</span> training_and_test_inputfile <span class="sc">%&gt;%</span> </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Join rgi results</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">select</span>(rgi_results, <span class="sc">-</span>genus, <span class="sc">-</span>species, <span class="sc">-</span>phenotype, </span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>                   <span class="sc">-</span>antibiotic, <span class="sc">-</span>measurement_value, <span class="sc">-</span>categoria_recodificada), <span class="at">by =</span> <span class="st">"accession"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">antibiotic =</span> <span class="fu">if_else</span>( antibiotic <span class="sc">==</span> <span class="st">"tetracycline"</span>, <span class="st">"TET"</span>, antibiotic))</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co"># unique(training_and_test_inputfile$antibiotic)</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] "TET" "ERY" "GEN" "CAZ"</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Dimensions</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(training_and_test_inputfile)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 9775 1081</code></pre>
 </div>
 </div>
 <p>colnames</p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(training_and_test_inputfile)[<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(training_and_test_inputfile)[<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] "genus"             "species"           "accession"        
- [4] "phenotype"         "antibiotic"        "measurement_value"
- [7] "assign_phenotype"  "recategorized_mic" "type"             
-[10] "aro3000464_a121d"  "aro3000464_g120k"  "aro3003930_v57m"  
-[13] "aro3004833_l421p"  "aro3000816"        "aro3003961"       
-[16] "aro3000533"        "aro3000535"        "aro3004832_a311v" 
-[19] "aro3004832_g545s"  "aro3004832_i312m"  "aro3004832_f504l" 
-[22] "aro3004832_t483s"  "aro3004832_v316t"  "aro3004832_a510v" 
-[25] "aro3004832_n512y"  "aro3003928_s91f"   "aro3000999"       
-[28] "aro3003929_s87r"   "aro3000186"        "aro3002630"       </code></pre>
+<pre><code> [1] "genus"              "species"            "accession"         
+ [4] "phenotype"          "antibiotic"         "measurement_value" 
+ [7] "new_species"        "genome"             "ani"               
+[10] "phenotype_assigned" "recategorized_mic"  "type"              
+[13] "aro3000464_a121d"   "aro3000464_g120k"   "aro3003930_v57m"   
+[16] "aro3004833_l421p"   "aro3000816"         "aro3003961"        
+[19] "aro3000533"         "aro3000535"         "aro3004832_a311v"  
+[22] "aro3004832_g545s"   "aro3004832_i312m"   "aro3004832_f504l"  
+[25] "aro3004832_t483s"   "aro3004832_v316t"   "aro3004832_a510v"  
+[28] "aro3004832_n512y"   "aro3003928_s91f"    "aro3000999"        </code></pre>
 </div>
 </div>
 <p>Save file</p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_tsv</span>(training_and_test_inputfile, <span class="at">file =</span> <span class="fu">here</span>(<span class="st">"rawdata/TrainAndTest_cleaned"</span>, <span class="st">"training_and_test_inputfile_cleaned.tsv.gz"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_tsv</span>(training_and_test_inputfile, <span class="at">file =</span> <span class="fu">here</span>(<span class="st">"rawdata/TrainAndTest_cleaned"</span>, <span class="st">"training_and_test_inputfile_cleaned.tsv.gz"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 

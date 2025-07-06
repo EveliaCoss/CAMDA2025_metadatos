@@ -8,7 +8,7 @@
 >     -   [test set](https://github.com/ccm-bioinfo/CAMDA2025_AntibioticResistance/blob/main/rawdata/TrainAndTest_dataset/testing_template.csv): CAMDA test set (`test_metadata_db`).
 >     -   [training set](https://github.com/ccm-bioinfo/CAMDA2025_AntibioticResistance/blob/main/rawdata/TrainAndTest_dataset/training_dataset.csv): CAMDA training set (`training_metadata_db`).
 >     -   [NCBI data](https://github.com/ccm-bioinfo/CAMDA2025_AntibioticResistance/blob/main/metadata/sra-metadata.csv): Metadata from NCBI (June 10, 2025) (`sra_metadata_db`)
->     -   [Antibiogramas](https://zenodo.org/records/14876710): Metadata from NCBI, ENA and BV-BRC. (February 16, 2025) (`antibiograms_db`)
+>     -   [Antibiograms](https://zenodo.org/records/15809334): Metadata from NCBI, ENA and BV-BRC. (February 16, 2025) (`antibiograms_db`)
 > -   **Output files:**
 >     -   [`testing_metadata_cleaned.tsv`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/testing_metadata_cleaned.tsv) : File containing only the SRA data *not* shared with the training set. Located in `rawdata/TrainAndTest_cleaned`.
 >     -   [`training_metadata_cleaned.tsv`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/training_metadata_cleaned.tsv) : Clean dataset with no missing data and no misclassified species. Species were also reassigned when necessary. See full explanation in **STEP 5.**
@@ -72,9 +72,35 @@ sra_metadata_db <- sra_metadata %>% janitor::clean_names() %>%  # para limpiar y
 sra_metadata_db$scientific_name_NCBI <- word(sra_metadata_db$scientific_name_complete, 1, 2)
 
 # > Antibiogram
-antibiograms_metadata <- read_tsv(here("metadata", "antibiograms.tsv.gz")) 
-antibiograms_db <- antibiograms_metadata %>% janitor::clean_names() %>%  # Renombrar datos
-  rename(accession = reads, scientific_name_Antibiogram = species)
+# Combined antibiogram dataset from NCBI, ENA, and BV-BRC
+# from: https://zenodo.org/records/14876710
+
+# Define URL and local destination
+anti_url <- "https://zenodo.org/record/15809334/files/antibiograms.tsv.zip"
+destfile <- here("metadata", "antibiograms_v2.tsv.zip")
+# Download the compressed file
+download.file(url = anti_url, destfile = destfile, mode = "wb")
+# Descomprimir el .zip
+unzip(destfile, exdir = "metadata")
+# Comprimir en zip
+original_file <- here("metadata", "antibiograms.tsv")
+gz_file <- here("metadata","antibiograms_v2.tsv.gz")
+R.utils::gzip(original_file, destname = gz_file, overwrite = TRUE)
+
+# Read the .tsv.gz file into R
+# Date: February 16, 2025
+# antibiograms_metadata
+antibiograms_db <- readr::read_tsv(destfile) %>%
+# Clean antibiogram metadata
+# antibiograms_db <- antibiograms_metadata %>%
+  # Standardizes column names: converts them to lowercase,
+  # replaces spaces and special characters with underscores
+  janitor::clean_names() %>%
+  # Renames the columns
+  rename(
+    accession = reads,
+    scientific_name_Antibiogram = species
+  )
 
 # > Train dataset with GTDB
 # Define URL and local destination
@@ -336,19 +362,9 @@ table(training_completeinfo_cleaned_db$status)
 
 Enviar a Yesenia
 
-```{r, eval=FALSE}
-training_db_cleaned <- training_completeinfo_cleaned_db %>%
-   select(scientific_name_new, accession, genome) 
-dim(training_db_cleaned)
-
-# save
-write_tsv(training_db_cleaned, file = here("rawdata/TrainAndTest_cleaned", "training_metadata_cleaned.tsv"), quote = "none")
-```
-
 Aqui debo unir el archivo de nuevos MIC y fenotipos
 
 ```{r}
-#NO CORRER
 # Join information
 training_db_cleaned <- training_completeinfo_cleaned_db %>%
   left_join(select(training_metadata_db, -scientific_name_CAMDA), by = "accession") %>%
@@ -368,7 +384,7 @@ write_tsv(training_db_cleaned, file = here("rawdata/TrainAndTest_cleaned", "trai
 
 ## About missing data
 
-```{r, eval=FALSE}
+```{r}
 training_db_cleaned %>%
   group_by(scientific_name_CAMDA) %>%
   summarise(
@@ -388,12 +404,12 @@ training_db_cleaned %>%
 
 The data from NCBI does not match the information available in the antibiogram records.
 
-```{r, eval=FALSE}
+```{r}
 training_verify_data <- training_db_cleaned %>%
   filter(status_reference == "Verify_sources")
 ```
 
-```{r, eval=FALSE}
+```{r}
 table(training_completeInfo_db$status_reference)
 ```
 
@@ -440,7 +456,7 @@ table(test_completeInfo_db$status_reference)
 
 Verify the total number of SRA IDs.
 
-```{r, eval=FALSE}
+```{r}
 # Count unique accessions per species in the training metadata
 train_counts_cleaned <- training_db_cleaned %>%
   group_by(scientific_name_CAMDA) %>%
@@ -475,13 +491,13 @@ combined_counts_completed %>%
 
 Save
 
-```{r, eval=FALSE}
+```{r}
 save(antibiograms_db, test_db_cleaned, training_db_cleaned, sra_metadata_db, test_completeInfo_db, training_completeInfo_db,  file = here("rawdata/TrainAndTest_cleaned", "complete_metadata.RData"))
 ```
 
 # Diverse phenotypes
 
-```{r, eval=FALSE}
+```{r}
 # Visualize phenotype info for Acinetobacter baumannii
 training_db_cleaned %>%
   group_by(scientific_name_CAMDA, phenotype) %>%
@@ -495,7 +511,7 @@ training_db_cleaned %>%
 
 How Many SRA are repeated within each species but assigned to different phenotypes
 
-```{r, eval=FALSE}
+```{r}
 training_db_cleaned %>%
   group_by(scientific_name_CAMDA, accession) %>%
   summarise(phenotype_count = n_distinct(phenotype), .groups = "drop") %>%
@@ -505,7 +521,7 @@ training_db_cleaned %>%
 
 To break down the count of conflicting accessions per species and per phenotype, you can extend the logic by grouping further by phenotype after identifying accessions with multiple phenotypes.
 
-```{r, eval=FALSE}
+```{r}
 training_diff_phenotype_summary <- training_db_cleaned %>%
   group_by(scientific_name_CAMDA, accession) %>%
   filter(n_distinct(phenotype) > 1) %>%
@@ -515,7 +531,7 @@ training_diff_phenotype_summary <- training_db_cleaned %>%
 head(training_diff_phenotype_summary)
 ```
 
-```{r, eval=FALSE}
+```{r}
 # Identify species with more than one assigned phenotype
 training_diff_phenotype_db <- training_db_cleaned %>%
   filter(accession %in% training_diff_phenotype_summary$accession)
@@ -524,7 +540,7 @@ dim(training_diff_phenotype_db)# [1] 108 21
 
 Save files
 
-```{r, eval=FALSE}
+```{r}
 write_tsv(training_diff_phenotype_db, file = here("rawdata/diff_phenotype","training_diff_phenotype_db.tsv"))
 write_tsv(training_diff_phenotype_summary, file = here("rawdata/diff_phenotype", "training_diff_phenotype_summary.tsv"))
 ```
