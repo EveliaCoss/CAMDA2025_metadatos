@@ -48,7 +48,7 @@ process_mic_data <- function(input_file, output_file) {
   })
   
   # Verificar existencia de columnas requeridas
-  required_cols <- c("measurement_value", "accession", "new_genus")
+  required_cols <- c("measurement_value", "accession", "new_genus", "phenotype")
   missing_cols <- setdiff(required_cols, colnames(df))
   if (length(missing_cols) > 0) {
     stop("Faltan columnas requeridas en el input: ", paste(missing_cols, collapse = ", "))

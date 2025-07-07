@@ -14,23 +14,35 @@
 >     -   [`complete_metadata.RData`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/complete_metadata.RData): This RData file contains a consolidated set of key objects used in workflows for antimicrobial resistance analysis and sequencing metadata. It supports smooth transitions between preprocessing, integration, and analysis stages. See complete details in [**Chapter 2**](https://eveliacoss.github.io/CAMDA2025_metadatos/2_Preprocessing_CAMDApublicdata.html).
 >     -   [`2025_Training_and_testing_strict.tsv.gz`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/rgi_analysis/2025_Training_and_testing_strict.tsv.gz)`:` Table containing results from RGI analysis using training and test datasets. This file originates from [Dataset2025](https://github.com/ccm-bioinfo/Camda_resistance_24-25/tree/main/DataSets/2025). It includes the following columns:
 >         -   **accession**, **genus**, **species**, **antibiotic** - Sample metadata. Note: some species annotations may contain inconsistencies due to accession-level discrepancies.
+>
 >         -   **phenotype**, **measurement_value** - Prediction targets for modeling.
+>
 >         -   **categoria_recodificada**- Proposed standardized MIC (Minimum Inhibitory Concentration) value for each sample (old version, 2024).
+>
 >         -   **columns starting with 300...** - feature data. Contains counts of genes and SNPs conferring antibiotic resistance. Columns are labeled using ARO ids (see Section 3 for details). SNP features are labeled with the ARO id, followed by a dash (`-`) and the amino acid substitution.
->     -   [`CAMDA25_training_con_MIC_y_fenotipo_1.csv`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/CAMDA25_training_con_MIC_y_fenotipo_1.csv): Table containing updated annotations of standardized MIC values (`recategorized_MIC`) and newly assigned phenotypes (`assign_phenotype`) for all samples. It includes the following columns:
->         -   **genus**, **species**, **accession**, **antibiotic** - Sample metadata. Note: some species annotations may contain inconsistencies due to accession-level discrepancies.
->         -   **phenotype**, **measurement_value** - Prediction targets for modeling.
->         -   **recategorized_MIC**- Proposed standardized MIC (Minimum Inhibitory Concentration) value for each sample (new version, 2025).
->         -   **assign_phenotype** – Reassigned binary phenotype, considering only “Resistant” and “Susceptible” categories.
+>
+>         -   ::: callout-warning
+>             No hay resultados para 42 accession. Más información en el **STEP 3**
+>             :::
 > -   Output files:
 >     -   [`training_and_test_inputfile_cleaned.tsv.gz`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/training_and_test_inputfile_cleaned.tsv.gz): Cleaned dataset (training ans test) containing standardized species names, reassigned MIC values (recategorized_mic), and curated phenotypes (assign_phenotype). This file is formatted and ready for input into machine learning (ML) and deep learning (DL) workflows. It includes the following columns:
 >         -   **genus**, **species**, **accession**, **phenotype**, **antibiotic,** **measurement_value** -Sample metadata with corrected species information. *Source:* `training_db_cleaned`
->         -   **recategorized_MIC**- Updated (2025) standardized Minimum Inhibitory Concentration (MIC) values for each sample. *Source:* `CAMDA25_training_con_MIC_y_fenotipo_1.csv`
->         -   **assign_phenotype** –Reassigned phenotype labels, limited to “Resistant” and “Susceptible” categories. *Source:* `CAMDA25_training_con_MIC_y_fenotipo_1.csv`
+>         -   **recategorized_MIC**- Updated (2025) standardized Minimum Inhibitory Concentration (MIC) values for each sample.
+>         -   **assign_phenotype** –Reassigned phenotype labels, limited to “Resistant” and “Susceptible” categories.
 >         -   **type**: Dataset classification between training and test datasets.
 >         -   **columns starting with 300...** - feature data. Contains counts of genes and SNPs conferring antibiotic resistance. Columns are labeled using ARO ids (see Section 3 for details). SNP features are labeled with the ARO id, followed by a dash (`-`) and the amino acid substitution.
 > -   Funcitions
->     -   process_mic_data():
+>     -   [`process_mic_data()`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/functions/process_mic_data_function.R): This function processes a `.tsv` file containing MIC (Minimum Inhibitory Concentration) data and assigns a phenotype (`Susceptible` or `Resistant`) based on bacterial genus and recategorized MIC values. It applies quality control filters and includes defensive checks. Required Input Columns: `measurement_value`, `accession`, `new_genus`, `phenotype`. Supported Genera: *Klebsiella, Escherichia, Salmonella, Streptococcus, Staphylococcus, Pseudomonas, Acinetobacter, Campylobacter*, and *Neisseria*.
+>
+>     -   ::: callout-important
+>         ## When phenotype_assigned is NA
+>
+>         -   If either `new_genus` or recategorized MIC is missing
+>
+>         -   If the genus is not defined in the interpretation table
+>
+>         -   If the MIC doesn't fall within any of the defined bins
+>         :::
 
 ### Import Data
 
@@ -166,7 +178,8 @@ training_and_test_inputfile_complete <- training_and_test_inputfile_complete %>%
 ```
 
 ```{r}
-head(training_and_test_inputfile_complete)
+head(training_and_test_inputfile_complete) %>% 
+  DT::datatable()
 ```
 
 Save file
@@ -190,6 +203,8 @@ training_duplicadas %>%
   filter(type == "training") 
 ```
 
+## STEP 3. Verificaciones en el archivo de training
+
 Verificar que training no tenga NA
 
 ```{r}
@@ -206,8 +221,11 @@ unique(training_and_test_inputfile_complete$recategorized_mic)
 # Verificar las filas que dan NA
 training_and_test_inputfile_complete %>%
   filter(type == "training") %>%
-  filter(is.na(recategorized_mic))
+  filter(is.na(recategorized_mic)) %>%
+  DT::datatable()
 ```
+
+## Datos faltantes de RGI
 
 Cuantas accesiones si tienes y no tienen resultados en RGI por accession:
 
@@ -249,3 +267,7 @@ Cuantas especies no tienen informacion
 ```{r}
 table(training_sin_resultados_db$scientific_name_new)
 ```
+
+::: callout-warning
+Los resultados de RGI no tienen resultados para 42 accession IDs.
+:::

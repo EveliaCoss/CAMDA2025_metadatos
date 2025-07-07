@@ -25,7 +25,7 @@
 >     -   [`training_diff_phenotype_summary.tsv`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/diff_phenotype/training_diff_phenotype_summary.tsv): Summary of the number of phenotypes assigned per species and accession. See complete details in **Section 3: Diverse phenotypes**.
 > -   **Function:**
 >     -   [`compare_sp()`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/functions/compare_sp_function.R): Performs a comparison and integration of species-level metadata across different sources (e.g., `training_metadata_db`, `sra_metadata_db`, and `antibiograms_db`). It ensures consistency and alignment of sample annotations by merging and validating key fields such as species identity, phenotypic labels, and associated metadata. The output is a harmonized `tibble` suitable for downstream analyses or quality control. See complete details in **STEP 4**.
->     -   `compare_genus()`: Check species name matches between CAMDA and public data across genus.
+>     -   [`compare_genus()`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/functions/compare_genus_function.R): Check species name matches between CAMDA and public data across genus.
 
 ## Load packages
 
