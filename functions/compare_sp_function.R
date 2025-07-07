@@ -81,8 +81,7 @@ compare_sp <- function(metadata_db = NULL,
   # Join and analyze
   base_all <- left_join(training_metadata_db, sra_metadata_db, by = "accession", relationship = "many-to-many") %>%
     left_join(antibiograms_db, by = "accession", relationship = "many-to-many") %>%
-    select(accession, scientific_name_CAMDA, scientific_name_NCBI, scientific_name_Antibiogram) 
-  #%>% distinct() # eliminar filas repetidas, una accesiion por fila
+    select(accession, scientific_name_CAMDA, scientific_name_NCBI, scientific_name_Antibiogram) %>% distinct() # eliminar filas repetidas, una accesiion por fila
 
   # Paso 2: Analizar la informacion con NCBI y antiograms y colocar un estatus
   base_status <- base_all %>%

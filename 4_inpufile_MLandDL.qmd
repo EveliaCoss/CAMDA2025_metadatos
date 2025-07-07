@@ -17,7 +17,7 @@
 >         -   **phenotype**, **measurement_value** - Prediction targets for modeling.
 >         -   **categoria_recodificada**- Proposed standardized MIC (Minimum Inhibitory Concentration) value for each sample (old version, 2024).
 >         -   **columns starting with 300...** - feature data. Contains counts of genes and SNPs conferring antibiotic resistance. Columns are labeled using ARO ids (see Section 3 for details). SNP features are labeled with the ARO id, followed by a dash (`-`) and the amino acid substitution.
->     -   `CAMDA25_training_con_MIC_y_fenotipo_1.csv`: Table containing updated annotations of standardized MIC values (`recategorized_MIC`) and newly assigned phenotypes (`assign_phenotype`) for all samples. It includes the following columns:
+>     -   [`CAMDA25_training_con_MIC_y_fenotipo_1.csv`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/TrainAndTest_cleaned/CAMDA25_training_con_MIC_y_fenotipo_1.csv): Table containing updated annotations of standardized MIC values (`recategorized_MIC`) and newly assigned phenotypes (`assign_phenotype`) for all samples. It includes the following columns:
 >         -   **genus**, **species**, **accession**, **antibiotic** - Sample metadata. Note: some species annotations may contain inconsistencies due to accession-level discrepancies.
 >         -   **phenotype**, **measurement_value** - Prediction targets for modeling.
 >         -   **recategorized_MIC**- Proposed standardized MIC (Minimum Inhibitory Concentration) value for each sample (new version, 2025).
@@ -29,6 +29,8 @@
 >         -   **assign_phenotype** –Reassigned phenotype labels, limited to “Resistant” and “Susceptible” categories. *Source:* `CAMDA25_training_con_MIC_y_fenotipo_1.csv`
 >         -   **type**: Dataset classification between training and test datasets.
 >         -   **columns starting with 300...** - feature data. Contains counts of genes and SNPs conferring antibiotic resistance. Columns are labeled using ARO ids (see Section 3 for details). SNP features are labeled with the ARO id, followed by a dash (`-`) and the amino acid substitution.
+> -   Funcitions
+>     -   process_mic_data():
 
 ### Import Data
 
@@ -43,13 +45,13 @@ load(here("rawdata/TrainAndTest_cleaned", "complete_metadata.RData"))
 # antibiograms_db, test_db_cleaned, training_db_cleaned, sra_metadata_db, test_completeInfo_db,  training_completeInfo_db
 
 # > MIC values
-new_mic_db <- read_csv(file= here("rawdata/TrainAndTest_cleaned","CAMDA25_training_con_MIC_y_fenotipo_1.csv")) %>%
+#new_mic_db <- read_csv(file= here("rawdata/TrainAndTest_cleaned","CAMDA25_training_con_MIC_y_fenotipo_1.csv")) %>%
    # Standardizes column names: converts them to lowercase,
   # replaces spaces and special characters with underscores
-  janitor::clean_names() 
+ # janitor::clean_names() 
 #Rows: 5420 Columns: 8
 # renombrar columnas
-names(new_mic_db)[names(new_mic_db) == "new_genus"] <- "new_species"
+#names(new_mic_db)[names(new_mic_db) == "new_genus"] <- "new_species"
 
 # > gene family matrix (strict)
 
@@ -59,48 +61,78 @@ rgi_results <- read_tsv(file= here("rawdata/rgi_analysis","2025_Training_and_tes
   # replaces spaces and special characters with underscores
   janitor::clean_names() 
 # Rows: 9471 Columns: 1076
+
+colnames(rgi_results)[colSums(is.na(rgi_results)) > 0]
 ```
+
+## STEP 1. Asignar nuevo valor de MIC y fenotipo por genero 
+
+```{r}
+source(here("functions", "process_mic_data_function.R"))
+```
+
+```{r}
+training_indir <- here("rawdata/TrainAndTest_cleaned", "training_metadata_cleaned.tsv")
+training_outdir <- here("rawdata/TrainAndTest_cleaned", "training_metadata_cleaned_new_mic.tsv")
+
+# Genera un nuevo mic y fenotipo por especie, ademas de almacenar el archivo en TSV
+training_new_mic_db <- process_mic_data(training_indir, training_outdir)
+
+head(training_new_mic_db)
+dim(training_new_mic_db)
+```
+
+433 valores NA en 'measurement_value'
+
+Analizar la informacion de Intermediate
+
+```{r}
+filter(training_new_mic_db, phenotype == "Intermediate") %>% head()
+```
+
+## STEP 2. Unir archivos de test y training 
 
 Join information according with metadata
 
 ```{r}
-# columns to remove from metadata
-cols_to_remove <- colnames(training_db_cleaned %>%
-  select(measurement_unit:collection_date, measurement_sign, measurement_unit,
-         scientific_name_CAMDA:status_reference))
-
 # 1. Remove columns from testing
-test_inputfile <- test_db_cleaned %>%
-  # remove columns
-  select(-any_of(cols_to_remove)) 
+test_inputfile <- test_db_cleaned 
 test_inputfile$type <- "test"
 test_inputfile$phenotype_assigned <- 0
 test_inputfile$recategorized_mic <- 0
 dim(test_inputfile) # [1] 4055    12
 
+# Unificar orden de las columnas
+global_cols <- colnames(test_inputfile)
+
 # 2. Unique IDs
 # Join New MIC values (accession, phenotype_assigned, mic_new)
-training_inputfile_cleaned <- new_mic_db %>% 
-  filter(accession %in% training_db_cleaned$accession)%>%
-  # remove columns
-   select(genus, species, accession, phenotype, antibiotic,
-         measurement_value, new_species, genome, ani, phenotype_assigned, recategorized_mic) 
-training_inputfile_cleaned$type <- "training"
-dim(training_inputfile_cleaned) # [1] 5720    12
+training_inputfile <- training_new_mic_db %>%
+  select(-new_genus) 
+training_inputfile$type <- "training"
+# reordenar las columnas
+training_inputfile <- training_inputfile %>% 
+  select(any_of(global_cols))
+dim(training_inputfile) # [1] 5720    12
 
-length(unique(new_mic_db$accession)) 
+length(unique(training_new_mic_db$accession)) 
 # [1] 5449
 
 # 4. Join files 
-training_and_test_inputfile <- rbind(training_inputfile_cleaned, test_inputfile)
+training_and_test_inputfile <- rbind(training_inputfile, test_inputfile)
+# eliminar duplicados
+training_and_test_inputfile <- training_and_test_inputfile %>% distinct()
 table(training_and_test_inputfile$type)
 # test training 
-# 4055    5720 #9775
+# 4055    5555 #9775
+
+dim(training_and_test_inputfile)
+# [1] 9610   12
 
 length(unique(training_and_test_inputfile$accession))# 9504 = 4055+5449
 
 # Join with RGI results
-training_and_test_inputfile <- training_and_test_inputfile %>% 
+training_and_test_inputfile_complete <- training_and_test_inputfile %>% 
   # Join rgi results
   left_join(select(rgi_results, -genus, -species, -phenotype, 
                    -antibiotic, -measurement_value, -categoria_recodificada), by = "accession") %>% 
@@ -110,17 +142,110 @@ training_and_test_inputfile <- training_and_test_inputfile %>%
 # [1] "TET" "ERY" "GEN" "CAZ"
 
 # Dimensions
-dim(training_and_test_inputfile)
+dim(training_and_test_inputfile_complete) # 9610 1081
+
+length(unique(training_and_test_inputfile_complete$accession)) #9504
 ```
 
 colnames
 
 ```{r}
-colnames(training_and_test_inputfile)[1:30]
+colnames(training_and_test_inputfile)
+
+str(training_and_test_inputfile)
+```
+
+Cambiar NA por ceros, excepto de algunas columnas
+
+```{r}
+training_and_test_inputfile_complete <- training_and_test_inputfile_complete %>%
+  mutate(across(
+    .cols = -c(genome, measurement_value, ani, phenotype_assigned, recategorized_mic),
+    .fns  = ~ ifelse(is.na(.), 0, .)
+  ))
+```
+
+```{r}
+head(training_and_test_inputfile_complete)
 ```
 
 Save file
 
 ```{r}
-write_tsv(training_and_test_inputfile, file = here("rawdata/TrainAndTest_cleaned", "training_and_test_inputfile_cleaned.tsv.gz"))
+write_tsv(training_and_test_inputfile_complete, file = here("rawdata/TrainAndTest_cleaned", "training_and_test_inputfile_cleaned.tsv.gz"))
+```
+
+Checar columnas con NA
+
+```{r}
+colnames(training_and_test_inputfile_complete)[colSums(is.na(training_and_test_inputfile_complete)) > 0]
+```
+
+Checar duplicados
+
+```{r}
+training_duplicadas <- training_and_test_inputfile[duplicated(training_and_test_inputfile), ]
+
+training_duplicadas %>% 
+  filter(type == "training") 
+```
+
+Verificar que training no tenga NA
+
+```{r}
+# Detectar columnas con NA
+training_and_test_inputfile_complete %>%
+  filter(type == "training") %>%
+  summarise(across(everything(), ~ sum(is.na(.)))) %>%
+  select(where(~ . > 0)) %>%
+  names()
+
+# Que valores arroja
+unique(training_and_test_inputfile_complete$recategorized_mic)
+
+# Verificar las filas que dan NA
+training_and_test_inputfile_complete %>%
+  filter(type == "training") %>%
+  filter(is.na(recategorized_mic))
+```
+
+Cuantas accesiones si tienes y no tienen resultados en RGI por accession:
+
+```{r}
+# Accession únicas en cada dataset
+accession_completo <- training_and_test_inputfile_complete %>% 
+  distinct(accession)
+
+accession_con_rgi <- rgi_results %>% 
+  distinct(accession)
+
+# Unir y clasificar
+resumen_rgi <- accession_completo %>%
+  mutate(has_rgi = accession %in% accession_con_rgi$accession) 
+resumen_rgi_number <- resumen_rgi %>%
+  count(has_rgi)
+
+resumen_rgi_number
+```
+
+De cuales especies no tenemos esta informacion
+
+```{r}
+# Obtener los SRA sin IDs
+training_sin_resultados_IDs <- resumen_rgi %>% 
+  filter(has_rgi == "FALSE")
+training_sin_resultados_IDs <- training_sin_resultados_IDs$accession
+
+# lista de acceesiones sin informacion 
+training_sin_resultados_db <- training_and_test_inputfile_complete %>% 
+  filter(accession %in% training_sin_resultados_IDs) 
+
+training_sin_resultados_db %>% 
+  DT::datatable()
+```
+
+Cuantas especies no tienen informacion
+
+```{r}
+table(training_sin_resultados_db$scientific_name_new)
 ```

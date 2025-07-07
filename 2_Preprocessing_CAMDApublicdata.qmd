@@ -25,6 +25,7 @@
 >     -   [`training_diff_phenotype_summary.tsv`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/rawdata/diff_phenotype/training_diff_phenotype_summary.tsv): Summary of the number of phenotypes assigned per species and accession. See complete details in **Section 3: Diverse phenotypes**.
 > -   **Function:**
 >     -   [`compare_sp()`](https://github.com/EveliaCoss/CAMDA2025_metadatos/blob/main/functions/compare_sp_function.R): Performs a comparison and integration of species-level metadata across different sources (e.g., `training_metadata_db`, `sra_metadata_db`, and `antibiograms_db`). It ensures consistency and alignment of sample annotations by merging and validating key fields such as species identity, phenotypic labels, and associated metadata. The output is a harmonized `tibble` suitable for downstream analyses or quality control. See complete details in **STEP 4**.
+>     -   `compare_genus()`: Check species name matches between CAMDA and public data across genus.
 
 ## Load packages
 
@@ -160,7 +161,42 @@ combined_counts
 These tables may contain duplicates and incorrect annotations in the species names.
 :::
 
-## STEP 2. Remove the SRA entries that belong to different genus from GTDB dataset
+### Functions
+
+#### Compare with public data
+
+```{r}
+source("functions/compare_sp_function.R")
+```
+
+The resulting dataset includes two status columns: **`status`** and **`status_reference`**:
+
+-   **`status`** indicates how the species annotation from the CAMDA dataset compares to external sources:
+
+    -   `Matched_NCBI_Antibiogram`: CAMDA matches both NCBI and antibiogram data.
+
+    -   `Matched_NCBI`: CAMDA matches only NCBI data.
+
+    -   `Matched_Antibiogram`: CAMDA matches only the antibiogram data.
+
+    -   `Missing_All`: No sufficient external data available for comparison.
+
+-   **`status_reference`** evaluates the consistency between the two external sources (NCBI and antibiogram):
+
+    -   `Good_sources`: NCBI and antibiogram annotations agree with each other.
+    -   `Verify_sources`: NCBI and antibiogram annotations disagree and require further manual verification to ensure data reliability.
+
+When the species annotations provided by NCBI and the antibiogram metadata do not match, it raises concerns about the accuracy of the sample's taxonomic identity. Such discrepancies may indicate mislabeling, contamination, or outdated records. Therefore, it is essential to verify the original sources to ensure the reliability of downstream analyses.
+
+#### Check species name matches between CAMDA and NCBI
+
+```{r}
+source(here("functions", "compare_genus_function.R"))
+```
+
+Find how many species have matching names between CAMDA and NCBI to identify correctly annotated entries.
+
+## Check GTDB dataset
 
 Join information
 
@@ -177,7 +213,7 @@ gtdb_results <- rbind(
 dim(gtdb_results) # 5752+5345
 ```
 
-## STEP 3. Cleaning metadata information
+## STEP 2. Cleaning metadata information
 
 The information for the SRA IDs in the test and training datasets was verified:
 
@@ -186,31 +222,31 @@ The information for the SRA IDs in the test and training datasets was verified:
 
 ### Exclude overlapping SRA IDs from the test set, retaining them only in the training set
 
-```{r}
-# Obtener los IDs que están en ambos dataframes
-sraids_overlapping <- intersect(test_metadata_db$accession, training_metadata_db$accession)
-
-# Mostrar los IDs comunes
-length(sraids_overlapping)
-```
-
 We detected that 1,290 SRA IDs are shared between both files.
 
 ```{r}
 testing_metadata_cleaned <- test_metadata_db %>% 
   # Remove the test IDs that are shared with the training set
-  filter(!(accession %in% training_metadata_db$accession)) %>% 
-  # Remove the SRA entries that belong to different genus.
+  filter(!(accession %in% training_metadata_db$accession)) %>% # 1,290
+  # Unir con la informacion de gtdb
   left_join(select(test_gtdb_result,
                    new_species, accession, genome, ani), by ="accession") %>%
   # redondear ANI
   mutate(ani = round(ani, 3))
 
 #  4055 SRA IDs accessions by row
-nrow(testing_metadata_cleaned) 
+nrow(testing_metadata_cleaned) #4055
+
+# Numero de accesiones
+length(unique(testing_metadata_cleaned$accession))#4055
 
 # Sin accession duplicados
 all(duplicated(testing_metadata_cleaned$accession))
+
+# Una sola accesion por fila
+
+# Sin ani con NA
+all(is.na(testing_metadata_cleaned$ani))
 ```
 
 Save file:
@@ -221,7 +257,83 @@ Save file:
 write_tsv(testing_metadata_cleaned, file = here("rawdata/TrainAndTest_cleaned", "testing_metadata_cleaned.tsv"), quote = "none")
 ```
 
-## STEP 3. Filter out from the testing data the IDs present in the training set
+Check information
+
+```{r}
+length(unique(testing_metadata_cleaned$accession))
+#[1] 4055
+length(unique(test_gtdb_result$accession)) #  1,290 SRA IDs are shared between both files.
+#[1] 5345
+
+# > Informacion de GTDB dataset
+# Filtrar solo los test que no aparecen en training
+test_gtdb_cleaned <- test_gtdb_result %>% 
+  filter(accession %in% testing_metadata_cleaned$accession) %>% 
+  # Redondear ANI
+  mutate(ani = round(ani, 3))
+dim(test_gtdb_cleaned)
+# [1] 4055    9
+```
+
+#### Check species name matches between CAMDA and public data
+
+Verificar especies y eliminar datos incorrectos
+
+```{r}
+# POR MODIFICAR
+# Ya la debo de cambiar porque GTDB es mejor en los resultados que contiene
+test_completeInfo_db <- compare_sp(testing_metadata_cleaned, sra_metadata_db, antibiograms_db)
+dim(test_completeInfo_db)
+#[1] 5458    6
+
+# ---- scientific_name_new -------
+# Detect different genus between species using GTDB dataset
+test_completeinfo_cleaned_db <- compare_genus(testing_metadata_cleaned, old_col = "scientific_name_CAMDA", new_col = "new_species")
+
+table(test_completeinfo_cleaned_db$genus_match)
+#  TRUE FALSE    NA 
+#  3906     6   143 
+
+# agregar nueva clasiifacion en los nombres de las especies
+test_completeinfo_cleaned_db$scientific_name_new <- ifelse(
+  # Si new_species es NA, mantiene scientific_name_CAMDA.
+  is.na(test_completeinfo_cleaned_db$new_species),
+  test_completeinfo_cleaned_db$scientific_name_CAMDA,
+  # Si son iguales, conserva scientific_name_CAMDA.
+  ifelse(
+    test_completeinfo_cleaned_db$scientific_name_CAMDA == test_completeinfo_cleaned_db$new_species,
+         test_completeinfo_cleaned_db$scientific_name_CAMDA,
+         test_completeinfo_cleaned_db$new_species))
+
+dim(test_completeinfo_cleaned_db)
+# [1] 4055   14
+```
+
+Hay 6 SRA con problemas en la especie
+
+```{r}
+test_completeinfo_cleaned_db %>% 
+  filter(genus_match == "FALSE")
+```
+
+Unificar las columnas entre training y test
+
+```{r}
+# global information 
+global_cols <- c("genus", "species", "scientific_name_new", "accession", "genome", "phenotype", "antibiotic", "measurement_value", "ani")
+
+# test informacion
+test_db_cleaned <- test_completeinfo_cleaned_db %>%
+  select(any_of(global_cols))
+```
+
+Save data
+
+```{r}
+write_tsv(test_db_cleaned, file = here("rawdata/TrainAndTest_cleaned", "Test_allstatus_sp_reference_metadata.tsv.gz"), quote = "none")
+```
+
+## Check training dataset - SRA duplicated
 
 ### **How many SRA IDs are duplicated within the training set?**
 
@@ -248,80 +360,77 @@ training_duplicated_db <- training_metadata %>%
   filter(accession %in% training_SRAIDs_duplicated)
 ```
 
-## Check: Do we have the same species?
-
-### Training vs public data
+## STEP 3. Cleaning training dataset
 
 ```{r}
-intersect(training_metadata_db$scientific_name_CAMDA, sra_metadata_db$scientific_name_NCBI)
-```
-
-### Test vs public data
-
-```{r}
-intersect(testing_metadata_cleaned$scientific_name_CAMDA, sra_metadata_db$scientific_name_NCBI)
-```
-
-## STEP 4. Comparing the information of Specie and accession (SRA ID)
-
-Load function
-
-```{r}
-source("functions/compare_sp_function.R")
-```
-
-The resulting dataset includes two status columns: **`status`** and **`status_reference`**:
-
--   **`status`** indicates how the species annotation from the CAMDA dataset compares to external sources:
-
-    -   `Matched_NCBI_Antibiogram`: CAMDA matches both NCBI and antibiogram data.
-
-    -   `Matched_NCBI`: CAMDA matches only NCBI data.
-
-    -   `Matched_Antibiogram`: CAMDA matches only the antibiogram data.
-
-    -   `Missing_All`: No sufficient external data available for comparison.
-
--   **`status_reference`** evaluates the consistency between the two external sources (NCBI and antibiogram):
-
-    -   `Good_sources`: NCBI and antibiogram annotations agree with each other.
-    -   `Verify_sources`: NCBI and antibiogram annotations disagree and require further manual verification to ensure data reliability.
-
-When the species annotations provided by NCBI and the antibiogram metadata do not match, it raises concerns about the accuracy of the sample's taxonomic identity. Such discrepancies may indicate mislabeling, contamination, or outdated records. Therefore, it is essential to verify the original sources to ensure the reliability of downstream analyses.
-
-### Training vs public data
-
-#### Check species name matches between CAMDA and NCBI
-
-```{r}
-source(here("functions", "compare_genus_function.R"))
-```
-
-Find how many species have matching names between CAMDA and NCBI to identify correctly annotated entries.
-
-```{r}
-training_completeInfo_db <- compare_sp(training_metadata_db, sra_metadata_db, antibiograms_db) %>% 
-  # Add GTDB informacion
+training_metadata_cleaned <- training_metadata_db %>% 
+  # Unir con la informacion de gtdb
   left_join(select(train_gtdb_result,
-                   new_species, accession, genome, ani), by ="accession") %>%
+                   new_species, accession, genome, ani), 
+            by ="accession", relationship = "many-to-many") %>%
   # redondear ANI
-  mutate(ani = round(ani, 3)) 
+  mutate(ani = round(ani, 3)) %>%
+  # Eliminar filas duplicadas
+  distinct()
 
-# Mantiene solo la primera aparición de cada 'accession'
-training_completeInfo_db <- training_completeInfo_db[!duplicated(training_completeInfo_db$accession), ]
+#  5458 SRA IDs accessions by row
+nrow(training_metadata_cleaned) #5729
 
+# Numero de accesiones
+length(unique(training_metadata_cleaned$accession))#5458
+
+# Sin ani con NA
+all(is.na(training_metadata_cleaned$ani))
+
+# Si hay filas con mas duplicados, accesiones con mas genomas
+```
+
+Checar IDs repetidos
+
+```{r}
+table_accession <- table(training_metadata_cleaned$accession)
+repeated_accessions <- table_accession[table_accession > 1]
+length(repeated_accessions)  # Cuántos accesiones se repiten, 220
+
+# Ver filas duplicadas completas
+duplicated_rows <- training_metadata_cleaned %>%
+  filter(accession %in% names(repeated_accessions)) %>%
+  arrange(accession)
+
+duplicated_rows %>%
+  DT::datatable()
+```
+
+Check information
+
+```{r}
+length(unique(training_metadata_cleaned$accession))
+#[1] 5458
+length(unique(train_gtdb_result$accession)) #  
+#[1] 5458
+
+dim(train_gtdb_result) #5752
+dim(training_metadata_cleaned) # 5729
+```
+
+Limpieza de especies
+
+```{r}
+# POR MODIFICAR
+# Ya la debo de cambiar porque GTDB es mejor en los resultados que contiene
+training_completeInfo_db <- compare_sp(training_metadata_db, sra_metadata_db, antibiograms_db)
 dim(training_completeInfo_db)
-  #[1] 5458    9
-#5458 same as training_metadata_db
+#[1] 5458    6
 
-# Detect different genus between species
-training_completeinfo_cleaned_db <- compare_genus(training_completeInfo_db, old_col = "scientific_name_CAMDA", new_col = "new_species") %>%
+# ---- scientific_name_new -------
+# Detect different genus between species using GTDB dataset
+training_completeinfo_cleaned_db <- compare_genus(training_metadata_cleaned, old_col = "scientific_name_CAMDA", new_col = "new_species") %>%
   # Delete problems with species
    filter(genus_match != FALSE) 
 
 table(training_completeinfo_cleaned_db$genus_match)
-# TRUE FALSE    NA 
-# 5105     0   344
+#  TRUE FALSE    NA 
+#  5497     9  1874 
 
 # agregar nueva clasiifacion en los nombres de las especies
 training_completeinfo_cleaned_db$scientific_name_new <- ifelse(
@@ -335,7 +444,7 @@ training_completeinfo_cleaned_db$scientific_name_new <- ifelse(
          training_completeinfo_cleaned_db$new_species))
 
 dim(training_completeinfo_cleaned_db)
-# [1] 5449   12
+# [1] 5720   12
 
 # Global information
 training_completeinfo_cleaned_db %>%  
@@ -347,34 +456,28 @@ training_completeinfo_cleaned_db %>%
 table(training_completeinfo_cleaned_db$scientific_name_new)
 ```
 
+Unificar las columnas entre training y test
+
+```{r}
+columns_to_select <- c(global_cols, "old_genus", "new_genus")
+
+# test informacion
+training_db_cleaned <- training_completeinfo_cleaned_db %>%
+  select(any_of(columns_to_select)) %>%
+  # Si new_genus tiene NA, colocar la informacion de old_genus y si no, dejar igual
+  mutate(new_genus = if_else(is.na(new_genus),old_genus, new_genus )) %>%
+  select(-old_genus)
+
+dim(training_db_cleaned)
+```
+
 Save data
 
 ```{r save training_completeInfo_db}
 write_tsv(training_completeinfo_cleaned_db, file = here("rawdata/TrainAndTest_cleaned", "Training_allstatus_sp_reference_metadata.tsv.gz"), quote = "none")
 ```
 
-#### How many SRA entries are correctly annotated and how many are not?
-
-```{r}
-# Global 
-table(training_completeinfo_cleaned_db$status)
-```
-
-Enviar a Yesenia
-
 Aqui debo unir el archivo de nuevos MIC y fenotipos
-
-```{r}
-# Join information
-training_db_cleaned <- training_completeinfo_cleaned_db %>%
-  left_join(select(training_metadata_db, -scientific_name_CAMDA), by = "accession") %>%
-  # Order columns
-  select(genus, species, accession, genome, ani, new_genus, phenotype:collection_date, scientific_name_CAMDA:status_reference) %>%
-  # Remove duplicates (only rows)
-  distinct()
-
-dim(training_db_cleaned)
-```
 
 Save data
 
@@ -384,8 +487,9 @@ write_tsv(training_db_cleaned, file = here("rawdata/TrainAndTest_cleaned", "trai
 
 ## About missing data
 
-```{r}
-training_db_cleaned %>%
+```{r, eval=FALSE}
+# NO CORRER - POR EDITAR
+training_completeinfo_cleaned_db %>%
   group_by(scientific_name_CAMDA) %>%
   summarise(
     total_samples = n(),
@@ -404,73 +508,33 @@ training_db_cleaned %>%
 
 The data from NCBI does not match the information available in the antibiogram records.
 
-```{r}
+```{r, eval=FALSE}
 training_verify_data <- training_db_cleaned %>%
   filter(status_reference == "Verify_sources")
 ```
 
-```{r}
+```{r,  eval=FALSE}
 table(training_completeInfo_db$status_reference)
 ```
 
-## Test vs public data
-
-#### Check species name matches between CAMDA and NCBI
-
-```{r}
-test_completeInfo_db <- compare_sp(testing_metadata_cleaned, sra_metadata_db, antibiograms_db)
-
-# Join information
-test_db_cleaned <- testing_metadata_cleaned %>%
-  left_join(select(test_completeInfo_db, -scientific_name_CAMDA), by = "accession")
-
-# Global information
-test_db_cleaned %>%  
-  # Visualizar informacion en una tabla bonita
-  DT::datatable()
-```
-
-Save data
-
-```{r}
-write_tsv(test_db_cleaned, file = here("rawdata/TrainAndTest_cleaned", "Test_allstatus_sp_reference_metadata.tsv.gz"), quote = "none")
-```
-
-#### How many SRA entries are correctly annotated and how many are not?
-
-```{r}
-# Global 
-table(test_completeInfo_db$status)
-```
-
-#### Checar las fuentes
-
-```{r}
-test_verify_data <- test_completeInfo_db %>%
-  filter(status_reference == "Verify_sources") 
-```
-
-```{r}
-table(test_completeInfo_db$status_reference)
-```
+## STEP 4: Test vs public data
 
 Verify the total number of SRA IDs.
 
 ```{r}
 # Count unique accessions per species in the training metadata
 train_counts_cleaned <- training_db_cleaned %>%
-  group_by(scientific_name_CAMDA) %>%
+  group_by(scientific_name_new) %>%
   summarise(trainClean_num_accessions = n_distinct(accession))
 
 # Count unique accessions per species in the testing metadata
 test_counts_cleaned <- test_db_cleaned %>%
-  group_by(scientific_name_CAMDA) %>%
+  group_by(scientific_name_new) %>%
   summarise(testClean_num_accessions = n_distinct(accession))
 
 # Combine the counts by species, keeping all species present in the training set
-combined_counts_completed <- combined_counts %>%
-  left_join(train_counts_cleaned, by = "scientific_name_CAMDA") %>%
-  left_join(test_counts_cleaned, by = "scientific_name_CAMDA") 
+combined_counts_completed <- train_counts_cleaned %>%
+  left_join(test_counts_cleaned, by = "scientific_name_new") 
 
 # sum columns
 df_total <- combined_counts_completed %>%
@@ -492,7 +556,7 @@ combined_counts_completed %>%
 Save
 
 ```{r}
-save(antibiograms_db, test_db_cleaned, training_db_cleaned, sra_metadata_db, test_completeInfo_db, training_completeInfo_db,  file = here("rawdata/TrainAndTest_cleaned", "complete_metadata.RData"))
+save(antibiograms_db, test_db_cleaned, training_db_cleaned, sra_metadata_db, test_completeinfo_cleaned_db, training_completeinfo_cleaned_db,  file = here("rawdata/TrainAndTest_cleaned", "complete_metadata.RData"))
 ```
 
 # Diverse phenotypes
@@ -500,7 +564,7 @@ save(antibiograms_db, test_db_cleaned, training_db_cleaned, sra_metadata_db, tes
 ```{r}
 # Visualize phenotype info for Acinetobacter baumannii
 training_db_cleaned %>%
-  group_by(scientific_name_CAMDA, phenotype) %>%
+  group_by(scientific_name_new, phenotype) %>%
   summarise(count = n(), .groups = "drop") %>%
   pivot_wider(
     names_from = phenotype,
@@ -513,20 +577,20 @@ How Many SRA are repeated within each species but assigned to different phenotyp
 
 ```{r}
 training_db_cleaned %>%
-  group_by(scientific_name_CAMDA, accession) %>%
+  group_by(scientific_name_new, accession) %>%
   summarise(phenotype_count = n_distinct(phenotype), .groups = "drop") %>%
   filter(phenotype_count > 1) %>%
-  count(scientific_name_CAMDA, name = "num_conflicting_accessions")
+  count(scientific_name_new, name = "num_conflicting_accessions")
 ```
 
 To break down the count of conflicting accessions per species and per phenotype, you can extend the logic by grouping further by phenotype after identifying accessions with multiple phenotypes.
 
 ```{r}
 training_diff_phenotype_summary <- training_db_cleaned %>%
-  group_by(scientific_name_CAMDA, accession) %>%
+  group_by(scientific_name_new, accession) %>%
   filter(n_distinct(phenotype) > 1) %>%
-  distinct(scientific_name_CAMDA, accession, phenotype) %>%
-  count(scientific_name_CAMDA, phenotype, name = "num_conflicting_accessions_per_phenotype")
+  distinct(scientific_name_new, accession, phenotype) %>%
+  count(scientific_name_new, phenotype, name = "num_conflicting_accessions_per_phenotype")
 
 head(training_diff_phenotype_summary)
 ```

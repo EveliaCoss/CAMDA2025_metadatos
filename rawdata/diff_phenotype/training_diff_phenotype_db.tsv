@@ -1,109 +1,109 @@
-genus	species	accession	genome	ani	new_genus	phenotype	antibiotic	measurement_sign	measurement_value	measurement_unit	laboratory_typing_method	laboratory_typing_platform	testing_standard	testing_standard_year	publication	isolation_source	isolation_country	collection_date	scientific_name_CAMDA	scientific_name_NCBI	scientific_name_Antibiogram	status	status_reference
-Neisseria	gonorrhoeae	ERR191801	ENA_SAMEA1690471	0.997	Neisseria	Susceptible	TET	NA	0.25	mg/L	Broth dilution	NA	CLSI	2013	24462211	urethra	USA	NA	Neisseria gonorrhoeae	NA	Neisseria gonorrhoeae	Matched_Antibiogram	Verify_sources
-Neisseria	gonorrhoeae	ERR191801	ENA_SAMEA1690471	0.997	Neisseria	Resistant	TET	NA	2	mg/L	Broth dilution	NA	CLSI	2013	24462211	urethra	USA	NA	Neisseria gonorrhoeae	NA	Neisseria gonorrhoeae	Matched_Antibiogram	Verify_sources
-Neisseria	gonorrhoeae	ERR223696	ENA_SAMEA1690454	0.997	Neisseria	Susceptible	TET	NA	0.25	mg/L	Broth dilution	NA	CLSI	2013	24462211	urethra	USA	NA	Neisseria gonorrhoeae	Neisseria gonorrhoeae	Neisseria gonorrhoeae	Matched_NCBI_Antibiogram	Good_sources
-Neisseria	gonorrhoeae	ERR223696	ENA_SAMEA1690454	0.997	Neisseria	Resistant	TET	NA	4	mg/L	Broth dilution	NA	CLSI	2013	24462211	urethra	USA	NA	Neisseria gonorrhoeae	Neisseria gonorrhoeae	Neisseria gonorrhoeae	Matched_NCBI_Antibiogram	Good_sources
-Neisseria	gonorrhoeae	ERR223668	ENA_SAMEA1690489	0.997	Neisseria	Susceptible	TET	NA	0.25	mg/L	Broth dilution	NA	CLSI	2013	24462211	urethra	USA	NA	Neisseria gonorrhoeae	NA	Neisseria gonorrhoeae	Matched_Antibiogram	Verify_sources
-Neisseria	gonorrhoeae	ERR223668	ENA_SAMEA1690489	0.997	Neisseria	Intermediate	TET	NA	0.5	mg/L	Broth dilution	NA	CLSI	2013	24462211	urethra	USA	NA	Neisseria gonorrhoeae	NA	Neisseria gonorrhoeae	Matched_Antibiogram	Verify_sources
-Neisseria	gonorrhoeae	ERR223616	ENA_SAMEA1690342	0.997	Neisseria	Resistant	TET	NA	4	mg/L	Broth dilution	NA	CLSI	2013	24462211	urethra	USA	NA	Neisseria gonorrhoeae	NA	Neisseria gonorrhoeae	Matched_Antibiogram	Verify_sources
-Neisseria	gonorrhoeae	ERR223616	ENA_SAMEA1690342	0.997	Neisseria	Intermediate	TET	NA	1	mg/L	Broth dilution	NA	CLSI	2013	24462211	urethra	USA	NA	Neisseria gonorrhoeae	NA	Neisseria gonorrhoeae	Matched_Antibiogram	Verify_sources
-Neisseria	gonorrhoeae	ERR222902	ENA_SAMEA1677481	0.997	Neisseria	Resistant	TET	NA	2	mg/L	Broth dilution	NA	CLSI	2013	24462211	urethra	USA	NA	Neisseria gonorrhoeae	NA	Neisseria gonorrhoeae	Matched_Antibiogram	Verify_sources
-Neisseria	gonorrhoeae	ERR222902	ENA_SAMEA1677481	0.997	Neisseria	Intermediate	TET	NA	1	mg/L	Broth dilution	NA	CLSI	2013	24462211	urethra	USA	NA	Neisseria gonorrhoeae	NA	Neisseria gonorrhoeae	Matched_Antibiogram	Verify_sources
-Staphylococcus	aureus	ERR029468	NA	NA	NA	Resistant	ERY	NA	NA	NA	Disk diffusion	NA	CLSI	2013	25903077	NA	Singapore	NA	Staphylococcus aureus	NA	NA	Missing_All	No_sources
-Staphylococcus	aureus	ERR029468	NA	NA	NA	Susceptible	ERY	NA	NA	NA	Disk diffusion	NA	CLSI	2013	25903077	NA	Singapore	NA	Staphylococcus aureus	NA	NA	Missing_All	No_sources
-Staphylococcus	aureus	ERR029341	NA	NA	NA	Resistant	ERY	NA	NA	NA	Disk diffusion	NA	CLSI	2013	25903077	NA	Singapore	NA	Staphylococcus aureus	NA	NA	Missing_All	No_sources
-Staphylococcus	aureus	ERR029341	NA	NA	NA	Susceptible	ERY	NA	NA	NA	Disk diffusion	NA	CLSI	2013	25903077	NA	Singapore	NA	Staphylococcus aureus	NA	NA	Missing_All	No_sources
-Staphylococcus	aureus	ERR029354	NA	NA	NA	Resistant	ERY	NA	NA	NA	Disk diffusion	NA	CLSI	2013	25903077	NA	Singapore	NA	Staphylococcus aureus	NA	NA	Missing_All	No_sources
-Staphylococcus	aureus	ERR029354	NA	NA	NA	Susceptible	ERY	NA	NA	NA	Disk diffusion	NA	CLSI	2013	25903077	NA	Singapore	NA	Staphylococcus aureus	NA	NA	Missing_All	No_sources
-Escherichia	coli	SRR2134681	ENA_SAMN03892121	0.986	Escherichia	Susceptible	GEN	<=	1	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	blood	USA	NA	Escherichia coli	Escherichia coli	Escherichia coli	Matched_NCBI_Antibiogram	Good_sources
-Escherichia	coli	SRR2134681	ENA_SAMN03892121	0.986	Escherichia	Resistant	GEN	NA	20	mm	Disk diffusion	NA	CLSI	2013	NA	blood	USA	NA	Escherichia coli	Escherichia coli	Escherichia coli	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170784	NA	NA	NA	Susceptible	CAZ	=	8	mg/L	Broth dilution	MicroScan	CLSI	2013	NA	Surveillance	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170784	NA	NA	NA	Resistant	CAZ	NA	32	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Surveillance	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170255	ENA_SAMN04487136	0.98	Acinetobacter	Susceptible	CAZ	=	4	mg/L	Broth dilution	BD Phoenix	CLSI	2013	NA	Wound	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170255	ENA_SAMN04487136	0.98	Acinetobacter	Intermediate	CAZ	NA	16	mg/L	Broth dilution	MicroScan	CLSI	2013	NA	Wound	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3133099	ENA_SAMN04447714	0.982	Acinetobacter	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Sterile Fluid	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3133099	ENA_SAMN04447714	0.982	Acinetobacter	Intermediate	CAZ	NA	16	mg/L	Broth dilution	BD Phoenix	CLSI	2013	NA	Sterile Fluid	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3131234	NA	NA	NA	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Surveillance	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3131234	NA	NA	NA	Intermediate	CAZ	NA	16	mg/L	Broth dilution	BD Phoenix	CLSI	2013	NA	Surveillance	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170589	ENA_SAMN04488270	0.982	Acinetobacter	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Respiratory	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170589	ENA_SAMN04488270	0.982	Acinetobacter	Intermediate	CAZ	NA	16	mg/L	Broth dilution	MicroScan	CLSI	2013	NA	Respiratory	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3131220	NA	NA	NA	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Blood	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3131220	NA	NA	NA	Intermediate	CAZ	NA	16	mg/L	Broth dilution	BD Phoenix	CLSI	2013	NA	Blood	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170735	NA	NA	NA	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Wound	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170735	NA	NA	NA	Intermediate	CAZ	NA	16	mg/L	Broth dilution	BD Phoenix	CLSI	2013	NA	Wound	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170777	NA	NA	NA	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Blood	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170777	NA	NA	NA	Intermediate	CAZ	NA	16	mg/L	Broth dilution	BD Phoenix	CLSI	2013	NA	Blood	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3131162	NA	NA	NA	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Wound	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3131162	NA	NA	NA	Intermediate	CAZ	NA	16	mg/L	Broth dilution	BD Phoenix	CLSI	2013	NA	Wound	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3131226	NA	NA	NA	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Wound	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3131226	NA	NA	NA	Intermediate	CAZ	NA	16	mg/L	Broth dilution	BD Phoenix	CLSI	2013	NA	Wound	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3137587	NA	NA	NA	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Wound	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3137587	NA	NA	NA	Intermediate	CAZ	NA	16	mg/L	Broth dilution	BD Phoenix	CLSI	2013	NA	Wound	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3137589	ENA_SAMN04450975	0.982	Acinetobacter	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Cerebrospinal Fluid	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3137589	ENA_SAMN04450975	0.982	Acinetobacter	Intermediate	CAZ	NA	16	mg/L	Broth dilution	BD Phoenix	CLSI	2013	NA	Cerebrospinal Fluid	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170243	ENA_SAMN04485903	0.982	Acinetobacter	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Surveillance	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170243	ENA_SAMN04485903	0.982	Acinetobacter	Intermediate	CAZ	NA	16	mg/L	Broth dilution	MicroScan	CLSI	2013	NA	Surveillance	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170608	NA	NA	NA	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Sterile Body Site	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170608	NA	NA	NA	Intermediate	CAZ	NA	16	mg/L	Broth dilution	MicroScan	CLSI	2013	NA	Sterile Body Site	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170738	ENA_SAMN04491040	0.983	Acinetobacter	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Wound	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170738	ENA_SAMN04491040	0.983	Acinetobacter	Intermediate	CAZ	NA	16	mg/L	Broth dilution	BD Phoenix	CLSI	2013	NA	Wound	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170736	ENA_SAMN04491038	0.982	Acinetobacter	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Surveillance	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170736	ENA_SAMN04491038	0.982	Acinetobacter	Intermediate	CAZ	NA	16	mg/L	Broth dilution	MicroScan	CLSI	2013	NA	Surveillance	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3131219	ENA_SAMN04446540	0.983	Acinetobacter	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Wound	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3131219	ENA_SAMN04446540	0.983	Acinetobacter	Intermediate	CAZ	NA	16	mg/L	Broth dilution	BD Phoenix	CLSI	2013	NA	Wound	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170592	NA	NA	NA	Resistant	CAZ	NA	32	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Sterile Body Site	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170592	NA	NA	NA	Intermediate	CAZ	NA	16	mg/L	Broth dilution	MicroScan	CLSI	2013	NA	Sterile Body Site	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170229	ENA_SAMN04485907	0.983	Acinetobacter	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Tissue	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170229	ENA_SAMN04485907	0.983	Acinetobacter	Intermediate	CAZ	NA	16	mg/L	Broth dilution	MicroScan	CLSI	2013	NA	Tissue	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3137581	NA	NA	NA	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Wound	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3137581	NA	NA	NA	Intermediate	CAZ	NA	16	mg/L	Broth dilution	BD Phoenix	CLSI	2013	NA	Wound	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170597	NA	NA	NA	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Sterile Body Site	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170597	NA	NA	NA	Intermediate	CAZ	NA	16	mg/L	Broth dilution	BD Phoenix	CLSI	2013	NA	Sterile Body Site	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170596	NA	NA	NA	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Surveillance	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170596	NA	NA	NA	Intermediate	CAZ	NA	16	mg/L	Broth dilution	MicroScan	CLSI	2013	NA	Surveillance	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR2916633	ENA_SAMN04254728	0.982	Acinetobacter	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	23812239	leg	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR2916633	ENA_SAMN04254728	0.982	Acinetobacter	Intermediate	CAZ	NA	16	mg/L	Broth dilution	BD Phoenix	CLSI	2013	23812239	leg	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3131228	NA	NA	NA	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Wound	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3131228	NA	NA	NA	Intermediate	CAZ	NA	16	mg/L	Broth dilution	MicroScan	CLSI	2013	NA	Wound	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170590	NA	NA	NA	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Surveillance	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170590	NA	NA	NA	Intermediate	CAZ	NA	16	mg/L	Broth dilution	MicroScan	CLSI	2013	NA	Surveillance	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170231	NA	NA	NA	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Tissue	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170231	NA	NA	NA	Intermediate	CAZ	NA	16	mg/L	Broth dilution	BD Phoenix	CLSI	2013	NA	Tissue	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3137588	ENA_SAMN04450974	0.982	Acinetobacter	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Wound	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3137588	ENA_SAMN04450974	0.982	Acinetobacter	Intermediate	CAZ	NA	16	mg/L	Broth dilution	BD Phoenix	CLSI	2013	NA	Wound	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170773	ENA_SAMN04491438	0.983	Acinetobacter	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Surveillance	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170773	ENA_SAMN04491438	0.983	Acinetobacter	Intermediate	CAZ	NA	16	mg/L	Broth dilution	BD Phoenix	CLSI	2013	NA	Surveillance	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170593	ENA_SAMN04488274	0.983	Acinetobacter	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Surveillance	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170593	ENA_SAMN04488274	0.983	Acinetobacter	Intermediate	CAZ	NA	16	mg/L	Broth dilution	MicroScan	CLSI	2013	NA	Surveillance	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170609	ENA_SAMN04488290	0.981	Acinetobacter	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Respiratory	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170609	ENA_SAMN04488290	0.981	Acinetobacter	Intermediate	CAZ	NA	16	mg/L	Broth dilution	MicroScan	CLSI	2013	NA	Respiratory	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3131165	ENA_SAMN04446459	0.982	Acinetobacter	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Wound	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3131165	ENA_SAMN04446459	0.982	Acinetobacter	Intermediate	CAZ	NA	16	mg/L	Broth dilution	BD Phoenix	CLSI	2013	NA	Wound	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170772	ENA_SAMN04491437	0.983	Acinetobacter	Resistant	CAZ	NA	64	mg/L	Broth dilution	VITEK 2	CLSI	2013	NA	Surveillance	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Acinetobacter	baumannii	SRR3170772	ENA_SAMN04491437	0.983	Acinetobacter	Intermediate	CAZ	NA	16	mg/L	Broth dilution	BD Phoenix	CLSI	2013	NA	Surveillance	USA	NA	Acinetobacter baumannii	Acinetobacter baumannii	Acinetobacter baumannii	Matched_NCBI_Antibiogram	Good_sources
-Streptococcus	pneumoniae	ERR023428	NA	NA	NA	Susceptible	ERY	<=	0.125	mg/L	Broth dilution	NA	CLSI	2013	NA	Sputum	United Kingdom	NA	Streptococcus pneumoniae	NA	NA	Missing_All	No_sources
-Streptococcus	pneumoniae	ERR023428	NA	NA	NA	Susceptible	ERY	<=	0.125	mg/L	Broth dilution	NA	CLSI	2013	NA	Nasopharynx	United Kingdom	NA	Streptococcus pneumoniae	NA	NA	Missing_All	No_sources
-Streptococcus	pneumoniae	ERR023428	NA	NA	NA	Resistant	ERY	NA	2	mg/L	Broth dilution	NA	CLSI	2013	NA	Blood	USA	NA	Streptococcus pneumoniae	NA	NA	Missing_All	No_sources
-Streptococcus	pneumoniae	ERR023428	NA	NA	NA	Resistant	ERY	NA	1	mg/L	Broth dilution	NA	CLSI	2013	NA	Blood	United Kingdom	NA	Streptococcus pneumoniae	NA	NA	Missing_All	No_sources
-Streptococcus	pneumoniae	ERR016723	NA	NA	NA	Susceptible	ERY	NA	0.125	mg/L	Broth dilution	NA	CLSI	2013	NA	Blood	Denmark	NA	Streptococcus pneumoniae	NA	NA	Missing_All	No_sources
-Streptococcus	pneumoniae	ERR016723	NA	NA	NA	Susceptible	ERY	NA	0.125	mg/L	Broth dilution	NA	CLSI	2013	NA	Swab	Denmark	NA	Streptococcus pneumoniae	NA	NA	Missing_All	No_sources
-Streptococcus	pneumoniae	ERR016723	NA	NA	NA	Resistant	ERY	NA	256	mg/L	Broth dilution	NA	CLSI	2013	NA	Sputum	Denmark	NA	Streptococcus pneumoniae	NA	NA	Missing_All	No_sources
-Streptococcus	pneumoniae	ERR016723	NA	NA	NA	Resistant	ERY	NA	256	mg/L	Broth dilution	NA	CLSI	2013	NA	Nasopharynx	Denmark	NA	Streptococcus pneumoniae	NA	NA	Missing_All	No_sources
-Streptococcus	pneumoniae	ERR016837	NA	NA	NA	Susceptible	ERY	NA	0.06	mg/L	Broth dilution	NA	CLSI	2013	NA	NA	Germany	NA	Streptococcus pneumoniae	NA	NA	Missing_All	No_sources
-Streptococcus	pneumoniae	ERR016837	NA	NA	NA	Susceptible	ERY	NA	0.06	mg/L	Broth dilution	NA	CLSI	2013	NA	CSF	Germany	NA	Streptococcus pneumoniae	NA	NA	Missing_All	No_sources
-Streptococcus	pneumoniae	ERR016837	NA	NA	NA	Resistant	ERY	NA	128	mg/L	Broth dilution	NA	CLSI	2013	NA	CSF	Germany	NA	Streptococcus pneumoniae	NA	NA	Missing_All	No_sources
-Streptococcus	pneumoniae	ERR016837	NA	NA	NA	Resistant	ERY	NA	2	mg/L	Broth dilution	NA	CLSI	2013	NA	Blood	Germany	NA	Streptococcus pneumoniae	NA	NA	Missing_All	No_sources
-Streptococcus	pneumoniae	ERR023450	NA	NA	NA	Susceptible	ERY	<=	0.125	mg/L	Broth dilution	NA	CLSI	2013	NA	Sputum	United Kingdom	NA	Streptococcus pneumoniae	NA	NA	Missing_All	No_sources
-Streptococcus	pneumoniae	ERR023450	NA	NA	NA	Resistant	ERY	NA	16	mg/L	Broth dilution	NA	CLSI	2013	NA	Blood	United Kingdom	NA	Streptococcus pneumoniae	NA	NA	Missing_All	No_sources
-Streptococcus	pneumoniae	ERR023450	NA	NA	NA	Resistant	ERY	NA	8	mg/L	Broth dilution	NA	CLSI	2013	NA	Blood	Georgia	NA	Streptococcus pneumoniae	NA	NA	Missing_All	No_sources
-Streptococcus	pneumoniae	ERR016733	NA	NA	NA	Susceptible	ERY	NA	0.12	mg/L	Broth dilution	NA	CLSI	2013	NA	NA	Germany	NA	Streptococcus pneumoniae	NA	NA	Missing_All	No_sources
-Streptococcus	pneumoniae	ERR016733	NA	NA	NA	Resistant	ERY	NA	32	mg/L	Broth dilution	NA	CLSI	2013	NA	Blood	Germany	NA	Streptococcus pneumoniae	NA	NA	Missing_All	No_sources
-Streptococcus	pneumoniae	ERR016733	NA	NA	NA	Resistant	ERY	NA	128	mg/L	Broth dilution	NA	CLSI	2013	NA	Blood	Germany	NA	Streptococcus pneumoniae	NA	NA	Missing_All	No_sources
-Streptococcus	pneumoniae	ERR016733	NA	NA	NA	Resistant	ERY	NA	4	mg/L	Broth dilution	NA	CLSI	2013	NA	Swab	Germany	NA	Streptococcus pneumoniae	NA	NA	Missing_All	No_sources
-Streptococcus	pneumoniae	ERR016733	NA	NA	NA	Intermediate	ERY	NA	0.5	mg/L	Broth dilution	NA	CLSI	2013	NA	NA	Spain	NA	Streptococcus pneumoniae	NA	NA	Missing_All	No_sources
-Streptococcus	pneumoniae	ERR024271	NA	NA	NA	Resistant	ERY	NA	1	mg/L	Broth dilution	NA	CLSI	2013	NA	NA	Canada	NA	Streptococcus pneumoniae	NA	NA	Missing_All	No_sources
-Streptococcus	pneumoniae	ERR024271	NA	NA	NA	Resistant	ERY	NA	2	mg/L	Broth dilution	NA	CLSI	2013	NA	NA	Canada	NA	Streptococcus pneumoniae	NA	NA	Missing_All	No_sources
-Streptococcus	pneumoniae	ERR024271	NA	NA	NA	Intermediate	ERY	NA	0.5	mg/L	Broth dilution	NA	CLSI	2013	NA	NA	Canada	NA	Streptococcus pneumoniae	NA	NA	Missing_All	No_sources
-Salmonella	enterica	SRR3664630	NA	NA	NA	Resistant	GEN	NA	8	mg/L	Broth dilution	Sensititre	CLSI	2013	30333126	Ground Turkey	USA	NA	Salmonella enterica	Salmonella enterica	Salmonella enterica subsp. enterica serovar Typhimurium var. 5-	Matched_NCBI	Verify_sources
-Salmonella	enterica	SRR3664630	NA	NA	NA	Intermediate	GEN	NA	4	mg/L	Broth dilution	CMV2AGNF/CMV3AGNF	CLSI	2013	27381390	Ground Turkey	USA	NA	Salmonella enterica	Salmonella enterica	Salmonella enterica subsp. enterica serovar Typhimurium var. 5-	Matched_NCBI	Verify_sources
-Salmonella	enterica	SRR3664630	NA	NA	NA	Intermediate	GEN	NA	4	mg/L	Broth dilution	NA	CLSI	2013	27381390	Ground Turkey	USA	NA	Salmonella enterica	Salmonella enterica	Salmonella enterica subsp. enterica serovar Typhimurium var. 5-	Matched_NCBI	Verify_sources
+genus	species	scientific_name_new	accession	genome	phenotype	antibiotic	measurement_value	ani	new_genus
+Neisseria	gonorrhoeae	Neisseria gonorrhoeae	ERR191801	ENA_SAMEA1690471	Susceptible	TET	0.25	0.997	Neisseria
+Neisseria	gonorrhoeae	Neisseria gonorrhoeae	ERR223696	ENA_SAMEA1690454	Susceptible	TET	0.25	0.997	Neisseria
+Neisseria	gonorrhoeae	Neisseria gonorrhoeae	ERR223668	ENA_SAMEA1690489	Susceptible	TET	0.25	0.997	Neisseria
+Neisseria	gonorrhoeae	Neisseria gonorrhoeae	ERR223616	ENA_SAMEA1690342	Resistant	TET	4	0.997	Neisseria
+Neisseria	gonorrhoeae	Neisseria gonorrhoeae	ERR223696	ENA_SAMEA1690454	Resistant	TET	4	0.997	Neisseria
+Neisseria	gonorrhoeae	Neisseria gonorrhoeae	ERR191801	ENA_SAMEA1690471	Resistant	TET	2	0.997	Neisseria
+Neisseria	gonorrhoeae	Neisseria gonorrhoeae	ERR222902	ENA_SAMEA1677481	Resistant	TET	2	0.997	Neisseria
+Neisseria	gonorrhoeae	Neisseria gonorrhoeae	ERR222902	ENA_SAMEA1677481	Intermediate	TET	1	0.997	Neisseria
+Neisseria	gonorrhoeae	Neisseria gonorrhoeae	ERR223616	ENA_SAMEA1690342	Intermediate	TET	1	0.997	Neisseria
+Neisseria	gonorrhoeae	Neisseria gonorrhoeae	ERR223668	ENA_SAMEA1690489	Intermediate	TET	0.5	0.997	Neisseria
+Staphylococcus	aureus	Staphylococcus aureus	ERR029468	NA	Resistant	ERY	NA	NA	Staphylococcus
+Staphylococcus	aureus	Staphylococcus aureus	ERR029341	NA	Resistant	ERY	NA	NA	Staphylococcus
+Staphylococcus	aureus	Staphylococcus aureus	ERR029354	NA	Resistant	ERY	NA	NA	Staphylococcus
+Staphylococcus	aureus	Staphylococcus aureus	ERR029354	NA	Susceptible	ERY	NA	NA	Staphylococcus
+Staphylococcus	aureus	Staphylococcus aureus	ERR029341	NA	Susceptible	ERY	NA	NA	Staphylococcus
+Staphylococcus	aureus	Staphylococcus aureus	ERR029468	NA	Susceptible	ERY	NA	NA	Staphylococcus
+Escherichia	coli	Escherichia coli	SRR2134681	ENA_SAMN03892121	Susceptible	GEN	1	0.986	Escherichia
+Escherichia	coli	Escherichia coli	SRR2134681	ENA_SAMN03892121	Resistant	GEN	20	0.986	Escherichia
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170784	NA	Susceptible	CAZ	8	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170255	ENA_SAMN04487136	Susceptible	CAZ	4	0.98	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3133099	ENA_SAMN04447714	Resistant	CAZ	64	0.982	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3131234	NA	Resistant	CAZ	64	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170589	ENA_SAMN04488270	Resistant	CAZ	64	0.982	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3131220	NA	Resistant	CAZ	64	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170735	NA	Resistant	CAZ	64	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170777	NA	Resistant	CAZ	64	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3131162	NA	Resistant	CAZ	64	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3131226	NA	Resistant	CAZ	64	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3137587	NA	Resistant	CAZ	64	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3137589	ENA_SAMN04450975	Resistant	CAZ	64	0.982	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170243	ENA_SAMN04485903	Resistant	CAZ	64	0.982	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170608	NA	Resistant	CAZ	64	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170738	ENA_SAMN04491040	Resistant	CAZ	64	0.983	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170736	ENA_SAMN04491038	Resistant	CAZ	64	0.982	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3131219	ENA_SAMN04446540	Resistant	CAZ	64	0.983	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170592	NA	Resistant	CAZ	32	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170229	ENA_SAMN04485907	Resistant	CAZ	64	0.983	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3137581	NA	Resistant	CAZ	64	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170784	NA	Resistant	CAZ	32	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170597	NA	Resistant	CAZ	64	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170596	NA	Resistant	CAZ	64	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR2916633	ENA_SAMN04254728	Resistant	CAZ	64	0.982	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3131228	NA	Resistant	CAZ	64	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170590	NA	Resistant	CAZ	64	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170231	NA	Resistant	CAZ	64	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3137588	ENA_SAMN04450974	Resistant	CAZ	64	0.982	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170773	ENA_SAMN04491438	Resistant	CAZ	64	0.983	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170593	ENA_SAMN04488274	Resistant	CAZ	64	0.983	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170609	ENA_SAMN04488290	Resistant	CAZ	64	0.981	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3131165	ENA_SAMN04446459	Resistant	CAZ	64	0.982	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170772	ENA_SAMN04491437	Resistant	CAZ	64	0.983	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170773	ENA_SAMN04491438	Intermediate	CAZ	16	0.983	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR2916633	ENA_SAMN04254728	Intermediate	CAZ	16	0.982	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170738	ENA_SAMN04491040	Intermediate	CAZ	16	0.983	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170592	NA	Intermediate	CAZ	16	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170608	NA	Intermediate	CAZ	16	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170597	NA	Intermediate	CAZ	16	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3137588	ENA_SAMN04450974	Intermediate	CAZ	16	0.982	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3137587	NA	Intermediate	CAZ	16	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170609	ENA_SAMN04488290	Intermediate	CAZ	16	0.981	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170596	NA	Intermediate	CAZ	16	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3131226	NA	Intermediate	CAZ	16	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3131220	NA	Intermediate	CAZ	16	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170735	NA	Intermediate	CAZ	16	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170243	ENA_SAMN04485903	Intermediate	CAZ	16	0.982	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170777	NA	Intermediate	CAZ	16	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3131228	NA	Intermediate	CAZ	16	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170593	ENA_SAMN04488274	Intermediate	CAZ	16	0.983	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3137589	ENA_SAMN04450975	Intermediate	CAZ	16	0.982	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170736	ENA_SAMN04491038	Intermediate	CAZ	16	0.982	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170590	NA	Intermediate	CAZ	16	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3131165	ENA_SAMN04446459	Intermediate	CAZ	16	0.982	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3137581	NA	Intermediate	CAZ	16	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170229	ENA_SAMN04485907	Intermediate	CAZ	16	0.983	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170231	NA	Intermediate	CAZ	16	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3131234	NA	Intermediate	CAZ	16	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170772	ENA_SAMN04491437	Intermediate	CAZ	16	0.983	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170589	ENA_SAMN04488270	Intermediate	CAZ	16	0.982	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3133099	ENA_SAMN04447714	Intermediate	CAZ	16	0.982	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3170255	ENA_SAMN04487136	Intermediate	CAZ	16	0.98	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3131162	NA	Intermediate	CAZ	16	NA	Acinetobacter
+Acinetobacter	baumannii	Acinetobacter baumannii	SRR3131219	ENA_SAMN04446540	Intermediate	CAZ	16	0.983	Acinetobacter
+Streptococcus	pneumoniae	Streptococcus pneumoniae	ERR023428	NA	Susceptible	ERY	0.125	NA	Streptococcus
+Streptococcus	pneumoniae	Streptococcus pneumoniae	ERR016723	NA	Susceptible	ERY	0.125	NA	Streptococcus
+Streptococcus	pneumoniae	Streptococcus pneumoniae	ERR023428	NA	Susceptible	ERY	0.125	NA	Streptococcus
+Streptococcus	pneumoniae	Streptococcus pneumoniae	ERR016837	NA	Susceptible	ERY	0.06	NA	Streptococcus
+Streptococcus	pneumoniae	Streptococcus pneumoniae	ERR016837	NA	Susceptible	ERY	0.06	NA	Streptococcus
+Streptococcus	pneumoniae	Streptococcus pneumoniae	ERR016723	NA	Susceptible	ERY	0.125	NA	Streptococcus
+Streptococcus	pneumoniae	Streptococcus pneumoniae	ERR023450	NA	Susceptible	ERY	0.125	NA	Streptococcus
+Streptococcus	pneumoniae	Streptococcus pneumoniae	ERR016733	NA	Susceptible	ERY	0.12	NA	Streptococcus
+Streptococcus	pneumoniae	Streptococcus pneumoniae	ERR023428	NA	Resistant	ERY	2	NA	Streptococcus
+Streptococcus	pneumoniae	Streptococcus pneumoniae	ERR024271	NA	Resistant	ERY	1	NA	Streptococcus
+Streptococcus	pneumoniae	Streptococcus pneumoniae	ERR023428	NA	Resistant	ERY	1	NA	Streptococcus
+Streptococcus	pneumoniae	Streptococcus pneumoniae	ERR023450	NA	Resistant	ERY	16	NA	Streptococcus
+Streptococcus	pneumoniae	Streptococcus pneumoniae	ERR016837	NA	Resistant	ERY	128	NA	Streptococcus
+Streptococcus	pneumoniae	Streptococcus pneumoniae	ERR016723	NA	Resistant	ERY	256	NA	Streptococcus
+Streptococcus	pneumoniae	Streptococcus pneumoniae	ERR016837	NA	Resistant	ERY	2	NA	Streptococcus
+Streptococcus	pneumoniae	Streptococcus pneumoniae	ERR016733	NA	Resistant	ERY	32	NA	Streptococcus
+Streptococcus	pneumoniae	Streptococcus pneumoniae	ERR023450	NA	Resistant	ERY	8	NA	Streptococcus
+Streptococcus	pneumoniae	Streptococcus pneumoniae	ERR016733	NA	Resistant	ERY	128	NA	Streptococcus
+Streptococcus	pneumoniae	Streptococcus pneumoniae	ERR016733	NA	Resistant	ERY	4	NA	Streptococcus
+Streptococcus	pneumoniae	Streptococcus pneumoniae	ERR016723	NA	Resistant	ERY	256	NA	Streptococcus
+Streptococcus	pneumoniae	Streptococcus pneumoniae	ERR024271	NA	Resistant	ERY	2	NA	Streptococcus
+Streptococcus	pneumoniae	Streptococcus pneumoniae	ERR024271	NA	Intermediate	ERY	0.5	NA	Streptococcus
+Streptococcus	pneumoniae	Streptococcus pneumoniae	ERR016733	NA	Intermediate	ERY	0.5	NA	Streptococcus
+Salmonella	enterica	Salmonella enterica	SRR3664630	NA	Resistant	GEN	8	NA	Salmonella
+Salmonella	enterica	Salmonella enterica	SRR3664630	NA	Intermediate	GEN	4	NA	Salmonella
+Salmonella	enterica	Salmonella enterica	SRR3664630	NA	Intermediate	GEN	4	NA	Salmonella
