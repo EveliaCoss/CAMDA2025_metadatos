@@ -49,6 +49,10 @@
 
 ### Import Data
 
+
+
+
+
 ```{r}
 library(tidyverse)
 library(janitor)
@@ -80,7 +84,15 @@ rgi_results <- read_tsv(file= here("rawdata/rgi_analysis","2025_Training_and_tes
 colnames(rgi_results)[colSums(is.na(rgi_results)) > 0]
 ```
 
+
+
+
+
 ## STEP 1. Asignar nuevo valor de MIC y fenotipo por genero
+
+
+
+
 
 ```{r}
 source(here("functions", "process_mic_data_function_v3.R"))
@@ -97,17 +109,33 @@ head(training_new_mic_db)
 dim(training_new_mic_db)
 ```
 
+
+
+
+
 433 valores NA en 'measurement_value'
 
 Analizar la informacion de Intermediate
+
+
+
+
 
 ```{r}
 filter(training_new_mic_db, phenotype == "Intermediate") %>% head()
 ```
 
+
+
+
+
 ## STEP 2. Unir archivos de test y training
 
 Join information according with metadata
+
+
+
+
 
 ```{r}
 # 1. Remove columns from testing
@@ -162,7 +190,15 @@ dim(training_and_test_inputfile_complete) # 9610 1081
 length(unique(training_and_test_inputfile_complete$accession)) #9504
 ```
 
+
+
+
+
 colnames
+
+
+
+
 
 ```{r}
 colnames(training_and_test_inputfile)
@@ -170,7 +206,15 @@ colnames(training_and_test_inputfile)
 str(training_and_test_inputfile)
 ```
 
+
+
+
+
 Cambiar NA por ceros, excepto de algunas columnas
+
+
+
+
 
 ```{r}
 training_and_test_inputfile_complete <- training_and_test_inputfile_complete %>%
@@ -185,19 +229,43 @@ head(training_and_test_inputfile_complete) %>%
   DT::datatable()
 ```
 
+
+
+
+
 Save file
+
+
+
+
 
 ```{r}
 write_tsv(training_and_test_inputfile_complete, file = here("rawdata/TrainAndTest_cleaned", "training_and_test_inputfile_cleaned_v2.tsv.gz"))
 ```
 
+
+
+
+
 Checar columnas con NA
+
+
+
+
 
 ```{r}
 colnames(training_and_test_inputfile_complete)[colSums(is.na(training_and_test_inputfile_complete)) > 0]
 ```
 
+
+
+
+
 Checar duplicados
+
+
+
+
 
 ```{r}
 training_duplicadas <- training_and_test_inputfile[duplicated(training_and_test_inputfile), ]
@@ -206,9 +274,17 @@ training_duplicadas %>%
   filter(type == "training") 
 ```
 
+
+
+
+
 ## STEP 3. Verificaciones en el archivo de training
 
 Verificar que training no tenga NA
+
+
+
+
 
 ```{r}
 # Detectar columnas con NA
@@ -228,9 +304,17 @@ training_and_test_inputfile_complete %>%
   DT::datatable()
 ```
 
+
+
+
+
 ## Datos faltantes de RGI
 
 Cuantas accesiones si tienes y no tienen resultados en RGI por accession:
+
+
+
+
 
 ```{r}
 # Accession únicas en cada dataset
@@ -249,7 +333,15 @@ resumen_rgi_number <- resumen_rgi %>%
 resumen_rgi_number
 ```
 
+
+
+
+
 De cuales especies no tenemos esta informacion
+
+
+
+
 
 ```{r}
 # Obtener los SRA sin IDs
@@ -265,17 +357,33 @@ training_sin_resultados_db %>%
   DT::datatable()
 ```
 
+
+
+
+
 Cuantas especies no tienen informacion
+
+
+
+
 
 ```{r}
 table(training_sin_resultados_db$scientific_name_new)
 ```
+
+
+
+
 
 ::: callout-warning
 Los resultados de RGI no tienen resultados para 42 accession IDs.
 :::
 
 ## Comparar archivsos
+
+
+
+
 
 ```{r}
 # v1 de la funcion
@@ -287,7 +395,15 @@ TrainAndTest_input_v2_db <- read_tsv(file = here("rawdata/TrainAndTest_cleaned",
 # Rows: 9610 Columns: 1081
 ```
 
+
+
+
+
 Distribucion de especies
+
+
+
+
 
 ```{r}
 # v1
@@ -298,3 +414,4 @@ unique(TrainAndTest_input_v2_db$recategorized_mic)
 unique(TrainAndTest_input_v2_db$phenotype_assigned)
 # ceros los test
 ```
+

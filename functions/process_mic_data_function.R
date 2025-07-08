@@ -101,7 +101,13 @@ process_mic_data <- function(input_file, output_file) {
     ifelse(phenotype_df[genus, mic] == "s", "Susceptible", "Resistant")
   })
   
-  # Intentar escribir la salida
+  # When phenotype_assigned is NA
+  # 
+  # If either new_genus or recategorized MIC is missing
+  # If the genus is not defined in the interpretation table
+  # If the MIC doesn't fall within any of the defined bins
+  
+  # Escribir el archivo de salida
   tryCatch({
     write.table(df, output_file, sep = "\t", row.names = FALSE, quote = FALSE)
   }, error = function(e) {

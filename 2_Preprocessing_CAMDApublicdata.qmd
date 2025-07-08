@@ -92,8 +92,6 @@ R.utils::gzip(original_file, destname = gz_file, overwrite = TRUE)
 # Date: February 16, 2025
 # antibiograms_metadata
 antibiograms_db <- readr::read_tsv(destfile) %>%
-# Clean antibiogram metadata
-# antibiograms_db <- antibiograms_metadata %>%
   # Standardizes column names: converts them to lowercase,
   # replaces spaces and special characters with underscores
   janitor::clean_names() %>%
